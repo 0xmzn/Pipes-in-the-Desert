@@ -5,9 +5,11 @@ public class Controller {
     private Player activePlayer;
     private Timer timer;
     private Scanner scanner;
+    private int turn;
 
     public Controller(){
         scanner = new Scanner(System.in);
+        turn = 0;
     }
 
     //its a helper tho, should it be public? make new class for these?
@@ -24,6 +26,7 @@ public class Controller {
             System.err.println("An error occurred while waiting.");
         }
     }
+
     public void displayMenu(){
         printMethodName("displayMenu");
 
@@ -56,7 +59,27 @@ public class Controller {
         int programReady = scanner.nextInt();
 
         if (programReady == 1){
+            System.out.println("THE GAME HAS STARTED!!\n");
+            System.out.println("The possible commands are:");
+            System.out.println("pickUp");
+            System.out.println("installPump");
+            System.out.println("placePipeEnd");
+            System.out.println("connect");
+            System.out.println("disconnect");
+            System.out.println("fixPipe");
+            System.out.println("fixPump");
+            System.out.println("puncturePipe");
+            System.out.println("changeInputPipe");
+            System.out.println("changeOutputPipe");
+            System.out.println("moveW");
+            System.out.println("moveA");
+            System.out.println("moveS");
+            System.out.println("moveD");
+
             manageRounds();
+
+
+
         } else {
             System.err.println("The game cannot start until the program is ready, please wait...");
             sleep(1);
@@ -80,9 +103,13 @@ public class Controller {
     }
     public void manageRounds(){
         printMethodName("manageRounds");
+        
+        int round = turn/4+1;
+        int turnInRound = turn%4+1;
+        System.out.println("This is round #"+round+"! turn #"+turnInRound);
+        turn++;
         giveTurn();
         incrementRounds();
-
     }
 
     private void incrementRounds(){
@@ -92,7 +119,7 @@ public class Controller {
     public void giveTurn(){
         printMethodName("giveTurn");
         
-        System.out.println("Has the timer expired?");
+        System.out.println("the player given up the turn?");
         System.out.println("1. Yes");
         System.out.println("2. No");
         
