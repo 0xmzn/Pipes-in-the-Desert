@@ -68,8 +68,9 @@ public class Controller {
         if (programReady == 1){
             System.out.println("THE GAME HAS STARTED!!\n");
             System.out.println("The possible commands are:");
-            System.out.println("pickUp");
+            System.out.println("pickUpPump");
             System.out.println("installPump");
+            System.out.println("pickUpPipeEnd");
             System.out.println("placePipeEnd");
             System.out.println("connect");
             System.out.println("disconnect");
@@ -85,8 +86,11 @@ public class Controller {
 
             string command = scanner.nextLine();
             switch (command){
-                case "pickUp":
-                    Plumber.pickUp();
+                case "pickUpPipeEnd":
+                    Plumber.pickUpPipeEnd();//dont have diagram
+                    break;
+                case "pickUpPump":
+                    Plumber.pickUpPump();
                     break;
                 case "installPump":
                     Plumber.installPump();
