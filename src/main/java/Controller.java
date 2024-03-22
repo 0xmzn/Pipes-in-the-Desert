@@ -1,19 +1,26 @@
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
 public class Controller {
-
-    private Player activePlayer;
+    private List<Player> players;
     private Timer timer;
     private Scanner scanner;
     private int turn;
 
     public Controller(){
         scanner = new Scanner(System.in);
+        players = new ArrayList<Player>();
+        players.add(new Plumber());
+        players.add(new Saboteur());
+        players.add(new Plumber());
+        players.add(new Saboteur());
+
         turn = 0;
     }
 
     //its a helper tho, should it be public? make new class for these?
-    public void printMethodName(String methodName){
+    public static void printMethodName(String methodName){
         System.out.println("\n--------------------");
         System.out.println(methodName);
         System.out.println("--------------------\n");
@@ -37,8 +44,8 @@ public class Controller {
         int choice = scanner.nextInt();
         switch(choice){
             case 1:
-                startGame();
                 initGrid();
+                startGame();
                 break;
             case 2:
                 onExit();
@@ -76,9 +83,55 @@ public class Controller {
             System.out.println("moveS");
             System.out.println("moveD");
 
+            string command = scanner.nextLine();
+            switch (command){
+                case "pickUp":
+                    Plumber.pickUp();
+                    break;
+                case "installPump":
+                    Plumber.installPump();
+                    break;
+                case "placePipeEnd":
+                    Plumber.placePipeEnd();
+                    break;
+                case "connect":
+                    Plumber.connect();
+                    break;
+                case "disconnect":
+                    Plumber.disconnect();
+                    break;
+                case "fixPipe":
+                    Plumber.fixPipe();
+                    break;
+                case "fixPump":
+                    Plumber.fixPump();
+                    break;
+                case "puncturePipe":
+                    Saboteur.puncturePipe();
+                    break;
+                case "changeInputPipe":
+                    Player.changeInputPipe();
+                    break;
+                case "changeOutputPipe":
+                    Player.changeOutputPipe();
+                    break;
+                case "moveW":
+                    Player.moveW();
+                    break;
+                case "moveA":
+                    Player.moveA();
+                    break;
+                case "moveS":
+                    Player.moveS();
+                    break;
+                case "moveD":
+                    Player.moveD();
+                    break;
+                default:
+                    System.out.println("Invalid command. Please try again.");
+                    startGame();
+            }
             manageRounds();
-
-
 
         } else {
             System.err.println("The game cannot start until the program is ready, please wait...");
@@ -103,11 +156,7 @@ public class Controller {
     }
     public void manageRounds(){
         printMethodName("manageRounds");
-        
-        int round = turn/4+1;
-        int turnInRound = turn%4+1;
-        System.out.println("This is round #"+round+"! turn #"+turnInRound);
-        turn++;
+
         giveTurn();
         incrementRounds();
     }
