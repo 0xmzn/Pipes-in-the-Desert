@@ -106,11 +106,27 @@ public class Plumber extends Player
         return true;    
     }
 
+    private boolean getLocation(String location) {
+        printMethodName("getLocation()");
+        int isLocation = askQuestion("Is the player standing on "+location+"?");
+        
+        if (isLocation != 1 && isLocation != 2){
+            System.out.println("Invalid command, operation failed");
+            return false;
+        }
+        else if (isLocation == 2){
+            return false;
+        }
+
+        System.out.println("");
+        return true;
+    }
+
     public void pickUpPipeEnd(){
         printMethodName("pickUpPipeEnd");
         
         System.out.println("You are trying to pick up a pipe end...");
-        if (!checkType() || !checkInventory() || !getLocation() || !getManufacturedElement()){
+        if (!checkType() || !checkInventory() || !getLocation("pipe end") || !getManufacturedElement()){
             return;
         }
         boolean isConnectedToActiveElement = getConnected();
@@ -129,7 +145,7 @@ public class Plumber extends Player
         printMethodName("pickUpPump");
         
         System.out.println("You are trying to pick up a pump...");
-        if (!checkType() || !checkInventory() || !getLocation() || !getManufacturedElement()){
+        if (!checkType() || !checkInventory() || !getLocation("pump") || !getManufacturedElement()){
             return;
         }
         
@@ -154,7 +170,7 @@ public class Plumber extends Player
 
         System.out.println("You are trying to install a pump into the system...");
         if (!checkType() || !checkInventory() 
-        || !getLocation() || !getManufacturedElement()){
+        || !getLocation("pump") || !getManufacturedElement()){
             return;
         }
 
