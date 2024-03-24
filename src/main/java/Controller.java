@@ -2,7 +2,7 @@ import static java.lang.System.out;
 import java.util.Scanner;
 
 public class Controller {
-    private Scanner scanner;
+    private final Scanner scanner;
 
     public Controller(){
         scanner = new Scanner(System.in);
@@ -61,23 +61,23 @@ public class Controller {
         out.println("manufacturePump");
         out.println("manufacturePipe");
         out.println("breakPump");
-        out.println("giveTurn");
+//        out.println("giveTurn");
         out.println("endGame");
-        out.println("moveW");
-        out.println("moveA");
-        out.println("moveS");
-        out.println("moveD");
-        out.println("changeInputPipe");
-        out.println("changeOutputPipe");
-        out.println("pickUpPump");
-        out.println("installPump");
-        out.println("pickUpPipeEnd");
-        out.println("placePipeEnd");
-        out.println("connect");
-        out.println("disconnect");
-        out.println("fixPipe");
-        out.println("fixPump");
-        out.println("puncturePipe");
+//        out.println("moveW");
+//        out.println("moveA");
+//        out.println("moveS");
+//        out.println("moveD");
+//        out.println("changeInputPipe");
+//        out.println("changeOutputPipe");
+//        out.println("pickUpPump");
+//        out.println("installPump");
+//        out.println("pickUpPipeEnd");
+//        out.println("placePipeEnd");
+//        out.println("connect");
+//        out.println("disconnect");
+//        out.println("fixPipe");
+//        out.println("fixPump");
+//        out.println("puncturePipe");
 
         String command = scanner.nextLine();
         switch (command){
@@ -90,57 +90,57 @@ public class Controller {
             case "breakPump":
                 this.breakPump();
                 break;
-            case "giveTurn":
-                this.giveTurn();
-                break;
+//            case "giveTurn":
+//                this.giveTurn();
+//                break;
             case "endGame":
                 this.endGame();
                 break;
-            case "moveW":
-                Player.moveW();
-                break;
-            case "moveA":
-                Player.moveA();
-                break;
-            case "moveS":
-                Player.moveS();
-                break;
-            case "moveD":
-                Player.moveD();
-                break;
-            case "changeInputPipe":
-                Player.changeInputPipe();
-                break;
-            case "changeOutputPipe":
-                Player.changeOutputPipe();
-                break;
-            case "pickUpPipeEnd":
-                Plumber.pickUpPipeEnd();  // dont have diagram
-                break;
-            case "pickUpPump":
-                Plumber.pickUpPump();
-                break;
-            case "installPump":
-                Plumber.installPump();
-                break;
-            case "placePipeEnd":
-                Plumber.placePipeEnd();
-                break;
-            case "connect":
-                Plumber.connect();
-                break;
-            case "disconnect":
-                Plumber.disconnect();
-                break;
-            case "fixPipe":
-                Plumber.fixPipe();
-                break;
-            case "fixPump":
-                Plumber.fixPump();
-                break;
-            case "puncturePipe":
-                Saboteur.puncturePipe();
-                break;
+//            case "moveW":
+//                Player.moveW();
+//                break;
+//            case "moveA":
+//                Player.moveA();
+//                break;
+//            case "moveS":
+//                Player.moveS();
+//                break;
+//            case "moveD":
+//                Player.moveD();
+//                break;
+//            case "changeInputPipe":
+//                Player.changeInputPipe();
+//                break;
+//            case "changeOutputPipe":
+//                Player.changeOutputPipe();
+//                break;
+//            case "pickUpPipeEnd":
+//                Plumber.pickUpPipeEnd();  // dont have diagram
+//                break;
+//            case "pickUpPump":
+//                Plumber.pickUpPump();
+//                break;
+//            case "installPump":
+//                Plumber.installPump();
+//                break;
+//            case "placePipeEnd":
+//                Plumber.placePipeEnd();
+//                break;
+//            case "connect":
+//                Plumber.connect();
+//                break;
+//            case "disconnect":
+//                Plumber.disconnect();
+//                break;
+//            case "fixPipe":
+//                Plumber.fixPipe();
+//                break;
+//            case "fixPump":
+//                Plumber.fixPump();
+//                break;
+//            case "puncturePipe":
+//                Saboteur.puncturePipe();
+//                break;
             default:
                 out.println("Invalid command! Please try again.");
                 startGame();
@@ -215,19 +215,19 @@ public class Controller {
         }
     }
 
-    public void giveTurn(){
-        printMethodName("giveTurn()");
-
-        int answer = askQuestion("Has the turn of the previous player expired?");
-        if (answer == 1) {
-            takeTurn();
-            Timer.startTimer();
-
-            manageRounds();
-        } else {
-            out.println("We cannot change the turn, as the previous player has not finished!");
-        }
-    }
+//    public void giveTurn(){
+//        printMethodName("giveTurn()");
+//
+//        int answer = askQuestion("Has the turn of the previous player expired?");
+//        if (answer == 1) {
+//            takeTurn();
+//            Timer.startTimer();
+//
+//            manageRounds();
+//        } else {
+//            out.println("We cannot change the turn, as the previous player has not finished!");
+//        }
+//    }
 
     public void takeTurn() {
         printMethodName("takeTurn()");
