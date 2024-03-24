@@ -1,8 +1,13 @@
-public class Saboteur extends Player {
-    public Saboteur(String inputPipe, String outputPipe, int startX, int startY) {
-        super(inputPipe, outputPipe, startX, startY);
+import static java.lang.System.out;
+
+public class Saboteur {
+    private static void printMethodName(String methodName){
+        out.println("\n------------------------------------------------------------");
+        out.println(methodName + " method of the Saboteur class is called.");
+        out.println("------------------------------------------------------------\n");
     }
-    public void puncturePipe() {
-        System.out.println("Saboteur has punctured the pipe!");
+
+    public static void puncturePipe() {
+        printMethodName("puncturePipe()");
     }
 }

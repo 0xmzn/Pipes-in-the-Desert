@@ -16,14 +16,25 @@ public class Controller {
 
     private int askQuestion(String question, String... options) {
         out.println(question);
-        for(int i=0;i<options.length; i++) {
-            out.println((i + 1) + ". " + options[i]);
-        }
-        int answer = scanner.nextInt();
 
-        if(answer < 1 || answer > options.length) {
-            System.err.println("Invalid values was chosen for the answer!");
+        if (options.length == 0) {
+            out.println("1. Yes\n2. No");
+        } else {
+            for(int i = 0; i < options.length; i++) {
+                out.println((i + 1) + ". " + options[i]);
+            }
         }
+
+        int answer = scanner.nextInt();
+        if (options.length == 0) {
+            if (answer < 1 || answer > 2)
+                System.err.println("Invalid values was chosen for the answer!");
+        } else {
+            if(answer < 1 || answer > options.length) {
+                System.err.println("Invalid values was chosen for the answer!");
+            }
+        }
+        
         return answer;
     }
 
@@ -55,8 +66,8 @@ public class Controller {
 
     public void startGame(){
         printMethodName("startGame()");
-
         out.println("THE GAME HAS STARTED!!\n");
+
         out.println("The possible commands are:");
         out.println("manufacturePump");
         out.println("manufacturePipe");
@@ -77,7 +88,7 @@ public class Controller {
 //        out.println("disconnect");
 //        out.println("fixPipe");
 //        out.println("fixPump");
-//        out.println("puncturePipe");
+        out.println("puncturePipe");
 
         String command = scanner.nextLine();
         switch (command){
@@ -138,14 +149,17 @@ public class Controller {
 //            case "fixPump":
 //                Plumber.fixPump();
 //                break;
-//            case "puncturePipe":
-//                Saboteur.puncturePipe();
-//                break;
+            case "puncturePipe":
+               Saboteur.puncturePipe();
+
+               int answer = askQuestion("Does the saboteur stand on the pipe?");
+               if (answer == 1) out.println("The pipe has been punctured!");
+               else out.println("The saboteur cannot puncture the pipe!");
+               break;
             default:
                 out.println("Invalid command! Please try again.");
                 startGame();
         }
-        manageRounds();
     }
 
     public void trackWaterFlow() {
