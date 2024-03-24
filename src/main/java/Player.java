@@ -14,24 +14,26 @@ public abstract class Player {
     }
 
     public void changeInputPipe() {
-        if (getLocation() && !isPunctured()) {
+        printMethodName("changeInputPipe()");
+        boolean getLocation = getLocation();
+        boolean isPunctured = isPunctured();
+        if (getLocation && !isPunctured) {
             printMethodName("Player is on the pump and it's not punctured. Attempting to change the input pipe...");
             printMethodName("Input pipe changed to the Next Pipe");
-        } else if (!getLocation()) {
-            printMethodName("Player is not on the pump. Cannot change the input pipe.");
-        } else if (isPunctured()) {
-            printMethodName("The pump is punctured. Cannot change the input pipe.");
-        }
+        } else {
+            printMethodName("Player is not on the pump or the pipe is punctured. Cannot change the input pipe.");
+        } 
     }
 
     public void changeOutputPipe() {
-        if (getLocation() && !isPunctured()) {
+        printMethodName("changeOutputPipe()");
+        boolean getLocation = getLocation();
+        boolean isPunctured = isPunctured();
+        if (getLocation && !isPunctured) {
             printMethodName("Player is on the pump and it's not punctured. Attempting to change the output pipe...");
             printMethodName("Output pipe changed to the NextPipe");
-        } else if (!getLocation()) {
-            printMethodName("Player is not on the pump. Cannot change the output pipe.");
-        } else if (isPunctured()) {
-            printMethodName("The pump is punctured. Cannot change the output pipe.");
+        } else {
+            printMethodName("Player is not on the pump he pipe is punctured. Cannot change the output pipe.");
         }
     }
 
@@ -78,19 +80,19 @@ public abstract class Player {
     }
 
     public void moveW() {
-        printMethodName("Moved up to position");
+        printMethodName("Moved up to position. moveW()");
     }
 
     public void moveA() {
-        printMethodName("Moved left to position");
+        printMethodName("Moved left to position. moveA()");
     }
 
     public void moveS() {
-        printMethodName("Moved down to position");
+        printMethodName("Moved down to position. moveS()");
     }
 
     public void moveD() {
-        printMethodName("Moved right to position");
+        printMethodName("Moved right to position. moveD()");
     }
 }
 

@@ -24,12 +24,11 @@ public class Saboteur extends Player {
     }
 
     public void puncturePipe() {
+        printMethodName("puncturePipe()");
         if (getLocation() && !isPunctured()) {
             printMethodName("Saboteur is on the pipe and it's not punctured. Puncturing Pipe...");
-        } else if (!getLocation()) {
-            printMethodName("Saboteur is not on the pipe. Cannot puncture pipe.");
-        } else if (isPunctured()) {
-            printMethodName("The pipe is punctured. Cannot puncture pipe.");
-        }
+        } else {
+            printMethodName("Saboteur is not on the pipe or the pipe is punctured. Cannot puncture pipe.");
+        } 
     }
 }
