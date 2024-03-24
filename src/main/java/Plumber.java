@@ -1,3 +1,2 @@
-public class Plumber extends Player
-{
+public class Plumber {
 }

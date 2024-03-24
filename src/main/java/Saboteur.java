@@ -1,2 +1,2 @@
-public class Saboteur extends Player{
+public class Saboteur {
 }
