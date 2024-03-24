@@ -1,2 +1,2 @@
-public class Plumber {
+public class Plumber extends Player {
 }
