@@ -14,29 +14,16 @@ public class Controller {
         out.println("------------------------------------------------------------\n");
     }
 
-    private int askQuestion(String question){
+    private int askQuestion(String question, String... options) {
         out.println(question);
-        out.println("1. Yes");
-        out.println("2. No");
-
+        for(int i=0;i<options.length; i++) {
+            out.println((i + 1) + ". " + options[i]);
+        }
         int answer = scanner.nextInt();
 
-        if (answer != 1 && answer != 2) 
-            System.err.println("The invalid value was chosen for the answer!");
-
-        return answer;
-    }
-
-    private int askQuestion(String question, String option1, String option2){
-        out.println(question);
-        out.println("1. " + option1);
-        out.println("2. " + option2);
-
-        int answer = scanner.nextInt();
-
-        if (answer != 1 && answer != 2) 
-            System.err.println("The invalid value was chosen for the answer!");
-
+        if(answer < 1 || answer > options.length) {
+            System.err.println("Invalid values was chosen for the answer!");
+        }
         return answer;
     }
 
