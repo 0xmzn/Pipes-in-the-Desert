@@ -2,19 +2,19 @@ import static java.lang.System.out;
 import java.util.Scanner;
 
 public class Controller {
-    private static Scanner scanner;
+    private final Scanner scanner;
 
-    public Controller(){
+    public Controller() {
         scanner = new Scanner(System.in);
     }
-
+    
     private static void printMethodName(String methodName){
         out.println("\n------------------------------------------------------------");
         out.println(methodName + " method of the Controller class is called.");
         out.println("------------------------------------------------------------\n");
     }
 
-    public static int askQuestion(String question, String... options) {
+    private int askQuestion(String question, String... options) {
         out.println(question);
 
         if (options.length == 0) {
@@ -34,7 +34,7 @@ public class Controller {
                 System.err.println("Invalid values was chosen for the answer!");
             }
         }
-        
+
         return answer;
     }
 
@@ -230,9 +230,8 @@ public class Controller {
 
         if (Timer.turnExpired()) {
             takeTurn();
-            Timer.startTimer();
-
             manageRounds();
+            Timer.startTimer();
         } else {
             out.println("We cannot change the turn, as the previous player has not finished!");
         }
