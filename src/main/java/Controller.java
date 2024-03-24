@@ -61,7 +61,7 @@ public class Controller {
         out.println("manufacturePump");
         out.println("manufacturePipe");
         out.println("breakPump");
-//        out.println("giveTurn");
+        out.println("giveTurn");
         out.println("endGame");
 //        out.println("moveW");
 //        out.println("moveA");
@@ -90,9 +90,9 @@ public class Controller {
             case "breakPump":
                 this.breakPump();
                 break;
-//            case "giveTurn":
-//                this.giveTurn();
-//                break;
+            case "giveTurn":
+                this.giveTurn();
+                break;
             case "endGame":
                 this.endGame();
                 break;
@@ -215,19 +215,19 @@ public class Controller {
         }
     }
 
-//    public void giveTurn(){
-//        printMethodName("giveTurn()");
-//
-//        int answer = askQuestion("Has the turn of the previous player expired?");
-//        if (answer == 1) {
-//            takeTurn();
-//            Timer.startTimer();
-//
-//            manageRounds();
-//        } else {
-//            out.println("We cannot change the turn, as the previous player has not finished!");
-//        }
-//    }
+    public void giveTurn(){
+        printMethodName("giveTurn()");
+
+        int answer = askQuestion("Has the turn of the previous player expired?");
+        if (answer == 1) {
+            takeTurn();
+            Timer.startTimer();
+
+            manageRounds();
+        } else {
+            out.println("We cannot change the turn, as the previous player has not finished!");
+        }
+    }
 
     public void takeTurn() {
         printMethodName("takeTurn()");
