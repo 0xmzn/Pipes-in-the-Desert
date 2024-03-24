@@ -1,32 +1,44 @@
 import java.util.Scanner;
+
 public abstract class Player {
     private String inputPipe;
     private String outputPipe;
     private int posX;
     private int posY;
-
-    private Scanner scanner;
+    protected Pump pump;
 
     public Player(String inputPipe, String outputPipe, int startX, int startY) {
         this.inputPipe = inputPipe;
         this.outputPipe = outputPipe;
         this.posX = startX;
         this.posY = startY;
+        this.pump = pump;
     }
 
-    public void changeInputPipe(String newInputPipe) {
-        System.out.println("changeInputPipe");
-        Player.getLocation();
-        Controller.checkWaterFlow();
-        this.inputPipe = newInputPipe;
-        System.out.println("Input pipe changed to: " + newInputPipe);
+    public void changeInputPipe() {
+        if (getLocation() && !pump.isPunctured()) {
+            System.out.println("Player is on the pump and it's not punctured. Attempting to change the input pipe...");
+            inputPipe = "NextPipe"; // Simplified for demonstration
+            System.out.printf("Input pipe changed to: %s\n", inputPipe);
+        } else if (!getLocation()) {
+            System.out.println("Player is not on the pump. Cannot change the input pipe.");
+        } else if (pump.isPunctured()) {
+            System.out.println("The pump is punctured. Cannot change the input pipe.");
+        }
     }
 
-    public void changeOutputPipe(String newOutputPipe) {
-        this.outputPipe = newOutputPipe;
-        System.out.println("Output pipe changed to: " + newOutputPipe);
+    public void changeOutputPipe() {
+        if (getLocation() && !pump.isPunctured()) {
+            System.out.println("Player is on the pump and it's not punctured. Attempting to change the output pipe...");
+            outputPipe = "NextPipe"; // Simplified for demonstration
+            System.out.printf("Output pipe changed to: %s\n", outputPipe);
+        } else if (!getLocation()) {
+            System.out.println("Player is not on the pump. Cannot change the output pipe.");
+        } else if (pump.isPunctured()) {
+            System.out.println("The pump is punctured. Cannot change the output pipe.");
+        }
     }
-    // what size the grid is? is the player is on the corner or edge what movements are not possible?
+
     public void moveW() {
         this.posY -= 1; // Assuming positive Y-axis is downward
         System.out.println("Moved up to position: (" + posX + ", " + posY + ")");
@@ -47,7 +59,6 @@ public abstract class Player {
         System.out.println("Moved right to position: (" + posX + ", " + posY + ")");
     }
 
-    // Getter methods to know if the player is near cistern to get a new pump for example
     public int getPosX() {
         return posX;
     }
@@ -56,12 +67,8 @@ public abstract class Player {
         return posY;
     }
 
-    public void getLocation(){
+    public boolean getLocation() {
         System.out.println("getLocation");
-        System.out.println("Is the player standing on the pump?");
-        string command = scanner.nextLine();
-        if (command == yes){
-            System.out.println("Is the pump broken?\n");
+        return true; // for now sends true so the player stands on the pump
     }
 }
-
