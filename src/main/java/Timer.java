@@ -10,4 +10,11 @@ public class Timer {
     public static void startTimer() {
         printMethodName("startTimer()");
     }
+
+    public static boolean turnExpired() {
+        printMethodName("turnExpired()");
+
+        int answer = Controller.askQuestion("Has the turn of the previous player expired?");
+        return (answer == 1);
+    }
 }

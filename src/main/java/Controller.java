@@ -2,7 +2,7 @@ import static java.lang.System.out;
 import java.util.Scanner;
 
 public class Controller {
-    private final Scanner scanner;
+    private static Scanner scanner;
 
     public Controller(){
         scanner = new Scanner(System.in);
@@ -14,16 +14,27 @@ public class Controller {
         out.println("------------------------------------------------------------\n");
     }
 
-    private int askQuestion(String question, String... options) {
+    public static int askQuestion(String question, String... options) {
         out.println(question);
-        for(int i=0;i<options.length; i++) {
-            out.println((i + 1) + ". " + options[i]);
-        }
-        int answer = scanner.nextInt();
 
-        if(answer < 1 || answer > options.length) {
-            System.err.println("Invalid values was chosen for the answer!");
+        if (options.length == 0) {
+            out.println("1. Yes\n2. No");
+        } else {
+            for(int i = 0; i < options.length; i++) {
+                out.println((i + 1) + ". " + options[i]);
+            }
         }
+
+        int answer = scanner.nextInt();
+        if (options.length == 0) {
+            if (answer < 1 || answer > 2)
+                System.err.println("Invalid values was chosen for the answer!");
+        } else {
+            if(answer < 1 || answer > options.length) {
+                System.err.println("Invalid values was chosen for the answer!");
+            }
+        }
+        
         return answer;
     }
 
@@ -55,8 +66,8 @@ public class Controller {
 
     public void startGame(){
         printMethodName("startGame()");
-
         out.println("THE GAME HAS STARTED!!\n");
+
         out.println("The possible commands are:");
         out.println("manufacturePump");
         out.println("manufacturePipe");
@@ -145,7 +156,6 @@ public class Controller {
                 out.println("Invalid command! Please try again.");
                 startGame();
         }
-        manageRounds();
     }
 
     public void trackWaterFlow() {
@@ -218,8 +228,7 @@ public class Controller {
     public void giveTurn(){
         printMethodName("giveTurn()");
 
-        int answer = askQuestion("Has the turn of the previous player expired?");
-        if (answer == 1) {
+        if (Timer.turnExpired()) {
             takeTurn();
             Timer.startTimer();
 
