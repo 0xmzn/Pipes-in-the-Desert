@@ -1,8 +1,11 @@
+import java.util.Scanner;
 public abstract class Player {
     private String inputPipe;
     private String outputPipe;
     private int posX;
     private int posY;
+
+    private Scanner scanner;
 
     public Player(String inputPipe, String outputPipe, int startX, int startY) {
         this.inputPipe = inputPipe;
@@ -12,6 +15,9 @@ public abstract class Player {
     }
 
     public void changeInputPipe(String newInputPipe) {
+        System.out.println("changeInputPipe");
+        Player.getLocation();
+        Controller.checkWaterFlow();
         this.inputPipe = newInputPipe;
         System.out.println("Input pipe changed to: " + newInputPipe);
     }
@@ -48,6 +54,14 @@ public abstract class Player {
 
     public int getPosY() {
         return posY;
+    }
+
+    public void getLocation(){
+        System.out.println("getLocation");
+        System.out.println("Is the player standing on the pump?");
+        string command = scanner.nextLine();
+        if (command == yes){
+            System.out.println("Is the pump broken?\n");
     }
 }
 
