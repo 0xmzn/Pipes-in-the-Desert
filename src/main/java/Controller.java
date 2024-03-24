@@ -3,20 +3,10 @@ import java.util.List;
 import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
 public class Controller {
-    private List<Player> players;
-    private Timer timer;
     private Scanner scanner;
-    private int turn;
 
     public Controller(){
         scanner = new Scanner(System.in);
-        players = new ArrayList<Player>();
-        players.add(new Plumber());
-        players.add(new Saboteur());
-        players.add(new Plumber());
-        players.add(new Saboteur());
-
-        turn = 0;
     }
 
     //its a helper tho, should it be public? make new class for these?
