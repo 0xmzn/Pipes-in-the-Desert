@@ -81,17 +81,18 @@ public class Controller {
         out.println("moveD");
         out.println("changeInputPipe");
         out.println("changeOutputPipe");
-//        out.println("pickUpPump");
-//        out.println("installPump");
-//        out.println("pickUpPipeEnd");
-//        out.println("placePipeEnd");
-//        out.println("connect");
-//        out.println("disconnect");
-//        out.println("fixPipe");
-//        out.println("fixPump");
+       out.println("pickUpPump");
+       out.println("installPump");
+       out.println("pickUpPipeEnd");
+       out.println("placePipeEnd");
+       out.println("connect");
+       out.println("disconnect");
+       out.println("fixPipe");
+       out.println("fixPump");
         out.println("puncturePipe");
 
         String command = scanner.nextLine();
+        Plumber plumber = new Plumber();
         Saboteur player = new Saboteur();
         switch (command){
             case "manufacturePump":
@@ -127,30 +128,30 @@ public class Controller {
             case "changeOutputPipe":
                 player.changeOutputPipe();
                 break;
-//            case "pickUpPipeEnd":
-//                Plumber.pickUpPipeEnd();  // dont have diagram
-//                break;
-//            case "pickUpPump":
-//                Plumber.pickUpPump();
-//                break;
-//            case "installPump":
-//                Plumber.installPump();
-//                break;
-//            case "placePipeEnd":
-//                Plumber.placePipeEnd();
-//                break;
-//            case "connect":
-//                Plumber.connect();
-//                break;
-//            case "disconnect":
-//                Plumber.disconnect();
-//                break;
-//            case "fixPipe":
-//                Plumber.fixPipe();
-//                break;
-//            case "fixPump":
-//                Plumber.fixPump();
-//                break;
+           case "pickUpPipeEnd":
+               plumber.pickUpPipeEnd();  // dont have diagram
+               break;
+           case "pickUpPump":
+                plumber.pickUpPump();
+               break;
+           case "installPump":
+                plumber.installPump();
+               break;
+           case "placePipeEnd":
+               plumber.placePipeEnd();
+               break;
+           case "connect":
+               plumber.connect();
+               break;
+           case "disconnect":
+               plumber.disconnect();
+               break;
+           case "fixPipe":
+               plumber.fixPipe();
+               break;
+           case "fixPump":
+               plumber.fixPump();
+               break;
             case "puncturePipe":
                player.puncturePipe();
                break;
