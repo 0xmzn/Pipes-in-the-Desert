@@ -16,7 +16,7 @@ public class Timer {
         if (options.length == 0) {
             out.println("1. Yes\n2. No");
         } else {
-            for(int i = 0; i < options.length; i++) {
+            for (int i = 0; i < options.length; i++) {
                 out.println((i + 1) + ". " + options[i]);
             }
         }
@@ -26,13 +26,11 @@ public class Timer {
             if (answer < 1 || answer > 2)
                 System.err.println("Invalid values was chosen for the answer!");
         } else {
-            if(answer < 1 || answer > options.length) {
+            if (answer < 1 || answer > options.length) {
                 System.err.println("Invalid values was chosen for the answer!");
             }
         }
 
-        questionScanner.close();
-        
         return answer;
     }
 
