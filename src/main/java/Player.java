@@ -1,11 +1,12 @@
 import static java.lang.System.out;
 
 import java.util.Scanner;
+
 public abstract class Player {
 
     protected final Scanner scanner;
 
-    protected Player(){
+    protected Player() {
         scanner = new Scanner(System.in);
     }
 
@@ -18,7 +19,7 @@ public abstract class Player {
             out.println("Input pipe changed to the Next Pipe");
         } else {
             out.println("Player is not on the pump or the pipe is punctured. Cannot change the input pipe.");
-        } 
+        }
     }
 
     public void changeOutputPipe() {
@@ -32,21 +33,20 @@ public abstract class Player {
             out.println("Player is not on the pump he pipe is punctured. Cannot change the output pipe.");
         }
     }
-    
+
     public void moveW() {
         printMethodName("moveW()");
 
         int choice = askQuestion("is the player able to move up?");
 
-        if (choice != 1 && choice != 2){
+        if (choice != 1 && choice != 2) {
             out.println("Invalid command, operation failed");
             return;
-        }
-        else if (choice == 2){
+        } else if (choice == 2) {
             out.println("Moving up is not valid for this location! Operation failed");
             return;
         }
-        
+
         out.println("Moved up.");
     }
 
@@ -55,11 +55,10 @@ public abstract class Player {
 
         int choice = askQuestion("is the player able to move left?");
 
-        if (choice != 1 && choice != 2){
+        if (choice != 1 && choice != 2) {
             out.println("Invalid command, operation failed");
             return;
-        }
-        else if (choice == 2){
+        } else if (choice == 2) {
             out.println("Moving left is not valid for this location! Operation failed");
             return;
         }
@@ -72,11 +71,10 @@ public abstract class Player {
 
         int choice = askQuestion("is the player able to move down?");
 
-        if (choice != 1 && choice != 2){
+        if (choice != 1 && choice != 2) {
             out.println("Invalid command, operation failed");
             return;
-        }
-        else if (choice == 2){
+        } else if (choice == 2) {
             out.println("Moving down is not valid for this location! Operation failed");
             return;
         }
@@ -89,11 +87,10 @@ public abstract class Player {
 
         int choice = askQuestion("is the player able to move right?");
 
-        if (choice != 1 && choice != 2){
+        if (choice != 1 && choice != 2) {
             out.println("Invalid command, operation failed");
             return;
-        }
-        else if (choice == 2){
+        } else if (choice == 2) {
             out.println("Moving right is not valid for this location! Operation failed");
             return;
         }
@@ -101,7 +98,7 @@ public abstract class Player {
         out.println("Moved right.");
     }
 
-    protected int askQuestion(String question){
+    protected int askQuestion(String question) {
         out.println(question);
         out.println("1. Yes");
         out.println("2. No");
@@ -109,22 +106,21 @@ public abstract class Player {
         return scanner.nextInt();
     }
 
-    protected static void printMethodName(String methodName){
+    protected static void printMethodName(String methodName) {
         out.println("\n--------------------");
         out.println(methodName);
         out.println("--------------------\n");
     }
 
-    protected boolean checkType(String type){
+    protected boolean checkType(String type) {
         printMethodName("checkType()");
-        int isTypeofPlayer = askQuestion("Is the curret player a "+type+"?");
+        int isTypeofPlayer = askQuestion("Is the curret player a " + type + "?");
 
-        if (isTypeofPlayer != 1 && isTypeofPlayer != 2){
+        if (isTypeofPlayer != 1 && isTypeofPlayer != 2) {
             out.println("Invalid command, operation failed");
             return false;
-        }
-        else if (isTypeofPlayer == 2){
-            out.println("This player is not a "+type+", operation failed");
+        } else if (isTypeofPlayer == 2) {
+            out.println("This player is not a " + type + ", operation failed");
             return false;
         }
 
@@ -132,15 +128,14 @@ public abstract class Player {
         return true;
     }
 
-    protected boolean isPunctured(){
+    protected boolean isPunctured() {
         printMethodName("isPunctured()");
         int isObjectPunctured = askQuestion("Is the Pump/Pipe punctured?");
 
-        if (isObjectPunctured != 1 && isObjectPunctured != 2){
+        if (isObjectPunctured != 1 && isObjectPunctured != 2) {
             printMethodName("Invalid command, activity failed");
             return false;
-        }
-        else if (isObjectPunctured == 1){
+        } else if (isObjectPunctured == 1) {
             printMethodName("This pump/pipe is punctured, activity failed");
             return true;
         }
@@ -151,19 +146,17 @@ public abstract class Player {
 
     protected boolean getLocation(String location) {
         printMethodName("getLocation()");
-        int isLocation = askQuestion("Is the player standing on a "+location+"?");
+        int isLocation = askQuestion("Is the player standing on a " + location + "?");
 
-        if (isLocation != 1 && isLocation != 2){
+        if (isLocation != 1 && isLocation != 2) {
             out.println("Invalid command, operation failed");
             return false;
-        }
-        else if (isLocation == 2){
-            out.println("You are not standing on a "+location+"! Operation failed");
+        } else if (isLocation == 2) {
+            out.println("You are not standing on a " + location + "! Operation failed");
             return false;
         }
 
         out.println("");
         return true;
-    }  
+    }
 }
-
