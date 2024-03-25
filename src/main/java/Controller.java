@@ -1,3 +1,4 @@
+import static java.lang.System.exit;
 import static java.lang.System.out;
 import java.util.Scanner;
 
@@ -264,5 +265,6 @@ public class Controller {
 
     public void onExit(){
         printMethodName("onExit()");
+        System.exit(0);
     }
 }
