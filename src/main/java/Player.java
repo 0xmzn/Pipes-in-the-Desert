@@ -1,68 +1,138 @@
+import static java.lang.System.out;
+
 import java.util.Scanner;
 public abstract class Player {
 
-    private Scanner scanner;
+    protected final Scanner scanner;
 
-    public Player(){
+    protected Player(){
         scanner = new Scanner(System.in);
-    }
-
-    private static void printMethodName(String methodName){
-        System.out.println("\n--------------------");
-        System.out.println(methodName);
-        System.out.println("--------------------\n");
     }
 
     public void changeInputPipe() {
         printMethodName("changeInputPipe()");
-        boolean getLocation = getLocation();
+        boolean getLocation = getLocation("Pump");
         boolean isPunctured = isPunctured();
         if (getLocation && !isPunctured) {
-            printMethodName("Player is on the pump and it's not punctured. Attempting to change the input pipe...");
-            printMethodName("Input pipe changed to the Next Pipe");
+            out.println("Player is on the pump and it's not punctured. Attempting to change the input pipe...");
+            out.println("Input pipe changed to the Next Pipe");
         } else {
-            printMethodName("Player is not on the pump or the pipe is punctured. Cannot change the input pipe.");
+            out.println("Player is not on the pump or the pipe is punctured. Cannot change the input pipe.");
         } 
     }
 
     public void changeOutputPipe() {
         printMethodName("changeOutputPipe()");
-        boolean getLocation = getLocation();
+        boolean getLocation = getLocation("Pump");
         boolean isPunctured = isPunctured();
         if (getLocation && !isPunctured) {
-            printMethodName("Player is on the pump and it's not punctured. Attempting to change the output pipe...");
-            printMethodName("Output pipe changed to the NextPipe");
+            out.println("Player is on the pump and it's not punctured. Attempting to change the output pipe...");
+            out.println("Output pipe changed to the NextPipe");
         } else {
-            printMethodName("Player is not on the pump he pipe is punctured. Cannot change the output pipe.");
+            out.println("Player is not on the pump he pipe is punctured. Cannot change the output pipe.");
         }
     }
+    
+    public void moveW() {
+        printMethodName("moveW()");
 
-    private int askQuestion(String question){
-        System.out.println(question);
-        System.out.println("1. Yes");
-        System.out.println("2. No");
+        int choice = askQuestion("is the player able to move up?");
+
+        if (choice != 1 && choice != 2){
+            out.println("Invalid command, operation failed");
+            return;
+        }
+        else if (choice == 2){
+            out.println("Moving up is not valid for this location! Operation failed");
+            return;
+        }
+        
+        out.println("Moved up.");
+    }
+
+    public void moveA() {
+        printMethodName("moveA()");
+
+        int choice = askQuestion("is the player able to move left?");
+
+        if (choice != 1 && choice != 2){
+            out.println("Invalid command, operation failed");
+            return;
+        }
+        else if (choice == 2){
+            out.println("Moving left is not valid for this location! Operation failed");
+            return;
+        }
+
+        out.println("Moved left.");
+    }
+
+    public void moveS() {
+        printMethodName("moveS()");
+
+        int choice = askQuestion("is the player able to move down?");
+
+        if (choice != 1 && choice != 2){
+            out.println("Invalid command, operation failed");
+            return;
+        }
+        else if (choice == 2){
+            out.println("Moving down is not valid for this location! Operation failed");
+            return;
+        }
+
+        out.println("Moved down.");
+    }
+
+    public void moveD() {
+        printMethodName("moveD()");
+
+        int choice = askQuestion("is the player able to move right?");
+
+        if (choice != 1 && choice != 2){
+            out.println("Invalid command, operation failed");
+            return;
+        }
+        else if (choice == 2){
+            out.println("Moving right is not valid for this location! Operation failed");
+            return;
+        }
+
+        out.println("Moved right.");
+    }
+
+    protected int askQuestion(String question){
+        out.println(question);
+        out.println("1. Yes");
+        out.println("2. No");
 
         return scanner.nextInt();
     }
 
-    public boolean getLocation(){
-        printMethodName("getLocation()");
-        int isStandingOnPump = askQuestion("Is the Player standing on the Pump?");
+    protected static void printMethodName(String methodName){
+        out.println("\n--------------------");
+        out.println(methodName);
+        out.println("--------------------\n");
+    }
 
-        if (isStandingOnPump != 1 && isStandingOnPump != 2){
-            printMethodName("Invalid command, changeInput/OutputPipe() failed");
+    protected boolean checkType(String type){
+        printMethodName("checkType()");
+        int isTypeofPlayer = askQuestion("Is the curret player a "+type+"?");
+
+        if (isTypeofPlayer != 1 && isTypeofPlayer != 2){
+            out.println("Invalid command, operation failed");
             return false;
         }
-        else if (isStandingOnPump == 2){
-            printMethodName("This player is not standing on the Pump, changeInput/OutputPipe() failed");
+        else if (isTypeofPlayer == 2){
+            out.println("This player is not a "+type+", operation failed");
             return false;
         }
 
-        printMethodName("This player is standing on the Pump");
+        out.println("");
         return true;
     }
-    
-    public boolean isPunctured(){
+
+    protected boolean isPunctured(){
         printMethodName("isPunctured()");
         int isObjectPunctured = askQuestion("Is the Pump/Pipe punctured?");
 
@@ -79,20 +149,21 @@ public abstract class Player {
         return false;
     }
 
-    public void moveW() {
-        printMethodName("Moved up to position. moveW()");
-    }
+    protected boolean getLocation(String location) {
+        printMethodName("getLocation()");
+        int isLocation = askQuestion("Is the player standing on a "+location+"?");
 
-    public void moveA() {
-        printMethodName("Moved left to position. moveA()");
-    }
+        if (isLocation != 1 && isLocation != 2){
+            out.println("Invalid command, operation failed");
+            return false;
+        }
+        else if (isLocation == 2){
+            out.println("You are not standing on a "+location+"! Operation failed");
+            return false;
+        }
 
-    public void moveS() {
-        printMethodName("Moved down to position. moveS()");
-    }
-
-    public void moveD() {
-        printMethodName("Moved right to position. moveD()");
-    }
+        out.println("");
+        return true;
+    }  
 }
 
