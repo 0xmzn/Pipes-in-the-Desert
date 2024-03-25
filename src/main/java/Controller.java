@@ -8,8 +8,8 @@ public class Controller {
     public Controller() {
         scanner = new Scanner(System.in);
     }
-    
-    private static void printMethodName(String methodName){
+
+    private static void printMethodName(String methodName) {
         out.println("\n------------------------------------------------------------");
         out.println(methodName + " method of the Controller class is called.");
         out.println("------------------------------------------------------------\n");
@@ -52,15 +52,15 @@ public class Controller {
         return answer;
     }
 
-    public void displayMenu(){
+    public void displayMenu() {
         printMethodName("displayMenu()");
 
         out.println("Welcome to Pipes in the Desert!\n");
         out.println("Please select an option from the menu below:");
         out.println("1. Start a new game\n2. Exit");
-        
+
         int choice = scanner.nextInt();
-        switch(choice){
+        switch (choice) {
             case 1:
                 initGrid();
                 startGame();
@@ -74,14 +74,13 @@ public class Controller {
         }
     }
 
-    public void initGrid(){
+    public void initGrid() {
         printMethodName("initGrid()");
     }
 
-    public void startGame(){
+    public void startGame() {
         printMethodName("startGame()");
         out.println("THE GAME HAS STARTED!!\n");
-
 
         out.println("The possible commands are:");
         out.println("manufacturePump");
@@ -95,20 +94,20 @@ public class Controller {
         out.println("moveD");
         out.println("changeInputPipe");
         out.println("changeOutputPipe");
-       out.println("pickUpPump");
-       out.println("installPump");
-       out.println("pickUpPipeEnd");
-       out.println("placePipeEnd");
-       out.println("connect");
-       out.println("disconnect");
-       out.println("fixPipe");
-       out.println("fixPump");
+        out.println("pickUpPump");
+        out.println("installPump");
+        out.println("pickUpPipeEnd");
+        out.println("placePipeEnd");
+        out.println("connect");
+        out.println("disconnect");
+        out.println("fixPipe");
+        out.println("fixPump");
         out.println("puncturePipe");
 
         String command = scanner.nextLine();
         Plumber plumber = new Plumber();
         Saboteur player = new Saboteur();
-        switch (command){
+        switch (command) {
             case "manufacturePump":
                 this.manufacturePump();
                 break;
@@ -142,33 +141,33 @@ public class Controller {
             case "changeOutputPipe":
                 player.changeOutputPipe();
                 break;
-           case "pickUpPipeEnd":
-               plumber.pickUpPipeEnd();  // dont have diagram
-               break;
-           case "pickUpPump":
+            case "pickUpPipeEnd":
+                plumber.pickUpPipeEnd(); // dont have diagram
+                break;
+            case "pickUpPump":
                 plumber.pickUpPump();
-               break;
-           case "installPump":
+                break;
+            case "installPump":
                 plumber.installPump();
-               break;
-           case "placePipeEnd":
-               plumber.placePipeEnd();
-               break;
-           case "connect":
-               plumber.connect();
-               break;
-           case "disconnect":
-               plumber.disconnect();
-               break;
-           case "fixPipe":
-               plumber.fixPipe();
-               break;
-           case "fixPump":
-               plumber.fixPump();
-               break;
+                break;
+            case "placePipeEnd":
+                plumber.placePipeEnd();
+                break;
+            case "connect":
+                plumber.connect();
+                break;
+            case "disconnect":
+                plumber.disconnect();
+                break;
+            case "fixPipe":
+                plumber.fixPipe();
+                break;
+            case "fixPump":
+                plumber.fixPump();
+                break;
             case "puncturePipe":
-               player.puncturePipe();
-               break;
+                player.puncturePipe();
+                break;
             default:
                 out.println("Invalid command! Please try again.");
                 startGame();
@@ -235,14 +234,14 @@ public class Controller {
         printMethodName("fillUpPumpReservoir()");
 
         int answer = askQuestion("Is the reservoir of the pump full?");
-        if (answer == 1) {  // the water is leaking from the pump to the desert
+        if (answer == 1) { // the water is leaking from the pump to the desert
             fillUpSaboteur();
         } else {
             out.println("The reservoir is filling in!");
         }
     }
 
-    public void giveTurn(){
+    public void giveTurn() {
         printMethodName("giveTurn()");
 
         if (Timer.turnExpired()) {
@@ -257,8 +256,8 @@ public class Controller {
     public void takeTurn() {
         printMethodName("takeTurn()");
     }
-    
-    public void manageRounds(){
+
+    public void manageRounds() {
         printMethodName("manageRounds()");
 
         int answer = askQuestion("Has the whole round passed, i.e. 4 turns?");
@@ -267,16 +266,16 @@ public class Controller {
         }
     }
 
-    public void incrementRounds(){
+    public void incrementRounds() {
         printMethodName("incrementRounds");
     }
 
-    public void endGame(){
+    public void endGame() {
         printMethodName("endGame()");
         displayMenu();
     }
 
-    public void onExit(){
+    public void onExit() {
         printMethodName("onExit()");
         System.exit(0);
     }
