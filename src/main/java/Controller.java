@@ -16,14 +16,25 @@ public class Controller {
 
     private int askQuestion(String question, String... options) {
         out.println(question);
-        for(int i=0;i<options.length; i++) {
-            out.println((i + 1) + ". " + options[i]);
-        }
-        int answer = scanner.nextInt();
 
-        if(answer < 1 || answer > options.length) {
-            System.err.println("Invalid values was chosen for the answer!");
+        if (options.length == 0) {
+            out.println("1. Yes\n2. No");
+        } else {
+            for(int i = 0; i < options.length; i++) {
+                out.println((i + 1) + ". " + options[i]);
+            }
         }
+
+        int answer = scanner.nextInt();
+        if (options.length == 0) {
+            if (answer < 1 || answer > 2)
+                System.err.println("Invalid values was chosen for the answer!");
+        } else {
+            if(answer < 1 || answer > options.length) {
+                System.err.println("Invalid values was chosen for the answer!");
+            }
+        }
+        
         return answer;
     }
 
@@ -55,20 +66,20 @@ public class Controller {
 
     public void startGame(){
         printMethodName("startGame()");
-
         out.println("THE GAME HAS STARTED!!\n");
+
         out.println("The possible commands are:");
         out.println("manufacturePump");
         out.println("manufacturePipe");
         out.println("breakPump");
 //        out.println("giveTurn");
         out.println("endGame");
-//        out.println("moveW");
-//        out.println("moveA");
-//        out.println("moveS");
-//        out.println("moveD");
-//        out.println("changeInputPipe");
-//        out.println("changeOutputPipe");
+        out.println("moveW");
+        out.println("moveA");
+        out.println("moveS");
+        out.println("moveD");
+        out.println("changeInputPipe");
+        out.println("changeOutputPipe");
 //        out.println("pickUpPump");
 //        out.println("installPump");
 //        out.println("pickUpPipeEnd");
@@ -77,9 +88,10 @@ public class Controller {
 //        out.println("disconnect");
 //        out.println("fixPipe");
 //        out.println("fixPump");
-//        out.println("puncturePipe");
+        out.println("puncturePipe");
 
         String command = scanner.nextLine();
+        Saboteur player = new Saboteur();
         switch (command){
             case "manufacturePump":
                 this.manufacturePump();
@@ -96,24 +108,24 @@ public class Controller {
             case "endGame":
                 this.endGame();
                 break;
-//            case "moveW":
-//                Player.moveW();
-//                break;
-//            case "moveA":
-//                Player.moveA();
-//                break;
-//            case "moveS":
-//                Player.moveS();
-//                break;
-//            case "moveD":
-//                Player.moveD();
-//                break;
-//            case "changeInputPipe":
-//                Player.changeInputPipe();
-//                break;
-//            case "changeOutputPipe":
-//                Player.changeOutputPipe();
-//                break;
+            case "moveW":
+                player.moveW();
+                break;
+            case "moveA":
+                player.moveA();
+                break;
+            case "moveS":
+                player.moveS();
+                break;
+            case "moveD":
+                player.moveD();
+                break;
+            case "changeInputPipe":
+                player.changeInputPipe();
+                break;
+            case "changeOutputPipe":
+                player.changeOutputPipe();
+                break;
 //            case "pickUpPipeEnd":
 //                Plumber.pickUpPipeEnd();  // dont have diagram
 //                break;
@@ -138,14 +150,13 @@ public class Controller {
 //            case "fixPump":
 //                Plumber.fixPump();
 //                break;
-//            case "puncturePipe":
-//                Saboteur.puncturePipe();
-//                break;
+            case "puncturePipe":
+               player.puncturePipe();
+               break;
             default:
                 out.println("Invalid command! Please try again.");
                 startGame();
         }
-        manageRounds();
     }
 
     public void trackWaterFlow() {
