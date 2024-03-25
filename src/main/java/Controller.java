@@ -45,7 +45,7 @@ public class Controller {
         out.println("Welcome to Pipes in the Desert!\n");
         out.println("Please select an option from the menu below:");
         out.println("1. Start a new game\n2. Exit");
-
+        
         int choice = scanner.nextInt();
         switch (choice) {
             case 1:
@@ -57,7 +57,6 @@ public class Controller {
                 break;
             default:
                 out.println("Invalid choice! Please try again.");
-                displayMenu();
         }
     }
 
@@ -91,7 +90,7 @@ public class Controller {
         out.println("fixPump");
         out.println("puncturePipe");
 
-        String command = scanner.nextLine();
+        String command = scanner.next();
         Plumber plumber = new Plumber();
         Saboteur player = new Saboteur();
         switch (command) {
@@ -259,7 +258,7 @@ public class Controller {
 
     public void endGame() {
         printMethodName("endGame()");
-        displayMenu();
+        onExit();
     }
 
     public void onExit() {
