@@ -74,12 +74,12 @@ public class Controller {
         out.println("breakPump");
 //        out.println("giveTurn");
         out.println("endGame");
-//        out.println("moveW");
-//        out.println("moveA");
-//        out.println("moveS");
-//        out.println("moveD");
-//        out.println("changeInputPipe");
-//        out.println("changeOutputPipe");
+        out.println("moveW");
+        out.println("moveA");
+        out.println("moveS");
+        out.println("moveD");
+        out.println("changeInputPipe");
+        out.println("changeOutputPipe");
 //        out.println("pickUpPump");
 //        out.println("installPump");
 //        out.println("pickUpPipeEnd");
@@ -91,6 +91,7 @@ public class Controller {
         out.println("puncturePipe");
 
         String command = scanner.nextLine();
+        Saboteur player = new Saboteur();
         switch (command){
             case "manufacturePump":
                 this.manufacturePump();
@@ -107,24 +108,24 @@ public class Controller {
             case "endGame":
                 this.endGame();
                 break;
-//            case "moveW":
-//                Player.moveW();
-//                break;
-//            case "moveA":
-//                Player.moveA();
-//                break;
-//            case "moveS":
-//                Player.moveS();
-//                break;
-//            case "moveD":
-//                Player.moveD();
-//                break;
-//            case "changeInputPipe":
-//                Player.changeInputPipe();
-//                break;
-//            case "changeOutputPipe":
-//                Player.changeOutputPipe();
-//                break;
+            case "moveW":
+                player.moveW();
+                break;
+            case "moveA":
+                player.moveA();
+                break;
+            case "moveS":
+                player.moveS();
+                break;
+            case "moveD":
+                player.moveD();
+                break;
+            case "changeInputPipe":
+                player.changeInputPipe();
+                break;
+            case "changeOutputPipe":
+                player.changeOutputPipe();
+                break;
 //            case "pickUpPipeEnd":
 //                Plumber.pickUpPipeEnd();  // dont have diagram
 //                break;
@@ -150,11 +151,7 @@ public class Controller {
 //                Plumber.fixPump();
 //                break;
             case "puncturePipe":
-               Saboteur.puncturePipe();
-
-               int answer = askQuestion("Does the saboteur stand on the pipe?");
-               if (answer == 1) out.println("The pipe has been punctured!");
-               else out.println("The saboteur cannot puncture the pipe!");
+               player.puncturePipe();
                break;
             default:
                 out.println("Invalid command! Please try again.");
