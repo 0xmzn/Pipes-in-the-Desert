@@ -163,7 +163,7 @@ public class Controller {
                 player.changeOutputPipe();
                 break;
             case "pickUpPipeEnd":
-                plumber.pickUpPipeEnd(); // dont have diagram
+                plumber.pickUpPipeEnd(); 
                 break;
             case "pickUpPump":
                 plumber.pickUpPump();

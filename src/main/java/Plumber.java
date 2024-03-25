@@ -19,7 +19,6 @@ public class Plumber extends Player {
 
     /**
      * Picks up a pipe end from the current location.
-     * Prints a message indicating the action being performed.
      * Checks for all preconditions before picking up the pipe end: player type, inventory
      * state, and player location.
      * If any of the conditions are not met, the method returns without performing
@@ -49,7 +48,6 @@ public class Plumber extends Player {
 
     /**
      * Picks up a pump from the current location.
-     * Prints a message indicating the action being performed.
      * Checks for all preconditions before picking up the pump: player type, inventory
      * state, player location, and pump availability.
      * If any of the conditions are not met, the method returns without performing
@@ -69,7 +67,6 @@ public class Plumber extends Player {
 
     /**
      * Installs a pump into the system.
-     * Prints a message indicating the action being performed.
      * Checks for all preconditions before installing the pump: player type, inventory state.
      * If any of the conditions are not met, the method returns without performing any action.
      * Otherwise, it performs the following steps:
@@ -101,7 +98,6 @@ public class Plumber extends Player {
 
     /**
      * Places a pipe end into the system.
-     * Prints a message indicating the action being performed.
      * Checks for all preconditions before placing the pipe end: player type, inventory state.
      * If any of the conditions are not met, the method returns without performing any action.
      * Otherwise, it asks the user if there is an active element to connect the pipe
@@ -131,7 +127,6 @@ public class Plumber extends Player {
 
     /**
      * Connects a pipe end to an active element.
-     * Prints a message indicating the action being performed.
      * Checks for all preconditions before picking up the pipe end: player type, inventory;
      * If any of the conditions are not met, the method returns without performing any action.
      * If the pipe end is already connected to any other active element, it fails.
@@ -155,7 +150,6 @@ public class Plumber extends Player {
 
     /**
      * Disconnects a pipe end from an active element.
-     * Prints a message indicating the action being performed.
      * If the pipe end can be disconnectted, it adds the item to the inventory and
      * prints a success message.
      */
@@ -178,7 +172,6 @@ public class Plumber extends Player {
 
     /**
      * Fixes a punctured pipe.
-     * Prints a message indicating the action being performed.
      * Checks the precondition before fixing the pipe: player type, pipe punctured state, location.
      * If any of the conditions are not met, the method returns without performing
      * any action.
@@ -197,7 +190,6 @@ public class Plumber extends Player {
 
     /**
      * Fixes a punctured pump.
-     * Prints a message indicating the action being performed.
      * Checks precondition before fixing the pump: player type, pump punctured state, location.
      * If any of the conditions are not met, the method returns without performing
      * any action.
