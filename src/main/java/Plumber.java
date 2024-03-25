@@ -13,11 +13,11 @@ public class Plumber extends Player
         printMethodName("pickUpPipeEnd");
         
         out.println("You are trying to pick up a pipe end...");
-        if (!checkType("Plumber") || !checkInventory() || !getLocation("pipe end") || !getManufacturedElement()){
+        if (!checkType("Plumber") || !checkInventory() || !getLocation("pipe end")){
             return;
         }
         boolean isConnectedToActiveElement = getConnected();
-        if (!isConnectedToActiveElement){
+        if (isConnectedToActiveElement){
             disconnect();
         }
         else if (!getPipeEnds()){
@@ -82,42 +82,60 @@ public class Plumber extends Player
     public void connect(){
         printMethodName("connect");
         
+        out.println("You are trying to connect a pipe end to an active element...");
 
-
-        setLocation();
-        removeInventory();
-
+        int canConnect = askQuestion("Is there space to connect a new pipe end?");
+        if(canConnect == 1){
+            removeInventory();
+            out.println("Pipe end connected successfully!");
+        }
+        else if (canConnect == 2){
+            out.println("The active element is taken by a different pipe end! Could not connect!");
+        }
+        else{
+            out.println("Invalid command, operation failed");
+        }
     }
 
     public void disconnect(){
         printMethodName("disconnect");
+
+        out.println("You are trying to disconnect a pipe end to an active element...");
+
+        int canDisconnect = askQuestion("Does the active element allow the pipe to be disconnected?");
+        if(canDisconnect == 1){
+            removeInventory();
+            out.println("Pipe end disconnected successfully!");
+        }
+        else if (canDisconnect == 2){
+            out.println("The active element can not function without this connection! Try to use changeInputPipe() or changeOutputPipe() instead!");
+        }
+        else{
+            out.println("Invalid command, operation failed");
+        }
+
     }
 
     public void fixPipe(){
-        printMethodName("placePipeEnd");
+        printMethodName("fixPipe");
 
         out.println("You are trying to fix a pipe...");
         if (!checkType("plumber") || !isPunctured() || !getLocation("pipe")){
             return;
         }
 
-        boolean isConnectedToActiveElement = getConnected();
-        if (!isConnectedToActiveElement){
-            connect();
-        }
-        else if (!getPipeEnds()){
-            out.println("Pick up failed as the other end of pipe is also disconnected!");
-            return;
-        }
-
-        setLocation();
-        removeInventory();
-
         out.println("Pipe fixed successfully!");
     }
 
     public void fixPump(){
         printMethodName("fixPump");
+
+        out.println("You are trying to fix a pump...");
+        if (!checkType("plumber") || !isPunctured() || !getLocation("pipe")){
+            return;
+        }
+
+        out.println("Pump fixed successfully!");
     }
 
     private boolean checkInventory(){
