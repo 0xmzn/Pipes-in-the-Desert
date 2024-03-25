@@ -52,8 +52,8 @@ public class Plumber extends Player
         setLocation();
         cutPipe();
         connect();
-        setInputPipe();
-        setOutputPipe();
+        changeInputPipe();
+        changeOutputPipe();
         removeInventory();
         out.println("Pump installed successfully!");
     }
