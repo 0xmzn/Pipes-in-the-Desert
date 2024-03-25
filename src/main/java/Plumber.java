@@ -9,7 +9,6 @@ public class Plumber extends Player
         super();
     }
 
-    
     public void pickUpPipeEnd(){
         printMethodName("pickUpPipeEnd");
         
@@ -63,27 +62,31 @@ public class Plumber extends Player
         printMethodName("placePipeEnd");
 
         out.println("You are trying to place a pipe end into the system...");
-        if (!checkType("plumber") || !checkInventory() || !getConnected()){
+        if (!checkType("plumber") || !checkInventory()){
             return;
         }
 
-        boolean isConnectedToActiveElement = getConnected();
-        if (!isConnectedToActiveElement){
+        int shouldConnect = askQuestion("Is there an active element you would like to connect your pipe to?");
+        if(shouldConnect == 1){
             connect();
         }
-        else if (!getPipeEnds()){
-            out.println("Pick up failed as the other end of pipe is also disconnected!");
+        else if (shouldConnect == 2){
+            out.println("Pipe end placed towards the desert successfully!");
+        }
+        else{
+            out.println("Invalid command, operation failed");
             return;
         }
-
-        setLocation();
-        removeInventory();
-
-        out.println("Pipe end placed successfully!");
     }
 
     public void connect(){
         printMethodName("connect");
+        
+
+
+        setLocation();
+        removeInventory();
+
     }
 
     public void disconnect(){
