@@ -1,6 +1,8 @@
 public class Main {
     public static void main(String[] args){
         Controller c = new Controller();
-        c.displayMenu();
+        while (true) {
+            c.displayMenu();
+        }
     }
 }

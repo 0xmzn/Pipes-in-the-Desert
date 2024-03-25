@@ -1,3 +1,4 @@
+import static java.lang.System.exit;
 import static java.lang.System.out;
 import java.util.Scanner;
 
@@ -23,18 +24,31 @@ public class Controller {
             for(int i = 0; i < options.length; i++) {
                 out.println((i + 1) + ". " + options[i]);
             }
+
+        if (options.length == 0) {
+            out.println("1. Yes\n2. No");
+        } else {
+            for(int i = 0; i < options.length; i++) {
+                out.println((i + 1) + ". " + options[i]);
+            }
         }
+
 
         int answer = scanner.nextInt();
         if (options.length == 0) {
             if (answer < 1 || answer > 2)
                 System.err.println("Invalid values was chosen for the answer!");
-        } else {
-            if(answer < 1 || answer > options.length) {
+        } else {        if (options.length == 0) {
+            if (answer < 1 || answer > 2)
                 System.err.println("Invalid values was chosen for the answer!");
+        } else {
+                if(answer < 1 || answer > options.length) {
+                    System.err.println("Invalid values was chosen for the answer!");
+            }
             }
         }
 
+        
         return answer;
     }
 
@@ -68,29 +82,32 @@ public class Controller {
         printMethodName("startGame()");
         out.println("THE GAME HAS STARTED!!\n");
 
+
         out.println("The possible commands are:");
         out.println("manufacturePump");
         out.println("manufacturePipe");
         out.println("breakPump");
         out.println("giveTurn");
         out.println("endGame");
-//        out.println("moveW");
-//        out.println("moveA");
-//        out.println("moveS");
-//        out.println("moveD");
-//        out.println("changeInputPipe");
-//        out.println("changeOutputPipe");
-//        out.println("pickUpPump");
-//        out.println("installPump");
-//        out.println("pickUpPipeEnd");
-//        out.println("placePipeEnd");
-//        out.println("connect");
-//        out.println("disconnect");
-//        out.println("fixPipe");
-//        out.println("fixPump");
-//        out.println("puncturePipe");
+        out.println("moveW");
+        out.println("moveA");
+        out.println("moveS");
+        out.println("moveD");
+        out.println("changeInputPipe");
+        out.println("changeOutputPipe");
+       out.println("pickUpPump");
+       out.println("installPump");
+       out.println("pickUpPipeEnd");
+       out.println("placePipeEnd");
+       out.println("connect");
+       out.println("disconnect");
+       out.println("fixPipe");
+       out.println("fixPump");
+        out.println("puncturePipe");
 
         String command = scanner.nextLine();
+        Plumber plumber = new Plumber();
+        Saboteur player = new Saboteur();
         switch (command){
             case "manufacturePump":
                 this.manufacturePump();
@@ -107,51 +124,51 @@ public class Controller {
             case "endGame":
                 this.endGame();
                 break;
-//            case "moveW":
-//                Player.moveW();
-//                break;
-//            case "moveA":
-//                Player.moveA();
-//                break;
-//            case "moveS":
-//                Player.moveS();
-//                break;
-//            case "moveD":
-//                Player.moveD();
-//                break;
-//            case "changeInputPipe":
-//                Player.changeInputPipe();
-//                break;
-//            case "changeOutputPipe":
-//                Player.changeOutputPipe();
-//                break;
-//            case "pickUpPipeEnd":
-//                Plumber.pickUpPipeEnd();  // dont have diagram
-//                break;
-//            case "pickUpPump":
-//                Plumber.pickUpPump();
-//                break;
-//            case "installPump":
-//                Plumber.installPump();
-//                break;
-//            case "placePipeEnd":
-//                Plumber.placePipeEnd();
-//                break;
-//            case "connect":
-//                Plumber.connect();
-//                break;
-//            case "disconnect":
-//                Plumber.disconnect();
-//                break;
-//            case "fixPipe":
-//                Plumber.fixPipe();
-//                break;
-//            case "fixPump":
-//                Plumber.fixPump();
-//                break;
-//            case "puncturePipe":
-//                Saboteur.puncturePipe();
-//                break;
+            case "moveW":
+                player.moveW();
+                break;
+            case "moveA":
+                player.moveA();
+                break;
+            case "moveS":
+                player.moveS();
+                break;
+            case "moveD":
+                player.moveD();
+                break;
+            case "changeInputPipe":
+                player.changeInputPipe();
+                break;
+            case "changeOutputPipe":
+                player.changeOutputPipe();
+                break;
+           case "pickUpPipeEnd":
+               plumber.pickUpPipeEnd();  // dont have diagram
+               break;
+           case "pickUpPump":
+                plumber.pickUpPump();
+               break;
+           case "installPump":
+                plumber.installPump();
+               break;
+           case "placePipeEnd":
+               plumber.placePipeEnd();
+               break;
+           case "connect":
+               plumber.connect();
+               break;
+           case "disconnect":
+               plumber.disconnect();
+               break;
+           case "fixPipe":
+               plumber.fixPipe();
+               break;
+           case "fixPump":
+               plumber.fixPump();
+               break;
+            case "puncturePipe":
+               player.puncturePipe();
+               break;
             default:
                 out.println("Invalid command! Please try again.");
                 startGame();
@@ -261,5 +278,6 @@ public class Controller {
 
     public void onExit(){
         printMethodName("onExit()");
+        System.exit(0);
     }
 }
