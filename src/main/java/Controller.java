@@ -5,10 +5,10 @@ import java.util.Scanner;
 public class Controller {
     private final Scanner scanner;
 
-    public Controller(){
+    public Controller() {
         scanner = new Scanner(System.in);
     }
-
+    
     private static void printMethodName(String methodName){
         out.println("\n------------------------------------------------------------");
         out.println(methodName + " method of the Controller class is called.");
@@ -24,17 +24,30 @@ public class Controller {
             for(int i = 0; i < options.length; i++) {
                 out.println((i + 1) + ". " + options[i]);
             }
+
+        if (options.length == 0) {
+            out.println("1. Yes\n2. No");
+        } else {
+            for(int i = 0; i < options.length; i++) {
+                out.println((i + 1) + ". " + options[i]);
+            }
         }
+
 
         int answer = scanner.nextInt();
         if (options.length == 0) {
             if (answer < 1 || answer > 2)
                 System.err.println("Invalid values was chosen for the answer!");
-        } else {
-            if(answer < 1 || answer > options.length) {
+        } else {        if (options.length == 0) {
+            if (answer < 1 || answer > 2)
                 System.err.println("Invalid values was chosen for the answer!");
+        } else {
+                if(answer < 1 || answer > options.length) {
+                    System.err.println("Invalid values was chosen for the answer!");
+            }
             }
         }
+
         
         return answer;
     }
@@ -69,11 +82,12 @@ public class Controller {
         printMethodName("startGame()");
         out.println("THE GAME HAS STARTED!!\n");
 
+
         out.println("The possible commands are:");
         out.println("manufacturePump");
         out.println("manufacturePipe");
         out.println("breakPump");
-//        out.println("giveTurn");
+        out.println("giveTurn");
         out.println("endGame");
         out.println("moveW");
         out.println("moveA");
@@ -104,9 +118,9 @@ public class Controller {
             case "breakPump":
                 this.breakPump();
                 break;
-//            case "giveTurn":
-//                this.giveTurn();
-//                break;
+            case "giveTurn":
+                this.giveTurn();
+                break;
             case "endGame":
                 this.endGame();
                 break;
@@ -228,19 +242,17 @@ public class Controller {
         }
     }
 
-//    public void giveTurn(){
-//        printMethodName("giveTurn()");
-//
-//        int answer = askQuestion("Has the turn of the previous player expired?");
-//        if (answer == 1) {
-//            takeTurn();
-//            Timer.startTimer();
-//
-//            manageRounds();
-//        } else {
-//            out.println("We cannot change the turn, as the previous player has not finished!");
-//        }
-//    }
+    public void giveTurn(){
+        printMethodName("giveTurn()");
+
+        if (Timer.turnExpired()) {
+            takeTurn();
+            manageRounds();
+            Timer.startTimer();
+        } else {
+            out.println("We cannot change the turn, as the previous player has not finished!");
+        }
+    }
 
     public void takeTurn() {
         printMethodName("takeTurn()");
