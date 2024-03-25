@@ -26,7 +26,7 @@ public class Plumber extends Player
 
     private boolean checkType(){
         printMethodName("checkType()");
-        int isPlumber = askQuestion("Are you a plumber?");
+        int isPlumber = askQuestion("Is the curret player a plumber?");
 
         if (isPlumber != 1 && isPlumber != 2){
             System.out.println("Invalid command, pickUp() failed");
@@ -50,7 +50,7 @@ public class Plumber extends Player
             return false;
         }
         else if (isInventoryFree == 2){
-            System.out.println("This player is not a plumber, pickUp() failed");
+            System.out.println("You can not pick up multiple items simultaneously, pickUp() failed");
             return false;
         }
 
@@ -82,7 +82,7 @@ public class Plumber extends Player
             return false;
         }
         else if (hasOtherEnd == 2){
-            System.out.println("The other end of this pipe is not connected to any active elements!");
+            System.out.println("The other end of this pipe is not connected to any active elements! PickUp() failed");
             return false;
         }
 
@@ -108,13 +108,14 @@ public class Plumber extends Player
 
     private boolean getLocation(String location) {
         printMethodName("getLocation()");
-        int isLocation = askQuestion("Is the player standing on "+location+"?");
+        int isLocation = askQuestion("Is the player standing on a "+location+"?");
         
         if (isLocation != 1 && isLocation != 2){
             System.out.println("Invalid command, operation failed");
             return false;
         }
         else if (isLocation == 2){
+            System.err.println("You are not standing on a "+location+"! Operation failed");
             return false;
         }
 
@@ -163,7 +164,6 @@ public class Plumber extends Player
 
     private void removeInventory() {
         printMethodName("removeInventory");
-
     }
     public void installPump(){
         printMethodName("installPump");
@@ -186,7 +186,6 @@ public class Plumber extends Player
 
     public void placePipeEnd(){
         printMethodName("placePipeEnd");
-
 
         System.out.println("You are trying to place a pipe end into the system...");
         if (!checkType() || !checkInventory() || !getConnected()){
@@ -217,7 +216,26 @@ public class Plumber extends Player
     }
 
     public void fixPipe(){
-        printMethodName("fixPipe");
+        printMethodName("placePipeEnd");
+
+        System.out.println("You are trying to fix a pipe...");
+        if (!checkType() || !isPunctured() || !getLocation()){
+            return;
+        }
+
+        boolean isConnectedToActiveElement = getConnected();
+        if (!isConnectedToActiveElement){
+            connect();
+        }
+        else if (isConnectedToActiveElement && !getPipeEnds()){
+            System.err.println("Pick up failed as the other end of pipe is also disconnected!");
+            return;
+        }
+
+        setLocation();
+        removeInventory();
+
+        System.out.println("Pump picked up successfully!");
     }
 
     public void fixPump(){
