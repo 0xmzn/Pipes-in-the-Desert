@@ -2,26 +2,50 @@ import static java.lang.System.out;
 
 import java.util.Scanner;
 
+/**
+ * The abstract class representing a player in the game. Unites methods used
+ * both, by Plumber and by Saboteur.
+ */
 public abstract class Player {
 
     protected final Scanner scanner;
 
+    /**
+     * Constructs a new Player object. Initializes the scanner to reuse in all
+     * methods.
+     */
     protected Player() {
         scanner = new Scanner(System.in);
     }
 
+    /**
+     * Changes the input pipe for the player.
+     * Checks precondition before changing the input pipe: player location and pump
+     * puncture state.
+     * If any of the conditions are not met, the method returns without performing
+     * any action.
+     * Otherwise, it prints a success message.
+     */
     public void changeInputPipe() {
         printMethodName("changeInputPipe()");
         boolean getLocation = getLocation("Pump");
         boolean isPunctured = isPunctured();
         if (getLocation && !isPunctured) {
             out.println("Player is on the pump and it's not punctured. Attempting to change the input pipe...");
-            out.println("Input pipe changed to the Next Pipe");
+            out.println("Input pipe changed to the new Pipe");
         } else {
             out.println("Player is not on the pump or the pipe is punctured. Cannot change the input pipe.");
         }
     }
 
+    /**
+     * Changes the input pipe for the player.
+     * Checks precondition before changing the output pipe: player location and pump
+     * puncture state.
+     * If any of the conditions are not met, the method returns without performing
+     * any action.
+     * Otherwise, it prints a success message.
+     */
     public void changeOutputPipe() {
         printMethodName("changeOutputPipe()");
         boolean getLocation = getLocation("Pump");
@@ -34,6 +58,9 @@ public abstract class Player {
         }
     }
 
+    /**
+     * Moves the player up if possible.
+     */
     public void moveW() {
         printMethodName("moveW()");
 
@@ -50,6 +77,9 @@ public abstract class Player {
         out.println("Moved up.");
     }
 
+    /**
+     * Moves the player left if possible.
+     */
     public void moveA() {
         printMethodName("moveA()");
 
@@ -66,6 +96,9 @@ public abstract class Player {
         out.println("Moved left.");
     }
 
+    /**
+     * Moves the player down if possible.
+     */
     public void moveS() {
         printMethodName("moveS()");
 
@@ -82,6 +115,9 @@ public abstract class Player {
         out.println("Moved down.");
     }
 
+    /**
+     * Moves the player right if possible.
+     */
     public void moveD() {
         printMethodName("moveD()");
 
@@ -98,6 +134,12 @@ public abstract class Player {
         out.println("Moved right.");
     }
 
+    /**
+     * Asks a question to the player and returns the choice.
+     *
+     * @param question the question to ask
+     * @return the choice made by the player
+     */
     protected int askQuestion(String question) {
         out.println(question);
         out.println("1. Yes");
@@ -106,15 +148,26 @@ public abstract class Player {
         return scanner.nextInt();
     }
 
+    /**
+     * Prints the name of the current method.
+     *
+     * @param methodName the name of the method
+     */
     protected static void printMethodName(String methodName) {
         out.println("\n--------------------");
         out.println(methodName);
         out.println("--------------------\n");
     }
 
+    /**
+     * Checks if the current player is a Plumber or a Saboteur.
+     *
+     * @param type the type to check
+     * @return true if the player is of the specified type, false otherwise
+     */
     protected boolean checkType(String type) {
         printMethodName("checkType()");
-        int isTypeofPlayer = askQuestion("Is the curret player a " + type + "?");
+        int isTypeofPlayer = askQuestion("Is the current player a " + type + "?");
 
         if (isTypeofPlayer != 1 && isTypeofPlayer != 2) {
             out.println("Invalid command, operation failed");
@@ -128,6 +181,11 @@ public abstract class Player {
         return true;
     }
 
+    /**
+     * Checks if the pump or pipe is punctured.
+     *
+     * @return true if the pump or pipe is punctured, false otherwise
+     */
     protected boolean isPunctured() {
         printMethodName("isPunctured()");
         int isObjectPunctured = askQuestion("Is the Pump/Pipe punctured?");
@@ -144,6 +202,13 @@ public abstract class Player {
         return false;
     }
 
+    /**
+     * Checks if the player is standing on the specified location.
+     *
+     * @param location the location to check
+     * @return true if the player is standing on the specified location, false
+     *         otherwise
+     */
     protected boolean getLocation(String location) {
         printMethodName("getLocation()");
         int isLocation = askQuestion("Is the player standing on a " + location + "?");
