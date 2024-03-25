@@ -24,31 +24,18 @@ public class Controller {
             for(int i = 0; i < options.length; i++) {
                 out.println((i + 1) + ". " + options[i]);
             }
-
-        if (options.length == 0) {
-            out.println("1. Yes\n2. No");
-        } else {
-            for(int i = 0; i < options.length; i++) {
-                out.println((i + 1) + ". " + options[i]);
-            }
         }
-
 
         int answer = scanner.nextInt();
         if (options.length == 0) {
             if (answer < 1 || answer > 2)
                 System.err.println("Invalid values was chosen for the answer!");
-        } else {        if (options.length == 0) {
-            if (answer < 1 || answer > 2)
-                System.err.println("Invalid values was chosen for the answer!");
         } else {
-                if(answer < 1 || answer > options.length) {
-                    System.err.println("Invalid values was chosen for the answer!");
-            }
+            if(answer < 1 || answer > options.length) {
+                System.err.println("Invalid values was chosen for the answer!");
             }
         }
 
-        
         return answer;
     }
 
