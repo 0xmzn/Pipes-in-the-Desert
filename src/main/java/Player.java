@@ -181,26 +181,6 @@ public abstract class Player {
         return true;
     }
 
-    /**
-     * Checks if the pump or pipe is punctured.
-     *
-     * @return true if the pump or pipe is punctured, false otherwise
-     */
-    protected boolean isPunctured() {
-        printMethodName("isPunctured()");
-        int isObjectPunctured = askQuestion("Is the Pump/Pipe punctured?");
-
-        if (isObjectPunctured != 1 && isObjectPunctured != 2) {
-            printMethodName("Invalid command, activity failed");
-            return false;
-        } else if (isObjectPunctured == 1) {
-            printMethodName("This pump/pipe is punctured, activity failed");
-            return true;
-        }
-
-        printMethodName("This pump/pipe is not punctured");
-        return false;
-    }
 
     /**
      * Checks if the player is standing on the specified location.
