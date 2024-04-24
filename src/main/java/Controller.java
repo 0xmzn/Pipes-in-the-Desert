@@ -11,8 +11,46 @@ import java.util.Scanner;
  * the water flow and managing the game turns.
  * It also contributes to randomly breaking pumps.
  */
+
 public class Controller {
     private final Scanner scanner;
+    /**
+     * The grid that stores objects, which implement the <Element> interface, i.e.
+     * <Cistern>, <Pump>, <Pipe>, <Spring> objects.
+     */
+    private Element[][] grid;
+
+    /**
+     * An amount of water collected by the team of plumbers.
+     */
+    private int plumberScore;
+
+    /**
+     * An amount of water collected by the team of saboteurs.
+     */
+    private int saboteurScore;
+
+    /**
+     * A timer object, which is used to manage starting and ending turns by counting
+     * the amount of time passed.
+     */
+    private Timer timer;
+
+    /**
+     * A number of turns that have passed from the start of the game.
+     */
+    private int turn;
+
+    /**
+     * A constant speed with which water passes through the pipe network.
+     */
+    private int waterSpeed;
+
+    /**
+     * Stores from round to round whether the water is flowing through the pipe
+     * network or not.
+     */
+    private boolean isWaterFlowing;
 
     /**
      * Constructs a new Controller object. Initializes the scanner to reuse for user
@@ -68,6 +106,7 @@ public class Controller {
      * Displays the initial main menu of the game and handles user input.
      */
     public void displayMenu() {
+        //TODO: update with prototype version
         printMethodName("displayMenu()");
 
         System.out.println("Welcome to Pipes in the Desert!\n");
@@ -92,6 +131,7 @@ public class Controller {
      * Initializes the game grid.
      */
     public void initGrid() {
+        //TODO: update with prototype version
         printMethodName("initGrid()");
     }
 
@@ -100,6 +140,7 @@ public class Controller {
      * Gives users all the callable methods to interact with the game.
      */
     public void startGame() {
+        //TODO: update with prototype version
         printMethodName("startGame()");
         System.out.println("THE GAME HAS STARTED!!\n");
 
@@ -128,18 +169,19 @@ public class Controller {
         String command = scanner.next();
         Plumber plumber = new Plumber();
         Saboteur player = new Saboteur();
+        Cistern cistern = new Cistern();
         switch (command) {
             case "manufacturePump":
-                this.manufacturePump();
+                cistern.manufacturePump();
                 break;
             case "manufacturePipe":
-                this.manufacturePipe();
+                cistern.manufacturePipe();
                 break;
             case "breakPump":
                 this.breakPump();
                 break;
             case "giveTurn":
-                this.giveTurn();
+                this.giveTurn(player);
                 break;
             case "endGame":
                 this.endGame();
@@ -163,7 +205,7 @@ public class Controller {
                 player.changeOutputPipe();
                 break;
             case "pickUpPipeEnd":
-                plumber.pickUpPipeEnd(); 
+                plumber.pickUpPipeEnd();
                 break;
             case "pickUpPump":
                 plumber.pickUpPump();
@@ -198,8 +240,10 @@ public class Controller {
     /**
      * Tracks the water flow in the game and increments corresponding saboteur or
      * plumber scores.
+     * @param activeSpring The active spring that determines the water flow.
      */
-    public void trackWaterFlow() {
+    public void trackFlow(Spring activeSpring) {
+        //TODO: update with prototype version
         printMethodName("trackWaterFlow()");
 
         int answer = askQuestion("Where does the water flow?", "Cisterns", "Desert");
@@ -210,6 +254,18 @@ public class Controller {
         }
     }
 
+    /**
+     * Updates the water flow based on the changes in 
+     * the state of the elements in the pipe system. 
+     *
+     * @param activeSprings The list of active springs.
+     * @return The updated water flow status.
+     */
+    public int updateFlow(List<Spring> activeSprings) {
+        //TODO: update with prototype version
+        printMethodName("updateFlow()");
+        return 0;
+    }
     /**
      * Increments the plumber's scores. Counts the total water transported to the
      * city cisterns.
@@ -227,37 +283,10 @@ public class Controller {
     }
 
     /**
-     * Manufactures a new pump. Checks if the cisterns have the capability.
-     */
-    public void manufacturePump() {
-        printMethodName("manufacturePump()");
-
-        int answer = askQuestion("Can a pump be manufactured at any of the cisterns?");
-        if (answer == 1) {
-            System.out.println("New pump is manufactured!");
-        } else {
-            System.out.println("New pump cannot be manufactured!");
-        }
-    }
-
-    /**
-     * Manufactures a new pipe. Checks if the cisterns have the capability.
-     */
-    public void manufacturePipe() {
-        printMethodName("manufacturePipe()");
-
-        int answer = askQuestion("Can a pipe be manufactured at any of the cisterns?");
-        if (answer == 1) {
-            System.out.println("New pipe is manufactured!");
-        } else {
-            System.out.println("New pipe cannot be manufactured!");
-        }
-    }
-
-    /**
      * Breaks a pump if there is one not broken currently.
      */
     public void breakPump() {
+        //TODO: update with prototype version
         printMethodName("breakPump()");
 
         int breakingAnswer = askQuestion("Is there a pump to be broken?");
@@ -266,7 +295,7 @@ public class Controller {
 
             int fillingAnswer = askQuestion("Is water flowing into the pump?");
             if (fillingAnswer == 1)
-                fillUpPumpReservoir();
+                fillUpPump();
         } else {
             System.out.println("There are no pumps to break!");
         }
@@ -276,8 +305,9 @@ public class Controller {
      * Fills up the reservoir of a broken pump. Called in case a pump is broken and
      * water tries to be transported in the system.
      */
-    public void fillUpPumpReservoir() {
-        printMethodName("fillUpPumpReservoir()");
+    public void fillUpPump() {
+        //TODO: update with prototype version
+        printMethodName("fillUpPump()");
 
         int answer = askQuestion("Is the reservoir of the pump full?");
         if (answer == 1) { // the water is leaking from the pump to the desert
@@ -290,7 +320,8 @@ public class Controller {
     /**
      * Takes the turn from the active player and gives to the next player.
      */
-    public void giveTurn() {
+    public boolean giveTurn(Player nextPlayer) {
+        //TODO: update with prototype version
         printMethodName("giveTurn()");
 
         if (Timer.turnExpired()) {
@@ -300,13 +331,16 @@ public class Controller {
         } else {
             System.out.println("We cannot change the turn, as the previous player has not finished!");
         }
+        return 0;
     }
 
     /**
      * Takes the current player's turn.
      */
-    public void takeTurn() {
+    public boolean takeTurn(Player currentPlayer) {
+        //TODO: update with prototype version
         printMethodName("takeTurn()");
+        return 0;
     }
 
     /**
@@ -314,6 +348,7 @@ public class Controller {
      * players have played their turns.
      */
     public void manageRounds() {
+        //TODO: update with prototype version
         printMethodName("manageRounds()");
 
         int answer = askQuestion("Has the whole round passed, i.e. 4 turns?");
@@ -333,6 +368,7 @@ public class Controller {
      * Ends the game and performs cleanup tasks.
      */
     public void endGame() {
+        //TODO: update with prototype version
         printMethodName("endGame()");
         onExit();
     }
@@ -341,6 +377,7 @@ public class Controller {
      * Performs cleanup tasks and exits the game.
      */
     public void onExit() {
+        //TODO: update with prototype version
         printMethodName("onExit()");
         System.exit(0);
     }
