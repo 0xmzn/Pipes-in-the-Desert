@@ -9,12 +9,21 @@ import java.util.Scanner;
 public abstract class Player {
 
     protected final Scanner scanner;
+    /**
+     * The coordinate of the player.
+     */
+    protected Point coordinate;
+    /**
+     * the possible steppable cells for the current player.
+     */
+    protected boolean[][] stepableCell;
 
     /**
      * Constructs a new Player object. Initializes the scanner to reuse in all
      * methods.
      */
     protected Player() {
+        // TODO: update with prototype version
         scanner = new Scanner(System.in);
     }
 
@@ -23,13 +32,19 @@ public abstract class Player {
      * Checks precondition before changing the input pipe: player location and pump
      * puncture state.
      * If any of the conditions are not met, the method returns without performing
-     * any action.
-     * Otherwise, it prints a success message.
+     * any action. Otherwise, it prints a success message.
+     * 
+     * @param pump      the pump object representing the new input pipe
+     * @param endOfPipe the endOfPipe object representing the end of the new input
+     *                  pipe
+     * @return true if the input pipe was successfully changed, false otherwise
      */
-    public void changeInputPipe() {
+    public boolean changeInputPipe(Pump pump, EndOfPipe endOfPipe) {
+        // TODO: update with prototype version
         printMethodName("changeInputPipe()");
         boolean getLocation = getLocation("Pump");
-        boolean isPunctured = isPunctured();
+
+        boolean isPunctured = pump.isPunctured();
         if (getLocation && !isPunctured) {
             out.println("Player is on the pump and it's not punctured. Attempting to change the input pipe...");
             out.println("Input pipe changed to the new Pipe");
@@ -45,8 +60,14 @@ public abstract class Player {
      * If any of the conditions are not met, the method returns without performing
      * any action.
      * Otherwise, it prints a success message.
+     * 
+     * @param pump      the pump object representing the new output pipe
+     * @param endOfPipe the endOfPipe object representing the end of the new output
+     *                  pipe
+     * @return true if the input pipe was successfully changed, false otherwise
      */
-    public void changeOutputPipe() {
+    public boolean changeOutputPipe(Pump pump, EndOfPipe endOfPipe) {
+        // TODO: update with prototype version
         printMethodName("changeOutputPipe()");
         boolean getLocation = getLocation("Pump");
         boolean isPunctured = isPunctured();
@@ -56,6 +77,47 @@ public abstract class Player {
         } else {
             out.println("Player is not on the pump he pipe is punctured. Cannot change the output pipe.");
         }
+    }
+
+    /**
+     * Sets the stepability of the cell at the given coordinates (x,y) to the
+     * specified value (stepable).
+     *
+     * @param x        the x-coordinate of the cell
+     * @param y        the y-coordinate of the cell
+     * @param stepable the stepability value to set
+     * @return true if the stepability was successfully set, false otherwise
+     */
+    public boolean setStepableCells(int x, int y, boolean stepable) {
+        printMethodName("setStepableCells()");
+        // TODO: update with prototype version
+        return false; // Placeholder return statement
+    }
+
+    /**
+     * Checks if the given coordinate in stepableCells is true.
+     *
+     * @param x the x-coordinate of the cell
+     * @param y the y-coordinate of the cell
+     * @return true if the given coordinate in stepableCells is true, false
+     *         otherwise
+     */
+    public boolean checkStepableCell(int x, int y) {
+        printMethodName("checkStepableCell()");
+        // TODO: update with prototype version
+        return false; // Placeholder return statement
+    }
+
+    /**
+     * Moves the player based on the provided key.
+     * 
+     * @param key the key representing the direction of movement
+     * @return true if the player was successfully moved, false otherwise
+     */
+    public boolean move(int key) {
+        // TODO: update with prototype version
+        // four old method implementations are provided below
+        return 0;
     }
 
     /**
@@ -135,6 +197,13 @@ public abstract class Player {
     }
 
     /**
+     * Player voluntarily gives up their turn.
+     */
+    public void giveUpTurn(){
+        //TODO: update with prototype version
+    }
+
+    /**
      * Asks a question to the player and returns the choice.
      *
      * @param question the question to ask
@@ -166,6 +235,7 @@ public abstract class Player {
      * @return true if the player is of the specified type, false otherwise
      */
     protected boolean checkType(String type) {
+        // TODO: update with prototype version
         printMethodName("checkType()");
         int isTypeofPlayer = askQuestion("Is the current player a " + type + "?");
 
@@ -190,6 +260,7 @@ public abstract class Player {
      *         otherwise
      */
     protected boolean getLocation(String location) {
+        // TODO: update with prototype version
         printMethodName("getLocation()");
         int isLocation = askQuestion("Is the player standing on a " + location + "?");
 
