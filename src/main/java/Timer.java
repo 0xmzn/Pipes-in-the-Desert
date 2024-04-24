@@ -8,6 +8,11 @@ import java.util.Scanner;
  */
 public class Timer {
     /**
+     * The constant amount of seconds given for each turn.
+     */
+    int turnTime;
+
+    /**
      * Prints the name of the method that is called.
      *
      * @param methodName the name of the method
@@ -55,6 +60,7 @@ public class Timer {
      * Starts the timer.
      */
     public static void startTimer() {
+        // TODO: update with protocol version
         printMethodName("startTimer()");
     }
 
@@ -64,6 +70,7 @@ public class Timer {
      * @return true if the turn has expired, false otherwise
      */
     public static boolean turnExpired() {
+        // TODO: update with protocol version
         printMethodName("turnExpired()");
 
         int answer = askQuestion("Has the turn of the previous player expired?");

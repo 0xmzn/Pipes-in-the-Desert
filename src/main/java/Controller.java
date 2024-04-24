@@ -170,6 +170,8 @@ public class Controller {
         Plumber plumber = new Plumber();
         Saboteur player = new Saboteur();
         Cistern cistern = new Cistern();
+        Pump pump = new Pump();
+        EndOfPipe end = new EndOfPipe();
         switch (command) {
             case "manufacturePump":
                 cistern.manufacturePump();
@@ -199,28 +201,28 @@ public class Controller {
                 player.moveD();
                 break;
             case "changeInputPipe":
-                player.changeInputPipe();
+                player.changeInputPipe(new Pump(), new EndOfPipe());
                 break;
             case "changeOutputPipe":
-                player.changeOutputPipe();
+                player.changeOutputPipe(new Pump(), new EndOfPipe());
                 break;
             case "pickUpPipeEnd":
-                plumber.pickUpPipeEnd();
+                plumber.pickUpPipeEnd(new Pump(), new EndOfPipe());
                 break;
             case "pickUpPump":
-                plumber.pickUpPump();
+                plumber.pickUpPump(new Pump(), new EndOfPipe());
                 break;
             case "installPump":
-                plumber.installPump();
+                plumber.installPump(new Point(1,1));
                 break;
             case "placePipeEnd":
-                plumber.placePipeEnd();
+                plumber.placePipeEnd(new EndOfPipe());
                 break;
             case "connect":
-                plumber.connect();
+                plumber.connect(new Pump(), new EndOfPipe());
                 break;
             case "disconnect":
-                plumber.disconnect();
+                plumber.disconnect(new Pump(), new EndOfPipe());
                 break;
             case "fixPipe":
                 plumber.fixPipe();
@@ -229,7 +231,7 @@ public class Controller {
                 plumber.fixPump();
                 break;
             case "puncturePipe":
-                player.puncturePipe();
+                player.puncturePipe(new Pipe());
                 break;
             default:
                 System.out.println("Invalid command! Please try again.");
@@ -319,6 +321,9 @@ public class Controller {
 
     /**
      * Takes the turn from the active player and gives to the next player.
+     * @param nextPlayer The next player to receive the turn.
+     * @return true if the turn was successfully given, false otherwise.
+     */
      */
     public boolean giveTurn(Player nextPlayer) {
         //TODO: update with prototype version
@@ -336,6 +341,8 @@ public class Controller {
 
     /**
      * Takes the current player's turn.
+     * @param currentPlayer The current player to take the turn from.
+     * @return true if the turn was successfully taken, false otherwise.
      */
     public boolean takeTurn(Player currentPlayer) {
         //TODO: update with prototype version
