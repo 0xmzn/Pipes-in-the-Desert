@@ -236,6 +236,7 @@ public abstract class Player {
      */
     protected boolean checkType(String type) {
         // TODO: update with prototype version
+        // remove if not needed
         printMethodName("checkType()");
         int isTypeofPlayer = askQuestion("Is the current player a " + type + "?");
 
@@ -261,6 +262,7 @@ public abstract class Player {
      */
     protected boolean getLocation(String location) {
         // TODO: update with prototype version
+        // remove if not needed
         printMethodName("getLocation()");
         int isLocation = askQuestion("Is the player standing on a " + location + "?");
 

@@ -289,7 +289,7 @@ public class Plumber extends Player {
      */
     private boolean getConnected() {
         //TODO: update with prototype version
-        // should be removed later
+        // removed if not needed
         printMethodName("getConnected()");
         int isConnected = askQuestion("Is the pipe end connected to an element?");
 
@@ -310,7 +310,7 @@ public class Plumber extends Player {
      */
     private boolean getPipeEnds() {
         // TODO: update with prototype version
-        // should be removed later
+        // remove if not needed
         printMethodName("getPipeEnds()");
         int hasOtherEnd = askQuestion("Is the other pipe end connected to an active element?");
 
@@ -334,6 +334,7 @@ public class Plumber extends Player {
      */
     private boolean getManufacturedElement() {
         // TODO: update with prototype version
+        // remove if not needed
         printMethodName("getManufacturedElement()");
         int isManufactured = askQuestion("Does the cistern have a manufactured pump?");
 
@@ -360,6 +361,7 @@ public class Plumber extends Player {
      */
     private void cutPipe() {
         // TODO: update with prototype version
+        // remove if not needed
         printMethodName("cutPipe");
     }
 

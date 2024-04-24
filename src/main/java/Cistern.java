@@ -25,6 +25,8 @@ public class Cistern extends ActiveElement {
      * Manufactures a new pump. Checks if the cisterns have the capability.
      */
     public void manufacturePump() {
+        //TODO: update with prototype version
+        // decide whether to remove this after implementing manufactureElement()
         printMethodName("manufacturePump()");
 
         int answer = askQuestion("Can a pump be manufactured at any of the cisterns?");
@@ -39,6 +41,8 @@ public class Cistern extends ActiveElement {
      * Manufactures a new pipe. Checks if the cisterns have the capability.
      */
     public void manufacturePipe() {
+        //TODO: update with prototype version
+        // decide whether to remove this after implementing manufactureElement()
         printMethodName("manufacturePipe()");
 
         int answer = askQuestion("Can a pipe be manufactured at any of the cisterns?");
