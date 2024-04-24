@@ -1,27 +1,29 @@
 import java.util.List;
 
 /**
- * Represents an element in the pipeline system. Can be pipe, pump, 
+ * Represents an element in the pipeline system. Can be pipe, pump,
  */
 public interface Element {
     /**
-     * List of currently connected ends of pipes to this active element.
+     * x and y coordinates of the element. Inbuilt java class that defines the
+     * coordinates in the game grid.
      */
-    protected List<EndOfPipe> connectedEndsOfPipes = new ArrayList<>();
+    protected Point coordinate;
 
     /**
-     * Connects the specified <code>EndOfPipe</code> element to this active element.
-     * 
-     * @param endOfPipe the <code>EndOfPipe</code> element to connect
-     * @return <code>true</code> if the <code>EndOfPipe</code> element was successfully connected, <code>false</code> otherwise
+     * Gets the x and y coordinates of the element.
+     * @return the coordinate of the element
      */
-    boolean connect(EndOfPipe endOfPipe);
+    public Point getCoordinate() {
+        return coordinate;
+    }
 
     /**
-     * Disconnects the specified <code>EndOfPipe</code> element from this active element.
-     * 
-     * @param endOfPipe the <code>EndOfPipe</code> element to disconnect
-     * @return <code>true</code> if the <code>EndOfPipe</code> element was successfully disconnected, <code>false</code> otherwise
+     * Sets the x and y coordinates of the element.
+     * @param coordinate the coordinate to set
      */
-    boolean disconnect(EndOfPipe endOfPipe);
+    public void setCoordinate(Point coordinate) {
+        this.coordinate = coordinate;
+    }
+
 }

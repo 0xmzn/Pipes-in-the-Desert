@@ -24,7 +24,7 @@ public class Pipe implements Element{
      *
      * @return true if the pipe is punctured, false otherwise.
      */
-    public boolean isPunctured() {
+    public boolean getIsPunctured() {
         return isPunctured;
     }
 
@@ -33,7 +33,7 @@ public class Pipe implements Element{
      *
      * @param puncturedState the new punctured state of the pipe.
      */
-    public void setPunctured(boolean puncturedState) {
+    public void setIsPunctured(boolean puncturedState) {
         isPunctured = puncturedState;
     }
 
@@ -42,7 +42,7 @@ public class Pipe implements Element{
      *
      * @return true if water is flowing through the pipe, false otherwise.
      */
-    public boolean isWaterFlowing() {
+    public boolean getIsWaterFlowing() {
         return isWaterFlowing;
     }
 
@@ -51,7 +51,7 @@ public class Pipe implements Element{
      *
      * @param waterFlowingState the new water flowing state of the pipe.
      */
-    public void setWaterFlowing(boolean waterFlowingState) {
+    public void setIsWaterFlowing(boolean waterFlowingState) {
         isWaterFlowing = waterFlowingState;
     }
 
@@ -62,14 +62,5 @@ public class Pipe implements Element{
      */
     public List<EndOfPipe> getPipeEnds() {
         return pipeEnds;
-    }
-
-    /**
-     * Sets the list of pipe ends.
-     *
-     * @param pipeEnds the new list of pipe ends.
-     */
-    public void setPipeEnds(List<EndOfPipe> pipeEnds) {
-        this.pipeEnds = pipeEnds;
     }
 }
