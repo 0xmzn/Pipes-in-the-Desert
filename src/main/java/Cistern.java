@@ -19,4 +19,12 @@ public class Cistern extends ActiveElement {
     public void manufactureElement() {
         // TODO: update with prototype version
     }
+
+    public Element getInventoryElement() {
+        return inventoryElement;
+    }
+
+    public void setInventoryElement(Element inventoryElement) {
+        this.inventoryElement = inventoryElement;
+    }
 }

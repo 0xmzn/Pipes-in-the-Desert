@@ -38,18 +38,18 @@ public class Plumber extends Player {
      * @param endOfPipe the pipe end to be picked up
      * @return true if the pipe end is picked up successfully, false otherwise
      */
-    public boolean pickUpPipeEnd(EndOfPipe endOfPipe) {
+    public boolean pickUpPipeEnd(Pipe pipe, EndOfPipe endOfPipe) {
         printMethodName("pickUpPipeEnd");
         boolean isInventoryTaken = !this.isInventoryEmpty();
         boolean isPlumberNotStandingOnPipeEnd = this.getLocation() == endOfPipe.getLocation();
-        boolean isEndOfPipeStuck = endOfPipe.canBePickedUp();
+        boolean isEndOfPipeStuck = !pipe.canBePickedUp(endOfPipe);
 
         if (isInventoryTaken || isPlumberNotStandingOnPipeEnd || isEndOfPipeStuck) {
             out.println("The element failed to be picked up.");
             return false;
         }
 
-        endOfPipe.disconnect();
+        endOfPipe.setConnectedActiveElement(null);
         this.inventory = endOfPipe;
         out.println("The element picked up successfully!");
         return true;
@@ -63,18 +63,26 @@ public class Plumber extends Player {
      * performing any action.
      * Otherwise, it prints a success message and returns true.
      * 
-     * @param pump the pump to be picked up
+     * @param cistern the cistern where the has to be picked up from
      * @return true if the pump is picked up successfully, false otherwise
      */
-    public boolean pickUpPump(Pump pump) {
+
+    public boolean pickUpPump(Cistern cistern){
         printMethodName("pickUpPump");
 
-        out.println("You are trying to pick up a pump...");
-        if (!checkType("Plumber") || !isInventoryEmpty() || !getLocation("pump") || !getManufacturedElement()) {
-            return;
+        boolean isInventoryTaken = !this.isInventoryEmpty();
+        boolean isPlumberNotStandingOnCistern = this.getLocation() == cistern.getCoordinate();
+        boolean isNoPumpManufactured = cistern.getInventoryElement() instanceof Pump;
+
+        if ( isInventoryTaken || isPlumberNotStandingOnCistern ||  isNoPumpManufactured) {
+            out.println("The element failed to be picked up.");
+            return false;
         }
 
+        this.inventory = cistern.getInventoryElement();
+        cistern.setInventoryElement(null);
         out.println("Pump picked up successfully!");
+        return true;
     }
 
     /**
@@ -218,46 +226,7 @@ public class Plumber extends Player {
      */
     public boolean fixElement(Element element) {
         // TODO: update with prototype version
-        // two old implementations are below
-        return 0;
-    }
-
-    /**
-     * Fixes a punctured pipe.
-     * Checks the precondition before fixing the pipe: player type, pipe punctured
-     * state, location.
-     * If any of the conditions are not met, the method returns without performing
-     * any action.
-     * Otherwise, it prints a success message.
-     */
-    public void fixPipe() {
-        printMethodName("fixPipe");
-
-        out.println("You are trying to fix a pipe...");
-        if (!checkType("plumber") || !isPunctured() || !getLocation("pipe")) {
-            return;
-        }
-
-        out.println("Pipe fixed successfully!");
-    }
-
-    /**
-     * Fixes a punctured pump.
-     * Checks precondition before fixing the pump: player type, pump punctured
-     * state, location.
-     * If any of the conditions are not met, the method returns without performing
-     * any action.
-     * Otherwise, it prints a success message.
-     */
-    public void fixPump() {
-        printMethodName("fixPump");
-
-        out.println("You are trying to fix a pump...");
-        if (!checkType("plumber") || !isPunctured() || !getLocation("pipe")) {
-            return;
-        }
-
-        out.println("Pump fixed successfully!");
+        return false;
     }
 
     /**
