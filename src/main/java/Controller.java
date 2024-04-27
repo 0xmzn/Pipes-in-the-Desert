@@ -56,6 +56,9 @@ public class Controller {
     List<Pipe> pipes;
     List<Pump> pumps;
 
+    private Cistern cistern1;
+    private Cistern cistern2;
+    private Cistern cistern3;
 
     /**
      * Constructs a new Controller object. Initializes the scanner to reuse for user
@@ -74,6 +77,9 @@ public class Controller {
         gameRunning = true;
         pipes = new ArrayList<>();
         pumps = new ArrayList<>();
+        cistern1 = new Cistern();
+        cistern2 = new Cistern();
+        cistern3 = new Cistern();
     }
 
     /**
@@ -125,9 +131,9 @@ public class Controller {
                 grid[i][j] = null;
             }
         }
-        grid[0][3] = new Cistern();
-        grid[0][6] = new Cistern();
-        grid[0][9] = new Cistern();
+        grid[0][3] = cistern1;
+        grid[0][6] = cistern2;
+        grid[0][9] = cistern3;
 
         grid[11][3] = new Spring();
         grid[11][6] = new Spring();
@@ -147,6 +153,20 @@ public class Controller {
 
         while(gameRunning){
             manageRounds();
+
+            cistern1.manufactureElement();
+            cistern2.manufactureElement();
+            cistern3.manufactureElement();
+
+            pipes.add(cistern1.getInventoryPipe());
+            pumps.add(cistern1.getInventoryPump());
+
+            pipes.add(cistern2.getInventoryPipe());
+            pumps.add(cistern2.getInventoryPump());
+
+            pipes.add(cistern3.getInventoryPipe());
+            pumps.add(cistern3.getInventoryPump());
+
         }
         endGame();
     }
@@ -238,7 +258,10 @@ public class Controller {
 
         if(nextPlayer instanceof Plumber){
             System.out.println("List of commands:\n");
-            System.out.println("move\n");
+            System.out.println("moveA\n");
+            System.out.println("moveD\n");
+            System.out.println("moveS\n");
+            System.out.println("moveW\n");
             System.out.println("fix\n");
             System.out.println("pickPipeEnd\n");
             System.out.println("pickPump\n");
@@ -249,7 +272,10 @@ public class Controller {
             System.out.println("disconnect\n");
         }else if (nextPlayer instanceof Saboteur){
             System.out.println("List of commands:\n");
-            System.out.println("move\n");
+            System.out.println("moveA\n");
+            System.out.println("moveD\n");
+            System.out.println("moveS\n");
+            System.out.println("moveW\n");
             System.out.println("puncture\n");
             System.out.println("changeWaterDirection\n");
         }
@@ -284,8 +310,17 @@ public class Controller {
                 nextPlayer.changeInputPipe();
                 nextPlayer.changeOutputPipe();
                 break;
-            case "move":
-                nextPlayer.move();
+            case "moveA":
+                nextPlayer.moveA();
+                break;
+            case "moveS":
+                nextPlayer.moveS();
+                break;
+            case "moveW":
+                nextPlayer.moveW();
+                break;
+            case "moveD":
+                nextPlayer.moveD();
                 break;
             case "pickPipeEnd":
                 if (nextPlayer instanceof Plumber) {
