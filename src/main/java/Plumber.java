@@ -21,6 +21,7 @@ public class Plumber extends Player {
      */
     public Plumber() {
         super();
+        inventory = null;
     }
 
     /**
@@ -38,22 +39,20 @@ public class Plumber extends Player {
      * @return true if the pipe end is picked up successfully, false otherwise
      */
     public boolean pickUpPipeEnd(EndOfPipe endOfPipe) {
-        // TODO: update with prototype version
         printMethodName("pickUpPipeEnd");
+        boolean isInventoryTaken = !this.isInventoryEmpty();
+        boolean isPlumberNotStandingOnPipeEnd = this.getLocation() == endOfPipe.getLocation();
+        boolean isEndOfPipeStuck = endOfPipe.canBePickedUp();
 
-        out.println("You are trying to pick up a pipe end...");
-        if (!checkType("Plumber") || !checkInventory() || !getLocation("pipe end")) {
-            return;
-        }
-        boolean isConnectedToActiveElement = getConnected();
-        if (isConnectedToActiveElement) {
-            disconnect();
-        } else if (!getPipeEnds()) {
-            out.println("Pick up failed as the other end of pipe is also disconnected!");
-            return;
+        if (isInventoryTaken || isPlumberNotStandingOnPipeEnd || isEndOfPipeStuck) {
+            out.println("The element failed to be picked up.");
+            return false;
         }
 
-        out.println("Pipe picked up successfully!");
+        endOfPipe.disconnect();
+        this.inventory = endOfPipe;
+        out.println("The element picked up successfully!");
+        return true;
     }
 
     /**
@@ -71,7 +70,7 @@ public class Plumber extends Player {
         printMethodName("pickUpPump");
 
         out.println("You are trying to pick up a pump...");
-        if (!checkType("Plumber") || !checkInventory() || !getLocation("pump") || !getManufacturedElement()) {
+        if (!checkType("Plumber") || !isInventoryEmpty() || !getLocation("pump") || !getManufacturedElement()) {
             return;
         }
 
@@ -97,7 +96,7 @@ public class Plumber extends Player {
         printMethodName("installPump");
 
         out.println("You are trying to install a pump into the system...");
-        if (!checkType("plumber") || !checkInventory()
+        if (!checkType("plumber") || !isInventoryEmpty()
                 || !getLocation("pump") || !getManufacturedElement()) {
             return;
         }
@@ -132,7 +131,7 @@ public class Plumber extends Player {
         printMethodName("placePipeEnd");
 
         out.println("You are trying to place a pipe end into the system...");
-        if (!checkType("Plumber") || !checkInventory()) {
+        if (!checkType("Plumber") || !isInventoryEmpty()) {
             return;
         }
 
@@ -266,21 +265,11 @@ public class Plumber extends Player {
      * 
      * @return true if the inventory is free, false otherwise.
      */
-    private boolean checkInventory() {
+    private boolean isInventoryEmpty() {
         // TODO: update with prototype version
-        printMethodName("checkInventory()");
-        int isInventoryFree = askQuestion("Is the inventory free?");
+        printMethodName("isInventoryEmpty()");
 
-        if (isInventoryFree != 1 && isInventoryFree != 2) {
-            out.println("Invalid command, operation failed");
-            return false;
-        } else if (isInventoryFree == 2) {
-            out.println("You can not pick up multiple items simultaneously, operation failed");
-            return false;
-        }
-
-        out.println("");
-        return true;
+        return inventory == null;
     }
 
     /**
