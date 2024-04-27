@@ -207,10 +207,10 @@ public class Controller {
                 player.changeOutputPipe(new Pump(), new EndOfPipe());
                 break;
             case "pickUpPipeEnd":
-                plumber.pickUpPipeEnd(new Pump(), new EndOfPipe());
+                plumber.pickUpPipeEnd(new EndOfPipe());
                 break;
             case "pickUpPump":
-                plumber.pickUpPump(new Pump(), new EndOfPipe());
+                plumber.pickUpPump(new Pump());
                 break;
             case "installPump":
                 plumber.installPump(new Point(1,1));
