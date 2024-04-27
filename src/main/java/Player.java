@@ -199,8 +199,8 @@ public abstract class Player {
     /**
      * Player voluntarily gives up their turn.
      */
-    public void giveUpTurn(){
-        //TODO: update with prototype version
+    public void giveUpTurn() {
+        // TODO: update with prototype version
     }
 
     /**
@@ -251,7 +251,6 @@ public abstract class Player {
         out.println("");
         return true;
     }
-
 
     /**
      * Checks if the player is standing on the specified location.

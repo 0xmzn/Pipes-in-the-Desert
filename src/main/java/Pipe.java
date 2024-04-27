@@ -3,7 +3,7 @@ import java.util.List;
 /**
  * Represents a pipe.
  */
-public class Pipe implements Element{
+public class Pipe implements Element {
     /**
      * Keeps track of whether the pipe is punctured or not.
      */

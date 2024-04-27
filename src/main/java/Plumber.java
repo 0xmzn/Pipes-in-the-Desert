@@ -290,7 +290,7 @@ public class Plumber extends Player {
      * @return true if the pipe end is connected, false otherwise.
      */
     private boolean getConnected() {
-        //TODO: update with prototype version
+        // TODO: update with prototype version
         // removed if not needed
         printMethodName("getConnected()");
         int isConnected = askQuestion("Is the pipe end connected to an element?");

@@ -1,7 +1,5 @@
 import java.util.Scanner;
 
-import java.util.Scanner;
-
 /**
  * The Main class is the entry point of the program.
  * It contains the main method that starts the game and calls the game loop.

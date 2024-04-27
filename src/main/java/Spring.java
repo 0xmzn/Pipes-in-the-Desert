@@ -13,8 +13,9 @@ public class Spring extends ActiveElement {
     boolean active;
 
     /**
-     * Notifies the Controller about starting the supplementation of water to the pipe system.
-     * First, the method checks if the precondition is met: 
+     * Notifies the Controller about starting the supplementation of water to the
+     * pipe system.
+     * First, the method checks if the precondition is met:
      * TODO
      */
     void supplyWater() {

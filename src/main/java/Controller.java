@@ -106,7 +106,7 @@ public class Controller {
      * Displays the initial main menu of the game and handles user input.
      */
     public void displayMenu() {
-        //TODO: update with prototype version
+        // TODO: update with prototype version
         printMethodName("displayMenu()");
 
         System.out.println("Welcome to Pipes in the Desert!\n");
@@ -131,7 +131,7 @@ public class Controller {
      * Initializes the game grid.
      */
     public void initGrid() {
-        //TODO: update with prototype version
+        // TODO: update with prototype version
         printMethodName("initGrid()");
     }
 
@@ -140,7 +140,7 @@ public class Controller {
      * Gives users all the callable methods to interact with the game.
      */
     public void startGame() {
-        //TODO: update with prototype version
+        // TODO: update with prototype version
         printMethodName("startGame()");
         System.out.println("THE GAME HAS STARTED!!\n");
 
@@ -213,7 +213,7 @@ public class Controller {
                 plumber.pickUpPump(new Pump());
                 break;
             case "installPump":
-                plumber.installPump(new Point(1,1));
+                plumber.installPump(new Point(1, 1));
                 break;
             case "placePipeEnd":
                 plumber.placePipeEnd(new EndOfPipe());
@@ -242,10 +242,11 @@ public class Controller {
     /**
      * Tracks the water flow in the game and increments corresponding saboteur or
      * plumber scores.
+     * 
      * @param activeSpring The active spring that determines the water flow.
      */
     public void trackFlow(Spring activeSpring) {
-        //TODO: update with prototype version
+        // TODO: update with prototype version
         printMethodName("trackWaterFlow()");
 
         int answer = askQuestion("Where does the water flow?", "Cisterns", "Desert");
@@ -257,17 +258,18 @@ public class Controller {
     }
 
     /**
-     * Updates the water flow based on the changes in 
-     * the state of the elements in the pipe system. 
+     * Updates the water flow based on the changes in
+     * the state of the elements in the pipe system.
      *
      * @param activeSprings The list of active springs.
      * @return The updated water flow status.
      */
     public int updateFlow(List<Spring> activeSprings) {
-        //TODO: update with prototype version
+        // TODO: update with prototype version
         printMethodName("updateFlow()");
         return 0;
     }
+
     /**
      * Increments the plumber's scores. Counts the total water transported to the
      * city cisterns.
@@ -288,7 +290,7 @@ public class Controller {
      * Breaks a pump if there is one not broken currently.
      */
     public void breakPump() {
-        //TODO: update with prototype version
+        // TODO: update with prototype version
         printMethodName("breakPump()");
 
         int breakingAnswer = askQuestion("Is there a pump to be broken?");
@@ -308,7 +310,7 @@ public class Controller {
      * water tries to be transported in the system.
      */
     public void fillUpPump() {
-        //TODO: update with prototype version
+        // TODO: update with prototype version
         printMethodName("fillUpPump()");
 
         int answer = askQuestion("Is the reservoir of the pump full?");
@@ -321,12 +323,12 @@ public class Controller {
 
     /**
      * Takes the turn from the active player and gives to the next player.
+     * 
      * @param nextPlayer The next player to receive the turn.
      * @return true if the turn was successfully given, false otherwise.
      */
-     */
     public boolean giveTurn(Player nextPlayer) {
-        //TODO: update with prototype version
+        // TODO: update with prototype version
         printMethodName("giveTurn()");
 
         if (Timer.turnExpired()) {
@@ -341,11 +343,12 @@ public class Controller {
 
     /**
      * Takes the current player's turn.
+     * 
      * @param currentPlayer The current player to take the turn from.
      * @return true if the turn was successfully taken, false otherwise.
      */
     public boolean takeTurn(Player currentPlayer) {
-        //TODO: update with prototype version
+        // TODO: update with prototype version
         printMethodName("takeTurn()");
         return 0;
     }
@@ -355,7 +358,7 @@ public class Controller {
      * players have played their turns.
      */
     public void manageRounds() {
-        //TODO: update with prototype version
+        // TODO: update with prototype version
         printMethodName("manageRounds()");
 
         int answer = askQuestion("Has the whole round passed, i.e. 4 turns?");
@@ -375,7 +378,7 @@ public class Controller {
      * Ends the game and performs cleanup tasks.
      */
     public void endGame() {
-        //TODO: update with prototype version
+        // TODO: update with prototype version
         printMethodName("endGame()");
         onExit();
     }
@@ -384,7 +387,7 @@ public class Controller {
      * Performs cleanup tasks and exits the game.
      */
     public void onExit() {
-        //TODO: update with prototype version
+        // TODO: update with prototype version
         printMethodName("onExit()");
         System.exit(0);
     }

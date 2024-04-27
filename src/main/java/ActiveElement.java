@@ -3,7 +3,7 @@ import java.util.List;
 /**
  * Represents an active element in the pipe system.
  */
-public class ActiveElement implements Element{
+public class ActiveElement implements Element {
     /**
      * List of currently connected ends of pipes to this active element.
      */
@@ -27,7 +27,7 @@ public class ActiveElement implements Element{
      * @return true if the disconnection was successful, false otherwise
      */
     public boolean disconnect(EndOfPipe endOfPipe) {
-        //TODO
+        // TODO
         return false;
     }
 }

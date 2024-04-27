@@ -3,7 +3,7 @@ import java.util.List;
 /**
  * Represents a pump in the system.
  */
-public class Pump extends ActiveElement{
+public class Pump extends ActiveElement {
     /**
      * Stores the amount of water that can be stored in the reservoir.
      */
