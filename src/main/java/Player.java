@@ -1,4 +1,5 @@
 import static java.lang.System.out;
+import java.awt.Point;
 
 import java.util.Scanner;
 
