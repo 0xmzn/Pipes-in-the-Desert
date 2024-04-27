@@ -1,3 +1,5 @@
+import java.awt.Point;
+
 /**
  * Represents one of the two ends of a pipe in the pipe system.
  */

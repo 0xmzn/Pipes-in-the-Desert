@@ -2,6 +2,7 @@ import static java.lang.System.out;
 import java.awt.Point;
 
 import java.util.Scanner;
+import java.awt.Point;
 
 /**
  * The abstract class representing a player in the game. Unites methods used
@@ -257,10 +258,10 @@ public abstract class Player {
      * Checks if the player is standing on the specified location.
      *
      * @param location the location to check
-     * @return true if the player is standing on the specified location, false
+     * @return
      *         otherwise
      */
-    protected boolean getLocation() {
+    protected Point getLocation() {
         return coordinate;
     }
 }
