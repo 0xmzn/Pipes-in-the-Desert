@@ -1,5 +1,6 @@
 import static java.lang.System.out;
 
+import java.awt.*;
 import java.util.Scanner;
 
 /**
@@ -44,13 +45,8 @@ public abstract class Player {
         printMethodName("changeInputPipe()");
         boolean getLocation = getLocation("Pump");
 
-        boolean isPunctured = pump.isPunctured();
-        if (getLocation && !isPunctured) {
-            out.println("Player is on the pump and it's not punctured. Attempting to change the input pipe...");
-            out.println("Input pipe changed to the new Pipe");
-        } else {
-            out.println("Player is not on the pump or the pipe is punctured. Cannot change the input pipe.");
-        }
+
+        return getLocation;
     }
 
     /**
@@ -70,13 +66,8 @@ public abstract class Player {
         // TODO: update with prototype version
         printMethodName("changeOutputPipe()");
         boolean getLocation = getLocation("Pump");
-        boolean isPunctured = isPunctured();
-        if (getLocation && !isPunctured) {
-            out.println("Player is on the pump and it's not punctured. Attempting to change the output pipe...");
-            out.println("Output pipe changed to the NextPipe");
-        } else {
-            out.println("Player is not on the pump he pipe is punctured. Cannot change the output pipe.");
-        }
+
+        return getLocation;
     }
 
     /**
@@ -117,7 +108,7 @@ public abstract class Player {
     public boolean move(int key) {
         // TODO: update with prototype version
         // four old method implementations are provided below
-        return 0;
+        return false;
     }
 
     /**
@@ -263,17 +254,7 @@ public abstract class Player {
         // TODO: update with prototype version
         // remove if not needed
         printMethodName("getLocation()");
-        int isLocation = askQuestion("Is the player standing on a " + location + "?");
 
-        if (isLocation != 1 && isLocation != 2) {
-            out.println("Invalid command, operation failed");
-            return false;
-        } else if (isLocation == 2) {
-            out.println("You are not standing on a " + location + "! Operation failed");
-            return false;
-        }
-
-        out.println("");
         return true;
     }
 }

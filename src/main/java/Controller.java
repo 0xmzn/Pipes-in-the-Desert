@@ -1,6 +1,7 @@
 import static java.lang.System.exit;
 import static java.lang.System.out;
-import java.util.Scanner;
+
+import java.util.*;
 
 import java.util.Scanner;
 
@@ -31,12 +32,6 @@ public class Controller {
     private int saboteurScore;
 
     /**
-     * A timer object, which is used to manage starting and ending turns by counting
-     * the amount of time passed.
-     */
-    private Timer timer;
-
-    /**
      * A number of turns that have passed from the start of the game.
      */
     private int turn;
@@ -51,6 +46,16 @@ public class Controller {
      * network or not.
      */
     private boolean isWaterFlowing;
+    private Plumber plumber1;
+    private Plumber plumber2;
+    private Saboteur saboteur1;
+    private Saboteur saboteur2;
+    private int round;
+    private boolean gameRunning;
+
+    List<Pipe> pipes;
+    List<Pump> pumps;
+
 
     /**
      * Constructs a new Controller object. Initializes the scanner to reuse for user
@@ -58,6 +63,17 @@ public class Controller {
      */
     public Controller() {
         scanner = new Scanner(System.in);
+        grid = new Element[10][12];
+        plumberScore = 0;
+        saboteurScore = 0;
+        plumber1 = new Plumber();
+        plumber2 = new Plumber();
+        saboteur1 = new Saboteur();
+        saboteur2 = new Saboteur();
+        round = 0;
+        gameRunning = true;
+        pipes = new ArrayList<>();
+        pumps = new ArrayList<>();
     }
 
     /**
@@ -72,46 +88,15 @@ public class Controller {
     }
 
     /**
-     * Asks a question and displays the options to choose from.
-     *
-     * @param question The question to ask.
-     * @param options  The options to display.
-     * @return The user's answer.
-     */
-    private int askQuestion(String question, String... options) {
-        System.out.println(question);
-
-        if (options.length == 0) {
-            System.out.println("1. Yes\n2. No");
-        } else {
-            for (int i = 0; i < options.length; i++) {
-                System.out.println((i + 1) + ". " + options[i]);
-            }
-        }
-
-        int answer = scanner.nextInt();
-        if (options.length == 0) {
-            if (answer < 1 || answer > 2)
-                System.err.println("Invalid values was chosen for the answer!");
-        } else {
-            if (answer < 1 || answer > options.length) {
-                System.err.println("Invalid values was chosen for the answer!");
-            }
-        }
-
-        return answer;
-    }
-
-    /**
      * Displays the initial main menu of the game and handles user input.
      */
     public void displayMenu() {
         // TODO: update with prototype version
         printMethodName("displayMenu()");
 
-        System.out.println("Welcome to Pipes in the Desert!\n");
-        System.out.println("Please select an option from the menu below:");
-        System.out.println("1. Start a new game\n2. Exit");
+        System.out.println("WELCOME TO THE \"PIPES IN THE DESERT\" GAME\n");
+        System.out.println("Choose the following options:");
+        System.out.println("1.Start Game\n2.Exit");
 
         int choice = scanner.nextInt();
         switch (choice) {
@@ -124,6 +109,8 @@ public class Controller {
                 break;
             default:
                 System.out.println("Invalid choice! Please try again.");
+                displayMenu();
+                break;
         }
     }
 
@@ -133,6 +120,18 @@ public class Controller {
     public void initGrid() {
         // TODO: update with prototype version
         printMethodName("initGrid()");
+        for (int i = 0; i < grid.length; i++) {
+            for (int j = 0; j < grid[i].length; j++) {
+                grid[i][j] = null;
+            }
+        }
+        grid[0][3] = new Cistern();
+        grid[0][6] = new Cistern();
+        grid[0][9] = new Cistern();
+
+        grid[11][3] = new Spring();
+        grid[11][6] = new Spring();
+        grid[11][9] = new Spring();
     }
 
     /**
@@ -143,100 +142,13 @@ public class Controller {
         // TODO: update with prototype version
         printMethodName("startGame()");
         System.out.println("THE GAME HAS STARTED!!\n");
+        //start the game timer
+        GameTimer.startTimer();
 
-        System.out.println("The possible commands are:");
-        System.out.println("manufacturePump");
-        System.out.println("manufacturePipe");
-        System.out.println("breakPump");
-        System.out.println("giveTurn");
-        System.out.println("endGame");
-        System.out.println("moveW");
-        System.out.println("moveA");
-        System.out.println("moveS");
-        System.out.println("moveD");
-        System.out.println("changeInputPipe");
-        System.out.println("changeOutputPipe");
-        System.out.println("pickUpPump");
-        System.out.println("installPump");
-        System.out.println("pickUpPipeEnd");
-        System.out.println("placePipeEnd");
-        System.out.println("connect");
-        System.out.println("disconnect");
-        System.out.println("fixPipe");
-        System.out.println("fixPump");
-        System.out.println("puncturePipe");
-
-        String command = scanner.next();
-        Plumber plumber = new Plumber();
-        Saboteur player = new Saboteur();
-        Cistern cistern = new Cistern();
-        Pump pump = new Pump();
-        EndOfPipe end = new EndOfPipe();
-        switch (command) {
-            case "manufacturePump":
-                cistern.manufacturePump();
-                break;
-            case "manufacturePipe":
-                cistern.manufacturePipe();
-                break;
-            case "breakPump":
-                this.breakPump();
-                break;
-            case "giveTurn":
-                this.giveTurn(player);
-                break;
-            case "endGame":
-                this.endGame();
-                break;
-            case "moveW":
-                player.moveW();
-                break;
-            case "moveA":
-                player.moveA();
-                break;
-            case "moveS":
-                player.moveS();
-                break;
-            case "moveD":
-                player.moveD();
-                break;
-            case "changeInputPipe":
-                player.changeInputPipe(new Pump(), new EndOfPipe());
-                break;
-            case "changeOutputPipe":
-                player.changeOutputPipe(new Pump(), new EndOfPipe());
-                break;
-            case "pickUpPipeEnd":
-                plumber.pickUpPipeEnd(new EndOfPipe());
-                break;
-            case "pickUpPump":
-                plumber.pickUpPump(new Pump());
-                break;
-            case "installPump":
-                plumber.installPump(new Point(1, 1));
-                break;
-            case "placePipeEnd":
-                plumber.placePipeEnd(new EndOfPipe());
-                break;
-            case "connect":
-                plumber.connect(new Pump(), new EndOfPipe());
-                break;
-            case "disconnect":
-                plumber.disconnect(new Pump(), new EndOfPipe());
-                break;
-            case "fixPipe":
-                plumber.fixPipe();
-                break;
-            case "fixPump":
-                plumber.fixPump();
-                break;
-            case "puncturePipe":
-                player.puncturePipe(new Pipe());
-                break;
-            default:
-                System.out.println("Invalid command! Please try again.");
-                startGame();
+        while(gameRunning){
+            manageRounds();
         }
+        endGame();
     }
 
     /**
@@ -246,15 +158,9 @@ public class Controller {
      * @param activeSpring The active spring that determines the water flow.
      */
     public void trackFlow(Spring activeSpring) {
-        // TODO: update with prototype version
+        // TODO
         printMethodName("trackWaterFlow()");
 
-        int answer = askQuestion("Where does the water flow?", "Cisterns", "Desert");
-        if (answer == 1) {
-            fillUpPlumber();
-        } else {
-            fillUpSaboteur();
-        }
     }
 
     /**
@@ -265,7 +171,7 @@ public class Controller {
      * @return The updated water flow status.
      */
     public int updateFlow(List<Spring> activeSprings) {
-        // TODO: update with prototype version
+        // TODO
         printMethodName("updateFlow()");
         return 0;
     }
@@ -293,16 +199,6 @@ public class Controller {
         // TODO: update with prototype version
         printMethodName("breakPump()");
 
-        int breakingAnswer = askQuestion("Is there a pump to be broken?");
-        if (breakingAnswer == 1) {
-            System.out.println("The pump is broken!");
-
-            int fillingAnswer = askQuestion("Is water flowing into the pump?");
-            if (fillingAnswer == 1)
-                fillUpPump();
-        } else {
-            System.out.println("There are no pumps to break!");
-        }
     }
 
     /**
@@ -313,12 +209,6 @@ public class Controller {
         // TODO: update with prototype version
         printMethodName("fillUpPump()");
 
-        int answer = askQuestion("Is the reservoir of the pump full?");
-        if (answer == 1) { // the water is leaking from the pump to the desert
-            fillUpSaboteur();
-        } else {
-            System.out.println("The reservoir is filling in!");
-        }
     }
 
     /**
@@ -331,26 +221,134 @@ public class Controller {
         // TODO: update with prototype version
         printMethodName("giveTurn()");
 
-        if (Timer.turnExpired()) {
-            takeTurn();
-            manageRounds();
-            Timer.startTimer();
-        } else {
-            System.out.println("We cannot change the turn, as the previous player has not finished!");
+        if(nextPlayer instanceof Plumber){
+            System.out.println("List of commands:\n");
+            System.out.println("move\n");
+            System.out.println("fix\n");
+            System.out.println("pickPipeEnd\n");
+            System.out.println("pickPump\n");
+            System.out.println("placePipeEnd\n");
+            System.out.println("installPump\n");
+            System.out.println("changeWaterDirection\n");
+            System.out.println("connect\n");
+            System.out.println("disconnect\n");
+        }else if (nextPlayer instanceof Saboteur){
+            System.out.println("List of commands:\n");
+            System.out.println("move\n");
+            System.out.println("puncture\n");
+            System.out.println("changeWaterDirection\n");
         }
-        return 0;
+
+        Timer timer = new Timer();
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                System.out.println("Time's up! Next player's turn.");
+                takeTurn();
+                timer.cancel();
+            }
+        },30*1000);
+
+        String command = scanner.nextLine().trim().toLowerCase();
+        switch(command){
+            case "fix":
+                if (nextPlayer instanceof Plumber) {
+                    ((Plumber) nextPlayer).fixElement(); // Call fixPipe method from Plumber class
+                } else {
+                    System.out.println("Invalid command for current player.");
+                }
+                break;
+            case "puncture":
+                if (nextPlayer instanceof Saboteur) {
+                    ((Saboteur) nextPlayer).puncturePipe(); // Call fixPipe method from Plumber class
+                } else {
+                    System.out.println("Invalid command for current player.");
+                }
+                break;
+            case "changeWaterDirection":
+                nextPlayer.changeInputPipe();
+                nextPlayer.changeOutputPipe();
+                break;
+            case "move":
+                nextPlayer.move();
+                break;
+            case "pickPipeEnd":
+                if (nextPlayer instanceof Plumber) {
+                    ((Plumber) nextPlayer).pickUpPipeEnd(); // Call fixPipe method from Plumber class
+                } else {
+                    System.out.println("Invalid command for current player.");
+                }
+                break;
+            case "pickPump":
+                if (nextPlayer instanceof Plumber) {
+                    ((Plumber) nextPlayer).pickUpPump(); // Call fixPipe method from Plumber class
+                } else {
+                    System.out.println("Invalid command for current player.");
+                }
+                break;
+            case "placePipeEnd":
+                if (nextPlayer instanceof Plumber) {
+                    ((Plumber) nextPlayer).placePipeEnd(); // Call fixPipe method from Plumber class
+                } else {
+                    System.out.println("Invalid command for current player.");
+                }
+                break;
+            case "installPump":
+                if (nextPlayer instanceof Plumber) {
+                    ((Plumber) nextPlayer).installPump(); // Call fixPipe method from Plumber class
+                } else {
+                    System.out.println("Invalid command for current player.");
+                }
+                break;
+            case "connect":
+            case "placePipeEnd":
+                if (nextPlayer instanceof Plumber) {
+                    ((Plumber) nextPlayer).connect(); // Call fixPipe method from Plumber class
+                } else {
+                    System.out.println("Invalid command for current player.");
+                }
+                break;
+            case "disconnect":
+            case "placePipeEnd":
+                if (nextPlayer instanceof Plumber) {
+                    ((Plumber) nextPlayer).disconnect(); // Call fixPipe method from Plumber class
+                } else {
+                    System.out.println("Invalid command for current player.");
+                }
+                break;
+        }
+        return true;
     }
 
     /**
      * Takes the current player's turn.
-     * 
-     * @param currentPlayer The current player to take the turn from.
+     *
      * @return true if the turn was successfully taken, false otherwise.
      */
-    public boolean takeTurn(Player currentPlayer) {
-        // TODO: update with prototype version
+    public boolean takeTurn() {
         printMethodName("takeTurn()");
-        return 0;
+        // Increment the round manually
+        round++;
+
+        // Print the round value
+        System.out.println("Round " + round % 4);
+
+        // Switch the turn to the next player based on the round
+        switch ((round - 1) % 4) {
+            case 0:
+                giveTurn(plumber1);
+                break;
+            case 1:
+                giveTurn(plumber2);
+                break;
+            case 2:
+                giveTurn(saboteur1);
+                break;
+            case 3:
+                giveTurn(saboteur2);
+                break;
+        }
+        return true;
     }
 
     /**
@@ -360,18 +358,38 @@ public class Controller {
     public void manageRounds() {
         // TODO: update with prototype version
         printMethodName("manageRounds()");
+        // Increment the round
+        round++;
 
-        int answer = askQuestion("Has the whole round passed, i.e. 4 turns?");
-        if (answer == 1) {
-            incrementRounds();
+        // Print the round value
+        System.out.println("Round " + round % 4);
+
+        // Switch the turn to the next player based on the round
+        switch (round % 4) {
+            case 0:
+                giveTurn(plumber1);
+                break;
+            case 1:
+                giveTurn(plumber2);
+                break;
+            case 2:
+                giveTurn(saboteur1);
+                break;
+            case 3:
+                giveTurn(saboteur2);
+                break;
         }
-    }
 
-    /**
-     * Increments the round counter.
-     */
-    public void incrementRounds() {
-        printMethodName("incrementRounds");
+        // Set up the listener for the next round
+        GameTimer.setListener(new GameTimer.TimerListener() {
+            @Override
+            public void onTurnExpired() {
+                manageRounds();
+            }
+        });
+        if(round > 10){
+            gameRunning = false;
+        }
     }
 
     /**
@@ -380,6 +398,10 @@ public class Controller {
     public void endGame() {
         // TODO: update with prototype version
         printMethodName("endGame()");
+        System.out.println("GAME OVER");
+        System.out.println("Plumber Score: " + plumberScore);
+        System.out.println("Saboteur Score: " + saboteurScore);
+        scanner.close();
         onExit();
     }
 
@@ -389,6 +411,7 @@ public class Controller {
     public void onExit() {
         // TODO: update with prototype version
         printMethodName("onExit()");
+        scanner.close();
         System.exit(0);
     }
 }

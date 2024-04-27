@@ -1,3 +1,5 @@
+import java.awt.*;
+
 /**
  * Represents one of the two ends of a pipe in the pipe system.
  */
