@@ -1,3 +1,4 @@
+import java.awt.*;
 import java.util.List;
 
 /**
@@ -5,9 +6,24 @@ import java.util.List;
  */
 public class ActiveElement implements Element {
     /**
+     * Keeps track of the coordinates of the pipe on the game grid.
+     */
+    private Point coordinate;
+    /**
      * List of currently connected ends of pipes to this active element.
      */
     protected List<EndOfPipe> connectedEndsOfPipes;
+
+    @Override
+    public Point getCoordinate() {
+        return coordinate;
+    }
+
+    @Override
+    public void setCoordinate(Point coordinate) {
+        this.coordinate = coordinate;
+    }
+
 
     /**
      * Connects the active element to an end of a pipe.

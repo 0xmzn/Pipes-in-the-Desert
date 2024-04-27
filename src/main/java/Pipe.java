@@ -1,9 +1,14 @@
+import java.awt.Point;
 import java.util.List;
 
 /**
  * Represents a pipe.
  */
 public class Pipe implements Element {
+    /**
+     * Keeps track of the coordinates of the pipe on the game grid.
+     */
+    private Point coordinate;
     /**
      * Keeps track of whether the pipe is punctured or not.
      */
@@ -13,6 +18,16 @@ public class Pipe implements Element {
      * Keeps track of whether water is flowing through the pipe or not.
      */
     private boolean isWaterFlowing;
+
+    @Override
+    public Point getCoordinate() {
+        return coordinate;
+    }
+
+    @Override
+    public void setCoordinate(Point coordinate) {
+        this.coordinate = coordinate;
+    }
 
     /**
      * Stores 2 <EndOfPipe> elements referring to both sides of the pipe.

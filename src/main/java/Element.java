@@ -9,5 +9,10 @@ public interface Element {
      * x and y coordinates of the element. Inbuilt java class that defines the
      * coordinates in the game grid.
      */
-    public Point coordinate;
+
+    Point getCoordinate();
+
+
+    void setCoordinate(Point coordinate);
+
 }
