@@ -199,6 +199,21 @@ public class Controller {
         // TODO: update with prototype version
         printMethodName("breakPump()");
 
+        if(pumps.isEmpty()){
+            System.out.println("No pumps available to break;");
+            return;
+        }
+        Random random = new Random();
+        int randomIndex = random.nextInt(pumps.size());
+        Pump pumpToBreak = pumps.get(randomIndex);
+        pumpToBreak.setIsPunctured(true);
+        Timer timer = new Timer();
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                breakPump();
+            }
+        }, 50 * 1000);
     }
 
     /**
