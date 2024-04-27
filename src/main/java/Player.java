@@ -259,21 +259,7 @@ public abstract class Player {
      * @return true if the player is standing on the specified location, false
      *         otherwise
      */
-    protected boolean getLocation(String location) {
-        // TODO: update with prototype version
-        // remove if not needed
-        printMethodName("getLocation()");
-        int isLocation = askQuestion("Is the player standing on a " + location + "?");
-
-        if (isLocation != 1 && isLocation != 2) {
-            out.println("Invalid command, operation failed");
-            return false;
-        } else if (isLocation == 2) {
-            out.println("You are not standing on a " + location + "! Operation failed");
-            return false;
-        }
-
-        out.println("");
-        return true;
+    protected boolean getLocation() {
+        return coordinate;
     }
 }
