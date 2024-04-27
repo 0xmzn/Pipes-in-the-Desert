@@ -316,7 +316,6 @@ public class Controller {
                 }
                 break;
             case "connect":
-            case "placePipeEnd":
                 if (nextPlayer instanceof Plumber) {
                     ((Plumber) nextPlayer).connect(); // Call fixPipe method from Plumber class
                 } else {
@@ -324,7 +323,6 @@ public class Controller {
                 }
                 break;
             case "disconnect":
-            case "placePipeEnd":
                 if (nextPlayer instanceof Plumber) {
                     ((Plumber) nextPlayer).disconnect(); // Call fixPipe method from Plumber class
                 } else {
