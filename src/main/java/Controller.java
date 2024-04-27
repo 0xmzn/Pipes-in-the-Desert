@@ -375,7 +375,7 @@ public class Controller {
         round++;
 
         // Print the round value
-        System.out.println("Round " + round % 4);
+        System.out.println("Round " + round / 4);
 
         // Switch the turn to the next player based on the round
         switch (round % 4) {
@@ -400,7 +400,7 @@ public class Controller {
                 manageRounds();
             }
         });
-        if(round > 10){
+        if(round > 40){
             gameRunning = false;
         }
     }
