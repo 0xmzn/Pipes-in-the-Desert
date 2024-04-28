@@ -1,3 +1,7 @@
+import java.util.Random;
+import java.util.Timer;
+import java.util.TimerTask;
+
 /**
  * Represents a cistern that manufactures and stores elements.
  */
@@ -7,8 +11,16 @@ public class Cistern extends ActiveElement {
      * manufactured by a <Cistern> object
      * and is currently located at the <Cistern>.
      */
-    private Element inventoryElement;
+    private Pipe inventoryPipe;
+    private Pump inventoryPump;
+    private Timer timer;
+    private boolean isManufacturing;
 
+    public Cistern(){
+        timer = new Timer();
+        isManufacturing = false;
+
+    }
     /**
      * Manufactures new elements in the cistern.
      * The method checks whether the inventoryElement attribute is instantiated or
@@ -17,6 +29,44 @@ public class Cistern extends ActiveElement {
      * intervals.
      */
     public void manufactureElement() {
-        // TODO: update with prototype version
+        if(isManufacturing){
+            System.out.println("Manufacturing is already in progress. Cannot manufacture another element.\n");
+            return;
+        }
+
+        if (inventoryPipe != null || inventoryPump != null) {
+            System.out.println("Inventory already contains an element. Cannot manufacture another element.\n");
+            return;
+        }
+
+        Random random = new Random();
+        int randomNumber = random.nextInt(2);
+        if(randomNumber==0){
+            System.out.println("Manufacturing pipe...\n");
+
+            inventoryPipe = new Pipe();
+            scheduleManufactureCompletion(15);
+        }
+        else{
+            System.out.println("Manufacturing pipe...\n");
+            inventoryPump = new Pump();
+            scheduleManufactureCompletion(15);
+        }
+    }
+    private void scheduleManufactureCompletion(int seconds){
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                System.out.println("Manufacturing completed.\n");
+                isManufacturing = false;
+            }
+        }, seconds*1000);
+        isManufacturing = true;
+    }
+    public Pipe getInventoryPipe(){
+        return inventoryPipe;
+    }
+    public Pump getInventoryPump(){
+        return inventoryPump;
     }
 }

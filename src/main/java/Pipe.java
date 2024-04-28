@@ -1,4 +1,4 @@
-import java.awt.Point;
+import java.awt.*;
 import java.util.List;
 
 /**
@@ -78,4 +78,5 @@ public class Pipe implements Element {
     public List<EndOfPipe> getPipeEnds() {
         return pipeEnds;
     }
+
 }
