@@ -53,12 +53,4 @@ public class EndOfPipe {
     public void setLocation(int x, int y) {
         coordinate = new Point(x, y);
     }
-
-    public ActiveElement getConnectedActiveElement() {
-        return connectedActiveElement;
-    }
-
-    public void setConnectedActiveElement(ActiveElement connectedActiveElement) {
-        this.connectedActiveElement = connectedActiveElement;
-    }
 }

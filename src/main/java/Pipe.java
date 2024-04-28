@@ -79,15 +79,4 @@ public class Pipe implements Element {
         return pipeEnds;
     }
 
-    public boolean canBePickedUp(EndOfPipe endOfPipe){
-        if (this.pipeEnds[0] == endOfPipe){
-            return !this.pipeEnds[1].getIsPunctured() && (this.pipeEnds[1].getConnectedActiveElement() != null);
-        }
-        else if (this.pipeEnds[1] == endOfPipe){
-            return !this.pipeEnds[0].getIsPunctured() && (this.pipeEnds[0].getConnectedActiveElement() != null);
-        }
-        else {
-            return false;
-        }
-    }
 }
