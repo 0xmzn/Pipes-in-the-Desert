@@ -69,4 +69,12 @@ public class Cistern extends ActiveElement {
     public Pump getInventoryPump(){
         return inventoryPump;
     }
+
+    public Element getInventoryElement() {
+        return inventoryElement;
+    }
+
+    public void setInventoryElement(Element inventoryElement) {
+        this.inventoryElement = inventoryElement;
+    }
 }
