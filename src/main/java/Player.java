@@ -2,6 +2,7 @@ import java.awt.Point;
 import java.util.List;
 import java.util.Scanner;
 import static java.lang.System.out;
+import java.awt.Point;
 
 /**
  * The abstract class representing a player in the game. Unites common methods

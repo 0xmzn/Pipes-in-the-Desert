@@ -1,4 +1,5 @@
 import static java.lang.System.out;
+import java.awt.Point;
 
 /**
  * The Saboteur class extends the Player class and implements saboteur-specific
@@ -18,20 +19,17 @@ public class Saboteur extends Player {
      * punctured.
      * Prints appropriate messages to indicate the success or failure of the
      * operation.
-     * 
-     * @param pipe the pipe to be fixed punctured
-     * @return true if the element is punctured successfully, false otherwise
+     *
+     * @param pipe the pipe to be punctured
+     * @return true if the pipe is punctured successfully, false otherwise
      */
     public boolean puncturePipe(Pipe pipe) {
-        // TODO: update with prototype version
-        printMethodName("puncturePipe()");
-
-        if (this.getLocation() == pipe.getCoordinate() && !pipe.getIsPunctured()) {
-            out.println("Saboteur is on the pipe and it's not punctured. Puncturing Pipe...");
+        if (this.coordinate.equals(pipe.getCoordinate()) && !pipe.getIsPunctured()) {
+            pipe.setIsPunctured(true);
             out.println("Pipe punctured successfully!");
             return true;
         } else {
-            out.println("Saboteur is not on the pipe or the pipe is punctured. Cannot puncture pipe.");
+            out.println("Cannot puncture pipe: Either not on the pipe or it is already punctured.");
             return false;
         }
     }
