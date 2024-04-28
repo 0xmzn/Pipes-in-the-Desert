@@ -1,9 +1,6 @@
 import static java.lang.System.exit;
 import static java.lang.System.out;
-
 import java.util.*;
-
-import java.util.Scanner;
 
 /**
  * The Controller class handles the game logic and user interactions for the

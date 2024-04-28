@@ -1,8 +1,6 @@
 import static java.lang.System.out;
-
-import java.awt.*;
 import java.util.Scanner;
-import java.awt.Point;
+import java.awt.*;
 
 /**
  * The abstract class representing a player in the game. Unites methods used
