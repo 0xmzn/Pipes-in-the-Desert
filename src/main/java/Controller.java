@@ -1,6 +1,8 @@
 import static java.lang.System.exit;
 import static java.lang.System.out;
 import java.util.*;
+import java.util.List;  // to avoid ambiguity of instantiation of the List container 
+import java.awt.*;
 
 /**
  * The Controller class handles the game logic and user interactions for the
@@ -178,6 +180,25 @@ public class Controller {
         // TODO
         printMethodName("trackWaterFlow()");
 
+        boolean didWaterReach = false;
+
+        Point activeSpringCoordinate = activeSpring.getCoordinate();
+        int activeSpringX = (int)activeSpringCoordinate.getX();
+        int activeSpringY = (int)activeSpringCoordinate.getY();
+
+        ActiveElement nextConnectedActiveElement = ((EndOfPipe)grid[activeSpringX][activeSpringY]).getPairEndOfPipe().getActiveElement();
+        
+        while (!didWaterReach) {
+            if (nextConnectedActiveElement == null) {
+                // increase saboteurScore
+            } else if (nextConnectedActiveElement instanceof Cistern) {
+                // increase plumberScore
+            } else if (nextConnectedActiveElement instanceof Pump) {
+
+            } else {
+                
+            }
+        }
     }
 
     /**

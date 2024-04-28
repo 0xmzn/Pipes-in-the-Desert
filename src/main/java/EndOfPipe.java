@@ -5,7 +5,9 @@ import java.awt.Point;
 /**
  * Represents one of the two ends of a pipe in the pipe system.
  */
-public class EndOfPipe {
+public class EndOfPipe implements Element{
+    private EndOfPipe pairEndOfPipe;
+
     /**
      * The coordinate of the end of the pipe in the game grid.
      */
@@ -16,6 +18,37 @@ public class EndOfPipe {
      * connected.
      */
     private ActiveElement connectedActiveElement;
+
+    public EndOfPipe(EndOfPipe pairEndOfPipe) {
+        this.pairEndOfPipe = pairEndOfPipe;
+    }
+
+    public EndOfPipe getPairEndOfPipe() {
+        return pairEndOfPipe;
+    }
+
+    /**
+     * Returns the coordinate coordinate of the end of the pipe.
+     * 
+     * @return The coordinate coordinate.
+     */
+    public Point getCoordinate() {
+        return coordinate;
+    }
+
+    /**
+     * Sets the coordinate of the end of the pipe.
+     * 
+     * @param x The x-coordinate of the coordinate.
+     * @param y The y-coordinate of the coordinate.
+     */
+    public void setCoordinate(Point newCoordinate) {
+        coordinate = newCoordinate;
+    }
+
+    public ActiveElement getActiveElement() {
+        return connectedActiveElement;
+    }
 
     /**
      * Connects the pipe to the specified active element.
@@ -35,22 +68,5 @@ public class EndOfPipe {
         this.connectedActiveElement = null;
     }
 
-    /**
-     * Returns the location coordinate of the end of the pipe.
-     * 
-     * @return The location coordinate.
-     */
-    public Point getLocation() {
-        return coordinate;
-    }
-
-    /**
-     * Sets the location of the end of the pipe.
-     * 
-     * @param x The x-coordinate of the location.
-     * @param y The y-coordinate of the location.
-     */
-    public void setLocation(int x, int y) {
-        coordinate = new Point(x, y);
-    }
+    
 }
