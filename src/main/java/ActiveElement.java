@@ -32,7 +32,7 @@ public class ActiveElement implements Element {
      * @return true if the connection was successful, false otherwise
      */
     public boolean connect(EndOfPipe endOfPipe) {
-        // TODO
+        connectedEndsOfPipes.add(endOfPipe);
         return false;
     }
 
@@ -43,7 +43,10 @@ public class ActiveElement implements Element {
      * @return true if the disconnection was successful, false otherwise
      */
     public boolean disconnect(EndOfPipe endOfPipe) {
-        // TODO
+        if (connectedEndsOfPipes.contains(endOfPipe)) {
+            connectedEndsOfPipes.remove(endOfPipe);
+            return true;
+        }
         return false;
     }
 }
