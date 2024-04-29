@@ -19,7 +19,8 @@ public class EndOfPipe implements Element{
      */
     private ActiveElement connectedActiveElement;
 
-    public EndOfPipe(EndOfPipe pairEndOfPipe) {
+    public EndOfPipe(Point coordinate, EndOfPipe pairEndOfPipe) {
+        this.coordinate = coordinate;
         this.pairEndOfPipe = pairEndOfPipe;
     }
 

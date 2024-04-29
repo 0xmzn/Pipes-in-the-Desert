@@ -9,6 +9,7 @@ public class Pipe implements Element {
      * Keeps track of the coordinates of the pipe on the game grid.
      */
     private Point coordinate;
+
     /**
      * Keeps track of whether the pipe is punctured or not.
      */
@@ -19,6 +20,16 @@ public class Pipe implements Element {
      */
     private boolean isWaterFlowing;
 
+    /**
+     * Stores 2 <EndOfPipe> elements referring to both sides of the pipe.
+     */
+    private List<EndOfPipe> pipeEnds;
+
+    public Pipe(EndOfPipe endOfPipe1, EndOfPipe endOfPipe2) {
+        this.pipeEnds.add(endOfPipe1);
+        this.pipeEnds.add(endOfPipe2);
+    }
+
     @Override
     public Point getCoordinate() {
         return coordinate;
@@ -28,11 +39,6 @@ public class Pipe implements Element {
     public void setCoordinate(Point coordinate) {
         this.coordinate = coordinate;
     }
-
-    /**
-     * Stores 2 <EndOfPipe> elements referring to both sides of the pipe.
-     */
-    private List<EndOfPipe> pipeEnds;
 
     /**
      * Returns the punctured state of the pipe.
