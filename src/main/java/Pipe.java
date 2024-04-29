@@ -1,5 +1,6 @@
 import java.awt.*;
 import java.util.List;
+import java.util.ArrayList;
 
 /**
  * Represents a pipe.
@@ -26,10 +27,14 @@ public class Pipe implements Element {
     private List<EndOfPipe> pipeEnds;
 
     public Pipe(EndOfPipe endOfPipe1, EndOfPipe endOfPipe2) {
+        this.pipeEnds = new ArrayList<>();
         this.pipeEnds.add(endOfPipe1);
         this.pipeEnds.add(endOfPipe2);
     }
 
+    public Pipe() {
+        this.pipeEnds = new ArrayList<EndOfPipe>();
+    }
     @Override
     public Point getCoordinate() {
         return coordinate;

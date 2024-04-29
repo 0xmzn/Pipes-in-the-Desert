@@ -1,4 +1,7 @@
+import java.util.ArrayList;
 import java.util.List;
+import java.util.ArrayList;
+
 
 /**
  * Represents a pump in the system.
@@ -39,7 +42,7 @@ public class Pump extends ActiveElement {
 
     public Pump() {
         waterInReservoir = 0;
-        connectedEndsOfPipes = new List<>();
+        connectedEndsOfPipes = new ArrayList<EndOfPipe>();
     }
 
     /**

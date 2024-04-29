@@ -1,5 +1,7 @@
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.List;
+
 
 /**
  * Represents an active element in the pipe system.
@@ -8,7 +10,7 @@ public class ActiveElement implements Element {
     /**
      * Keeps track of the coordinates of the pipe on the game grid.
      */
-    private Point coordinate;
+    protected Point coordinate;
     /**
      * List of currently connected ends of pipes to this active element.
      */
@@ -16,7 +18,7 @@ public class ActiveElement implements Element {
 
     public ActiveElement() {
         this.coordinate = new Point();
-        this.connectedEndsOfPipes = new List<>();
+        this.connectedEndsOfPipes = new ArrayList<EndOfPipe>();
     }
 
     /**
