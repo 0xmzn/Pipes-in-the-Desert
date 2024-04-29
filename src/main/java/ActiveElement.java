@@ -14,16 +14,30 @@ public class ActiveElement implements Element {
      */
     protected List<EndOfPipe> connectedEndsOfPipes;
 
+    public ActiveElement() {
+        this.coordinate = new Point();
+        this.connectedEndsOfPipes = new List<>();
+    }
+
+    /**
+     * Gets the coordinate of the active element.
+     *
+     * @return the coordinate of the active element
+     */
     @Override
     public Point getCoordinate() {
         return coordinate;
     }
 
+    /**
+     * Sets the coordinate of the active element.
+     *
+     * @param coordinate the new coordinate of the active element
+     */
     @Override
     public void setCoordinate(Point coordinate) {
         this.coordinate = coordinate;
     }
-
 
     /**
      * Connects the active element to an end of a pipe.
