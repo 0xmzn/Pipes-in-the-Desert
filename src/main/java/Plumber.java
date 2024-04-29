@@ -181,7 +181,6 @@ public class Plumber extends Player {
      * @return true if the pipe end is disconnected successfully, false otherwise
      */
     public boolean disconnect(ActiveElement activeElement) {
-        // TODO: update with prototype version
         printMethodName("disconnect");
 
         return activeElement.disconnect((EndOfPipe)inventory);

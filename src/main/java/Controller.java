@@ -97,7 +97,6 @@ public class Controller {
      * Displays the initial main menu of the game and handles user input.
      */
     public void displayMenu() {
-        // TODO: update with prototype version
         printMethodName("displayMenu()");
 
         System.out.println("WELCOME TO THE \"PIPES IN THE DESERT\" GAME\n");
@@ -124,7 +123,6 @@ public class Controller {
      * Initializes the game grid.
      */
     public void initGrid() {
-        // TODO: update with prototype version
         printMethodName("initGrid()");
         for (int i = 0; i < grid.length; i++) {
             for (int j = 0; j < grid[i].length; j++) {
@@ -145,7 +143,6 @@ public class Controller {
      * Gives users all the callable methods to interact with the game.
      */
     public void startGame() {
-        // TODO: update with prototype version
         printMethodName("startGame()");
         System.out.println("THE GAME HAS STARTED!!\n");
         //start the game timer
@@ -178,7 +175,6 @@ public class Controller {
      * @param activeSpring The active spring that determines the water flow.
      */
     public void trackFlow(Spring activeSpring) {
-        // TODO
         printMethodName("trackWaterFlow()");
         
         Point activeSpringCoordinate = activeSpring.getCoordinate();
@@ -240,7 +236,6 @@ public class Controller {
      * Breaks a pump if there is one not broken currently.
      */
     public void breakPump() {
-        // TODO: update with prototype version
         printMethodName("breakPump()");
 
         if(pumps.isEmpty()){
@@ -265,7 +260,6 @@ public class Controller {
      * water tries to be transported in the system.
      */
     public void fillUpPump() {
-        // TODO: update with prototype version
         printMethodName("fillUpPump()");
 
     }
@@ -277,7 +271,6 @@ public class Controller {
      * @return true if the turn was successfully given, false otherwise.
      */
     public boolean giveTurn(Player nextPlayer) {
-        // TODO: update with prototype version
         printMethodName("giveTurn()");
 
         if (nextPlayer instanceof Plumber) {
@@ -428,7 +421,6 @@ public class Controller {
      * players have played their turns.
      */
     public void manageRounds() {
-        // TODO: update with prototype version
         printMethodName("manageRounds()");
         // Increment the round
         round++;
@@ -468,7 +460,6 @@ public class Controller {
      * Ends the game and performs cleanup tasks.
      */
     public void endGame() {
-        // TODO: update with prototype version
         printMethodName("endGame()");
         System.out.println("GAME OVER");
         System.out.println("Plumber Score: " + plumberScore);
@@ -481,7 +472,6 @@ public class Controller {
      * Performs cleanup tasks and exits the game.
      */
     public void onExit() {
-        // TODO: update with prototype version
         printMethodName("onExit()");
         scanner.close();
         System.exit(0);
