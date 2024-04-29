@@ -2,6 +2,7 @@ import static java.lang.System.exit;
 import static java.lang.System.out;
 import java.util.*;
 import java.util.List;  // to avoid ambiguity of instantiation of the List container 
+import java.util.concurrent.TimeUnit;
 import java.awt.*;
 
 /**
@@ -23,12 +24,12 @@ public class Controller {
     /**
      * An amount of water collected by the team of plumbers.
      */
-    private int plumberScore;
+    private int plumberScore = 0;
 
     /**
      * An amount of water collected by the team of saboteurs.
      */
-    private int saboteurScore;
+    private int saboteurScore = 0;
 
     /**
      * A number of turns that have passed from the start of the game.
@@ -179,39 +180,44 @@ public class Controller {
     public void trackFlow(Spring activeSpring) {
         // TODO
         printMethodName("trackWaterFlow()");
-
-        boolean didWaterReach = false;
-
+        
         Point activeSpringCoordinate = activeSpring.getCoordinate();
         int activeSpringX = (int)activeSpringCoordinate.getX();
         int activeSpringY = (int)activeSpringCoordinate.getY();
 
         ActiveElement nextConnectedActiveElement = ((EndOfPipe)grid[activeSpringX][activeSpringY]).getPairEndOfPipe().getActiveElement();
         
-        while (!didWaterReach) {
-            if (nextConnectedActiveElement == null) {
-                // increase saboteurScore
-            } else if (nextConnectedActiveElement instanceof Cistern) {
-                // increase plumberScore
-            } else if (nextConnectedActiveElement instanceof Pump) {
+        while (activeSpring.getIsActive()) {
+            // need to implement in a separate thread in GUI application
+            try {
+                TimeUnit.SECONDS.sleep(5);
+            } catch (Exception e) {
+                System.err.println("Excpetion in TrackFlow() is caught!");
+            }
 
+            if (nextConnectedActiveElement == null) {
+                saboteurScore++;
+                out.println("Increasing saboteur teams's score.");
+            } else if (nextConnectedActiveElement instanceof Cistern) {
+                plumberScore++;
+                out.println("Increasing plumber teams's score.");
+            } else if (nextConnectedActiveElement instanceof Pump) {
+                Pump currentPump = (Pump)nextConnectedActiveElement;
+                if (currentPump.getIsPunctured()) {
+                    if (currentPump.isReservoirFull()) {
+                        saboteurScore++;
+                        out.println("Increasing saboteur teams's score.");
+                    } else {
+                        currentPump.fillReservoir();
+                        out.println("Filling the reservoir of the pump.");
+                    }
+                }
+
+                nextConnectedActiveElement = currentPump.getOutputEndOfPipe().getPairEndOfPipe().getActiveElement();
             } else {
-                
+                out.println("Pipe network goes from one spring to another spring.");
             }
         }
-    }
-
-    /**
-     * Updates the water flow based on the changes in
-     * the state of the elements in the pipe system.
-     *
-     * @param activeSprings The list of active springs.
-     * @return The updated water flow status.
-     */
-    public int updateFlow(List<Spring> activeSprings) {
-        // TODO
-        printMethodName("updateFlow()");
-        return 0;
     }
 
     /**

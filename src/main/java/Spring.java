@@ -12,6 +12,14 @@ public class Spring extends ActiveElement {
      */
     boolean active;
 
+    public void setIsActive(boolean active) {
+        this.active = active;
+    }
+
+    public boolean getIsActive() {
+        return active;
+    }
+
     /**
      * Notifies the Controller about starting the supplementation of water to the
      * pipe system.
