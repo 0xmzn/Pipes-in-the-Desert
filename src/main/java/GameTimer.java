@@ -17,12 +17,23 @@ public class GameTimer {
     private static TimerTask task;
     private static TimerListener listener;
 
-    public interface TimerListener{
+    /**
+     * The TimerListener interface provides a callback method to be called when a
+     * turn expires.
+     */
+    public interface TimerListener {
         void onTurnExpired();
     }
-    public static void setListener(TimerListener timerListener){
+
+    /**
+     * Sets the listener to be notified when a turn expires.
+     *
+     * @param timerListener the listener to be set
+     */
+    public static void setListener(TimerListener timerListener) {
         listener = timerListener;
     }
+
     /**
      * Prints the name of the method that is called.
      *
@@ -51,16 +62,20 @@ public class GameTimer {
         task = new TimerTask() {
             @Override
             public void run() {
-                if(listener!= null){
+                if (listener != null) {
                     listener.onTurnExpired();
                     out.println("30 seconds have passed.\n");
                 }
                 resetTimer();
             }
         };
-        timer.schedule(task, turnTime *1000);
+        timer.schedule(task, turnTime * 1000);
     }
 
+    /**
+     * Resets the timer.
+     * This cancels the current task and starts a new timer.
+     */
     public static void resetTimer() {
         task.cancel();
         startTimer();

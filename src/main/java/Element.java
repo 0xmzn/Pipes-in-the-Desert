@@ -6,6 +6,7 @@ import java.awt.Point;
  */
 public interface Element {
     /** 
+     * getter and setter
      * x and y coordinates of the element. Inbuilt java class that defines the
      * coordinates in the game grid.
      */
