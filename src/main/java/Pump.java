@@ -4,10 +4,12 @@ import java.util.List;
  * Represents a pump in the system.
  */
 public class Pump extends ActiveElement {
+    private int waterInReservoir;
+
     /**
      * Stores the amount of water that can be stored in the reservoir.
      */
-    private int reservoirCapacity;
+    private int reservoirCapacity = 10;
 
     /**
      * Stores the maximum number of pipes that can be connected (2 to 4).
@@ -34,6 +36,10 @@ public class Pump extends ActiveElement {
      * Keeps track of where the water is flowing to.
      */
     private EndOfPipe outputEndOfPipe;
+
+    public Pump() {
+        waterInReservoir = 0;
+    }
 
     /**
      * Returns the value of isPunctured.
@@ -82,6 +88,10 @@ public class Pump extends ActiveElement {
         return true;
     }
 
+    public EndOfPipe getInputEndOfPipe() {
+        return inputEndOfPipe;
+    }
+
     /**
      * Sets the outputEndOfPipe attribute to the passed EndOfPipe argument.
      *
@@ -92,5 +102,17 @@ public class Pump extends ActiveElement {
         // TODO: update with prototype version
         this.outputEndOfPipe = endOfPipe;
         return true;
+    }
+
+    public EndOfPipe getOutputEndOfPipe() {
+        return outputEndOfPipe;
+    }
+
+    public void fillReservoir() {
+        waterInReservoir++;
+    }
+
+    public boolean isReservoirFull() {
+        return waterInReservoir >= reservoirCapacity;
     }
 }
