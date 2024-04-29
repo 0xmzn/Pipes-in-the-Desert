@@ -39,6 +39,7 @@ public class Pump extends ActiveElement {
 
     public Pump() {
         waterInReservoir = 0;
+        connectedEndsOfPipes = new List<>();
     }
 
     /**
@@ -68,7 +69,6 @@ public class Pump extends ActiveElement {
      * @return true if the operation was successful, false otherwise
      */
     public boolean addEndOfPipe(EndOfPipe endOfPipe) {
-        // TODO: update with prototype version
         if (connectedEndsOfPipes.size() < maxPipes) {
             connectedEndsOfPipes.add(endOfPipe);
             return true;
@@ -83,11 +83,15 @@ public class Pump extends ActiveElement {
      * @return true if the operation was successful, false otherwise
      */
     public boolean setInputEndOfPipe(EndOfPipe endOfPipe) {
-        // TODO: update with prototype version
         this.inputEndOfPipe = endOfPipe;
         return true;
     }
 
+    /**
+     * Returns the inputEndOfPipe attribute.
+     *
+     * @return the inputEndOfPipe attribute
+     */
     public EndOfPipe getInputEndOfPipe() {
         return inputEndOfPipe;
     }
@@ -99,19 +103,31 @@ public class Pump extends ActiveElement {
      * @return true if the operation was successful, false otherwise
      */
     public boolean setOutputEndOfPipe(EndOfPipe endOfPipe) {
-        // TODO: update with prototype version
         this.outputEndOfPipe = endOfPipe;
         return true;
     }
 
+    /**
+     * Returns the outputEndOfPipe attribute.
+     *
+     * @return the outputEndOfPipe attribute
+     */
     public EndOfPipe getOutputEndOfPipe() {
         return outputEndOfPipe;
     }
 
+    /**
+     * Fills the reservoir with water.
+     */
     public void fillReservoir() {
         waterInReservoir++;
     }
 
+    /**
+     * Checks if the reservoir is full.
+     *
+     * @return true if the reservoir is full, false otherwise
+     */
     public boolean isReservoirFull() {
         return waterInReservoir >= reservoirCapacity;
     }
