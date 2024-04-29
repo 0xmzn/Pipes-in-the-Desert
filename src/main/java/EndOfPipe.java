@@ -69,5 +69,7 @@ public class EndOfPipe implements Element{
         this.connectedActiveElement = null;
     }
 
-    
+    public boolean canBePickedUp() {
+        return pairEndOfPipe.getActiveElement() != null;
+    }
 }
