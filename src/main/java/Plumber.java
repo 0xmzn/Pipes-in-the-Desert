@@ -38,14 +38,12 @@ public class Plumber extends Player {
      * @return true if the pipe end is picked up successfully, false otherwise
      */
     public boolean pickUpPipeEnd(EndOfPipe endOfPipe) {
-        // TODO: update with prototype version
-        printMethodName("pickUpPipeEnd");
-
-        out.println("You are trying to pick up a pipe end...");
-
-
-        out.println("Pipe picked up successfully!");
-        return false;
+        if (endOfPipe.canBePickedUp()) {
+            inventory = endOfPipe;
+            return true;
+        } else {
+            return false;
+        }
     }
 
     /**
@@ -59,14 +57,22 @@ public class Plumber extends Player {
      * @param pump the pump to be picked up
      * @return true if the pump is picked up successfully, false otherwise
      */
-    public boolean pickUpPump(Pump pump) {
+    public boolean pickUpPump(Cistern cistern) {
         printMethodName("pickUpPump");
 
-        out.println("You are trying to pick up a pump...");
-
-
-        out.println("Pump picked up successfully!");
-        return false;
+        if (inventory != null) {
+            out.println("Your inventory is full!");
+            return false;
+        } 
+        
+        if (cistern.getInventoryPump() == null) {
+            out.println("There is no pump in the cistern!");
+            return false;
+        } else {
+            inventory = cistern.getInventoryPump();
+            out.println("Plumber has picked up a pump from the cistern!");
+            return true;
+        }
     }
 
     /**
@@ -84,10 +90,24 @@ public class Plumber extends Player {
      * - Removes the item from the inventory.
      * Finally, it prints a success message.
      */
-    public boolean installPump(Point coordinate) {
+    public boolean installPump(Point targetCoordinate) {
+        // we are sure that targetCoordinate is empty
+        // if it is not, it should fail on the stage of the Controller
+
+        // unnecessary duplication of logic, instead of installPump we could have install Element
         printMethodName("installPump");
-        out.println("Pump installed successfully!");
-        return false;
+
+        if (inventory instanceof Pump) {
+            inventory = null;  // empty the inventory, the actual instantiate will happen in the Controller
+            return true;
+        } else if (inventory instanceof EndOfPipe) {
+            out.println("You have EndOfPipe in your inventory!");
+            return false;
+        } else {
+            // i.e. inventoru is null
+            out.println("There is nothing in your inventory!");
+            return false;
+        }
     }
 
     /**
@@ -106,12 +126,31 @@ public class Plumber extends Player {
      * @param endOfPipe the pipe end to be placed
      * @return true if the pipe end is placed successfully, false otherwise
      */
-    public boolean placePipeEnd(EndOfPipe endOfPipe) {
-        // TODO: update with prototype version
+    public boolean placePipeEnd(ActiveElement targetActiveElement) {
+        // we are sure that targetCoordinate is empty
+        // if it is not, it should fail on the stage of the Controller
+
         printMethodName("placePipeEnd");
 
-        out.println("You are trying to place a pipe end into the system...");
-        return false;
+        if (inventory instanceof EndOfPipe) {
+            EndOfPipe currentEndOfPipe = (EndOfPipe)inventory;
+
+            if (targetActiveElement == null) {
+                currentEndOfPipe.disconnectPipe();
+            } else {
+                connect(targetActiveElement);
+            }
+
+            inventory = null;  // empty the inventory, the actual instantiate will happen in the Controller
+            return true;
+        } else if (inventory instanceof Pump) {
+            out.println("You have Pump in your inventory!");
+            return false;
+        } else {
+            // i.e. inventoru is null
+            out.println("There is nothing in your inventory!");
+            return false;
+        }
     }
 
     /**
@@ -125,14 +164,12 @@ public class Plumber extends Player {
      * message.
      * 
      * @param activeElement the active element to connect the pipe end to
-     * @param endOfPipe     the pipe end to be connected
      * @return true if the pipe end is connected successfully, false otherwise
      */
-    public boolean connect(ActiveElement activeElement, EndOfPipe endOfPipe) {
-        // TODO: update with prototype version
+    public boolean connect(ActiveElement activeElement) {
         printMethodName("connect");
 
-        return false;
+        return activeElement.connect((EndOfPipe)inventory);
     }
 
     /**
@@ -141,14 +178,13 @@ public class Plumber extends Player {
      * prints a success message.
      * 
      * @param activeElement the active element to disconnect the pipe end from
-     * @param endOfPipe     the pipe end to be disconnected
      * @return true if the pipe end is disconnected successfully, false otherwise
      */
-    public boolean disconnect(ActiveElement activeElement, EndOfPipe endOfPipe) {
+    public boolean disconnect(ActiveElement activeElement) {
         // TODO: update with prototype version
         printMethodName("disconnect");
 
-        return false;
+        return activeElement.disconnect((EndOfPipe)inventory);
     }
 
     /**
@@ -164,43 +200,34 @@ public class Plumber extends Player {
      * @return true if the element is fixed successfully, false otherwise
      */
     public boolean fixElement(Element element) {
-        // TODO: update with prototype version
-        // two old implementations are below
-        return false;
-    }
+        printMethodName("fixElement()");
 
-    /**
-     * Fixes a punctured pipe.
-     * Checks the precondition before fixing the pipe: player type, pipe punctured
-     * state, location.
-     * If any of the conditions are not met, the method returns without performing
-     * any action.
-     * Otherwise, it prints a success message.
-     */
-    public void fixPipe() {
-        printMethodName("fixPipe");
-
-        out.println("You are trying to fix a pipe...");
-
-
-        out.println("Pipe fixed successfully!");
-    }
-
-    /**
-     * Fixes a punctured pump.
-     * Checks precondition before fixing the pump: player type, pump punctured
-     * state, location.
-     * If any of the conditions are not met, the method returns without performing
-     * any action.
-     * Otherwise, it prints a success message.
-     */
-    public void fixPump() {
-        printMethodName("fixPump");
-
-        out.println("You are trying to fix a pump...");
-
-
-        out.println("Pump fixed successfully!");
+        if (element instanceof Pipe) {
+            Pipe currentPipe = (Pipe)element;
+            
+            if (!currentPipe.getIsPunctured()) {
+                out.println("Pipe is not punctured!");
+                return false;
+            } else {
+                currentPipe.setIsPunctured(false);
+                out.println("Pipe is fixed!");
+                return true;
+            }
+        } else if (element instanceof Pump) {
+            Pump currentPump = (Pump)element;
+            
+            if (!currentPump.getIsPunctured()) {
+                out.println("Pump is not punctured!");
+                return false;
+            } else {
+                currentPump.setIsPunctured(false);
+                out.println("Pump is fixed!");
+                return true;
+            }
+        } else {
+            out.println("Elements outside of the scope of Pump and Pipe cannot be fixed!");
+            return false;
+        } 
     }
 
     /**
@@ -209,118 +236,17 @@ public class Plumber extends Player {
      * @return true if the inventory is free, false otherwise.
      */
     private boolean checkInventory() {
-        // TODO: update with prototype version
         printMethodName("checkInventory()");
-        int isInventoryFree = askQuestion("Is the inventory free?");
-
-        if (isInventoryFree != 1 && isInventoryFree != 2) {
-            out.println("Invalid command, operation failed");
-            return false;
-        } else if (isInventoryFree == 2) {
-            out.println("You can not pick up multiple items simultaneously, operation failed");
-            return false;
-        }
-
-        out.println("");
-        return true;
-    }
-
-    /**
-     * Checks if the pipe end is connected to an element and returns corresponding
-     * response.
-     * 
-     * @return true if the pipe end is connected, false otherwise.
-     */
-    private boolean getConnected() {
-        // TODO: update with prototype version
-        // removed if not needed
-        printMethodName("getConnected()");
-        int isConnected = askQuestion("Is the pipe end connected to an element?");
-
-        if (isConnected != 1 && isConnected != 2) {
-            out.println("Invalid command, operation failed");
-            return false;
-        } else if (isConnected == 2) {
-            return false;
-        }
-        return true;
-    }
-
-    /**
-     * Checks if the other end of the pipe is connected to an active element and
-     * returns corresponding response.
-     * 
-     * @return true if the other end of the pipe is connected, false otherwise.
-     */
-    private boolean getPipeEnds() {
-        // TODO: update with prototype version
-        // remove if not needed
-        printMethodName("getPipeEnds()");
-        int hasOtherEnd = askQuestion("Is the other pipe end connected to an active element?");
-
-        if (hasOtherEnd != 1 && hasOtherEnd != 2) {
-            out.println("Invalid command, operation failed");
-            return false;
-        } else if (hasOtherEnd == 2) {
-            out.println("The other end of this pipe is not connected to any active elements! operation failed");
-            return false;
-        }
-
-        out.println("");
-        return true;
-    }
-
-    /**
-     * Checks if the cistern has a manufactured pump and returns corresponding
-     * response.
-     * 
-     * @return true if the cistern has a manufactured pump, false otherwise.
-     */
-    private boolean getManufacturedElement() {
-        // TODO: update with prototype version
-        // remove if not needed
-        printMethodName("getManufacturedElement()");
-        int isManufactured = askQuestion("Does the cistern have a manufactured pump?");
-
-        if (isManufactured != 1 && isManufactured != 2) {
-            out.println("Invalid command, operation failed");
-            return false;
-        } else if (isManufactured == 2) {
-            return false;
-        }
-
-        out.println("");
-        return true;
-    }
-
-    /**
-     * Sets the new location to the element.
-     */
-    private void setLocation() {
-        printMethodName("setLocation");
-    }
-
-    /**
-     * Cuts the pipe to be able to install the pump.
-     */
-    private void cutPipe() {
-        // TODO: update with prototype version
-        // remove if not needed
-        printMethodName("cutPipe");
+        
+        return inventory == null;
     }
 
     /**
      * Removes the item from the inventory.
      */
     private void removeInventory() {
-        // TODO: update with prototype version
-        printMethodName("removeInventory");
-    }
+        printMethodName("removeInventory()");
 
-    /**
-     * Adds the item to the inventory.
-     */
-    private void addInventory() {
-        printMethodName("AddInventory");
+        inventory = null;
     }
 }

@@ -280,7 +280,7 @@ public class Controller {
         // TODO: update with prototype version
         printMethodName("giveTurn()");
 
-        if(nextPlayer instanceof Plumber){
+        if (nextPlayer instanceof Plumber) {
             System.out.println("List of commands:\n");
             System.out.println("moveA\n");
             System.out.println("moveD\n");
@@ -294,7 +294,7 @@ public class Controller {
             System.out.println("changeWaterDirection\n");
             System.out.println("connect\n");
             System.out.println("disconnect\n");
-        }else if (nextPlayer instanceof Saboteur){
+        } else if (nextPlayer instanceof Saboteur) {
             System.out.println("List of commands:\n");
             System.out.println("moveA\n");
             System.out.println("moveD\n");
@@ -318,21 +318,21 @@ public class Controller {
         switch(command){
             case "fix":
                 if (nextPlayer instanceof Plumber) {
-                    ((Plumber) nextPlayer).fixElement(); // Call fixPipe method from Plumber class
+                    ((Plumber) nextPlayer).fixElement(new Pump()); // Call fixPipe method from Plumber class
                 } else {
                     System.out.println("Invalid command for current player.");
                 }
                 break;
             case "puncture":
                 if (nextPlayer instanceof Saboteur) {
-                    ((Saboteur) nextPlayer).puncturePipe(); // Call fixPipe method from Plumber class
+                    ((Saboteur) nextPlayer).puncturePipe(new Pipe(new EndOfPipe(nextPlayer.coordinate), new EndOfPipe(new Point((int)nextPlayer.coordinate.getX()+1, (int)nextPlayer.coordinate.getY()))));
                 } else {
                     System.out.println("Invalid command for current player.");
                 }
                 break;
             case "changeWaterDirection":
-                nextPlayer.changeInputPipe();
-                nextPlayer.changeOutputPipe();
+                nextPlayer.changeInputPipe(new Pump(), new EndOfPipe(nextPlayer.coordinate));
+                nextPlayer.changeOutputPipe(new Pump(), new EndOfPipe(nextPlayer.coordinate));
                 break;
             case "moveA":
                 nextPlayer.moveA();
@@ -348,42 +348,42 @@ public class Controller {
                 break;
             case "pickPipeEnd":
                 if (nextPlayer instanceof Plumber) {
-                    ((Plumber) nextPlayer).pickUpPipeEnd(); // Call fixPipe method from Plumber class
+                    ((Plumber) nextPlayer).pickUpPipeEnd(new EndOfPipe(nextPlayer.coordinate));
                 } else {
                     System.out.println("Invalid command for current player.");
                 }
                 break;
             case "pickPump":
                 if (nextPlayer instanceof Plumber) {
-                    ((Plumber) nextPlayer).pickUpPump(); // Call fixPipe method from Plumber class
+                    ((Plumber) nextPlayer).pickUpPump(new Cistern()); // Call fixPipe method from Plumber class
                 } else {
                     System.out.println("Invalid command for current player.");
                 }
                 break;
             case "placePipeEnd":
                 if (nextPlayer instanceof Plumber) {
-                    ((Plumber) nextPlayer).placePipeEnd(); // Call fixPipe method from Plumber class
+                    ((Plumber) nextPlayer).placePipeEnd(new Pump()); // Call fixPipe method from Plumber class
                 } else {
                     System.out.println("Invalid command for current player.");
                 }
                 break;
             case "installPump":
                 if (nextPlayer instanceof Plumber) {
-                    ((Plumber) nextPlayer).installPump(); // Call fixPipe method from Plumber class
+                    ((Plumber) nextPlayer).installPump(nextPlayer.coordinate); // Call fixPipe method from Plumber class
                 } else {
                     System.out.println("Invalid command for current player.");
                 }
                 break;
             case "connect":
                 if (nextPlayer instanceof Plumber) {
-                    ((Plumber) nextPlayer).connect(); // Call fixPipe method from Plumber class
+                    ((Plumber) nextPlayer).connect(new Pump()); // Call fixPipe method from Plumber class
                 } else {
                     System.out.println("Invalid command for current player.");
                 }
                 break;
             case "disconnect":
                 if (nextPlayer instanceof Plumber) {
-                    ((Plumber) nextPlayer).disconnect(); // Call fixPipe method from Plumber class
+                    ((Plumber) nextPlayer).disconnect(new Pump()); // Call fixPipe method from Plumber class
                 } else {
                     System.out.println("Invalid command for current player.");
                 }
