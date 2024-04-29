@@ -280,7 +280,7 @@ public class Controller {
         // TODO: update with prototype version
         printMethodName("giveTurn()");
 
-        if(nextPlayer instanceof Plumber){
+        if (nextPlayer instanceof Plumber) {
             System.out.println("List of commands:\n");
             System.out.println("moveA\n");
             System.out.println("moveD\n");
@@ -294,7 +294,7 @@ public class Controller {
             System.out.println("changeWaterDirection\n");
             System.out.println("connect\n");
             System.out.println("disconnect\n");
-        }else if (nextPlayer instanceof Saboteur){
+        } else if (nextPlayer instanceof Saboteur) {
             System.out.println("List of commands:\n");
             System.out.println("moveA\n");
             System.out.println("moveD\n");

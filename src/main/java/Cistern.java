@@ -1,6 +1,7 @@
 import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.awt.Point;
 
 /**
  * Represents a cistern that manufactures and stores elements.
@@ -16,10 +17,11 @@ public class Cistern extends ActiveElement {
     private Timer timer;
     private boolean isManufacturing;
 
-    public Cistern(){
-        timer = new Timer();
-        isManufacturing = false;
-
+    public Cistern() {
+        this.inventoryPipe = null;
+        this.inventoryPump = null;
+        this.timer = new Timer();
+        this.isManufacturing = false;
     }
     /**
      * Manufactures new elements in the cistern.
@@ -41,18 +43,21 @@ public class Cistern extends ActiveElement {
 
         Random random = new Random();
         int randomNumber = random.nextInt(2);
-        if(randomNumber==0){
-            System.out.println("Manufacturing pipe...\n");
+        if(randomNumber==0) {
+            System.out.println("Manufacturing pipe...");
 
-            inventoryPipe = new Pipe();
+            Point cisternCoordinate = this.getCoordinate();
+            inventoryPipe = new Pipe(new EndOfPipe(cisternCoordinate), new EndOfPipe(new Point((int)cisternCoordinate.getX()+1, (int)cisternCoordinate.getY())));
+
             scheduleManufactureCompletion(15);
         }
-        else{
-            System.out.println("Manufacturing pipe...\n");
+        else {
+            System.out.println("Manufacturing pipe...");
             inventoryPump = new Pump();
             scheduleManufactureCompletion(15);
         }
     }
+
     private void scheduleManufactureCompletion(int seconds){
         timer.schedule(new TimerTask() {
             @Override
@@ -63,10 +68,12 @@ public class Cistern extends ActiveElement {
         }, seconds*1000);
         isManufacturing = true;
     }
-    public Pipe getInventoryPipe(){
+
+    public Pipe getInventoryPipe() {
         return inventoryPipe;
     }
-    public Pump getInventoryPump(){
+
+    public Pump getInventoryPump() {
         return inventoryPump;
     }
 }

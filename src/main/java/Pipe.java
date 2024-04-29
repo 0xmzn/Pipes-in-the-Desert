@@ -26,6 +26,10 @@ public class Pipe implements Element {
     private List<EndOfPipe> pipeEnds;
 
     public Pipe(EndOfPipe endOfPipe1, EndOfPipe endOfPipe2) {
+        // stupid, we will change it...
+        endOfPipe1.setPairEndOfPipe(endOfPipe2);
+        endOfPipe2.setPairEndOfPipe(endOfPipe1);
+
         this.pipeEnds.add(endOfPipe1);
         this.pipeEnds.add(endOfPipe2);
     }
