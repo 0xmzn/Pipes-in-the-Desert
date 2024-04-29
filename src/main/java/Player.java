@@ -28,6 +28,11 @@ public abstract class Player {
         scanner = new Scanner(System.in);
     }
 
+    /**
+     * Moves the player to the left.
+     *
+     * @return true if the move is successful, false otherwise
+     */
     public boolean moveA() {
         printMethodName("moveA()");
         if (checkStepableCell(coordinate.x - 1, coordinate.y)) {
@@ -39,6 +44,11 @@ public abstract class Player {
         }
     }
 
+    /**
+     * Moves the player up.
+     *
+     * @return true if the move is successful, false otherwise
+     */
     public boolean moveW() {
         printMethodName("moveW()");
         if (checkStepableCell(coordinate.x, coordinate.y - 1)) {
@@ -50,6 +60,11 @@ public abstract class Player {
         }
     }
 
+    /**
+     * Moves the player down.
+     *
+     * @return true if the move is successful, false otherwise
+     */
     public boolean moveS() {
         printMethodName("moveS()");
         if (checkStepableCell(coordinate.x, coordinate.y + 1)) {
@@ -61,6 +76,11 @@ public abstract class Player {
         }
     }
 
+    /**
+     * Moves the player to the right.
+     *
+     * @return true if the move is successful, false otherwise
+     */
     public boolean moveD() {
         printMethodName("moveD()");
         if (checkStepableCell(coordinate.x + 1, coordinate.y)) {
@@ -83,15 +103,36 @@ public abstract class Player {
         out.println("--------------------\n");
     }
 
+    /**
+     * Sets the specified cell as steppable if the player can move there
+     *
+     * @param x the x-coordinate of the cell
+     * @param y the y-coordinate of the cell
+     */
     protected void setSteppableCell(int x, int y) {
         printMethodName("setSteppableCell");
         steppableCell[x][y] = true;
     }
+
+    /**
+     * Checks if the specified cell is steppable.
+     *
+     * @param x the x-coordinate of the cell
+     * @param y the y-coordinate of the cell
+     * @return true if the cell is steppable, false otherwise
+     */
     private boolean checkStepableCell(int x, int y) {
         printMethodName("checkStepableCell");
         return steppableCell[x][y];
     }
 
+    /**
+     * Changes the input pipe of the specified pump.
+     *
+     * @param pump the pump to change the input pipe for
+     * @param endOfPipe the new input end of pipe
+     * @return true if the input pipe is successfully changed, false otherwise
+     */
     protected boolean changeInputPipe(Pump pump, EndOfPipe endOfPipe) {
         printMethodName("changeInputPipe");
         int pumpCoordinateX = pump.getCoordinate().x;
@@ -104,6 +145,13 @@ public abstract class Player {
         }
     }
 
+    /**
+     * Changes the output pipe of the specified pump.
+     *
+     * @param pump the pump to change the output pipe for
+     * @param endOfPipe the new output end of pipe
+     * @return true if the output pipe is successfully changed, false otherwise
+     */
     protected boolean changeOutputPipe(Pump pump, EndOfPipe endOfPipe) {
         printMethodName("changeInputPipe");
         int pumpCoordinateX = pump.getCoordinate().x;
