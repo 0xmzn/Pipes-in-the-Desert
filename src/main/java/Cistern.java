@@ -1,7 +1,12 @@
+import javax.imageio.ImageIO;
+import javax.swing.*;
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
-import java.awt.Point;
 
 /**
  * Represents a cistern that manufactures and stores elements.
@@ -16,13 +21,23 @@ public class Cistern extends ActiveElement {
     private Pump inventoryPump;
     private Timer timer;
     private boolean isManufacturing;
+    private JLabel cisternLabel;
 
     public Cistern() {
         this.inventoryPipe = null;
         this.inventoryPump = null;
         this.timer = new Timer();
         this.isManufacturing = false;
+        try {
+            BufferedImage image = ImageIO.read(new File("res/Cistern.png"));
+            ImageIcon cisternIcon = new ImageIcon(image);
+            cisternLabel = new JLabel(cisternIcon);
+            cisternLabel.setBackground(new Color(0,0,0,0));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
+
     /**
      * Manufactures new elements in the cistern.
      * The method checks whether the inventoryElement attribute is instantiated or
@@ -75,5 +90,9 @@ public class Cistern extends ActiveElement {
 
     public Pump getInventoryPump() {
         return inventoryPump;
+    }
+
+    public JLabel getCisternLabel(){
+        return cisternLabel;
     }
 }

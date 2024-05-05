@@ -26,18 +26,6 @@ public class Main {
             createGUI();
         });
 
-        Controller c = new Controller();
-        c.displayMenu();
-        while (true) {
-            System.out.println("Do you want to play again? \n1. Yes \n2. No");
-            Scanner scanner = new Scanner(System.in);
-            int choice = scanner.nextInt();
-            if (choice == 2) {
-                System.out.println("Goodbye!");
-                break;
-            }
-            c.startGame();
-        }
     }
     private static void createGUI(){
         JFrame frame = new JFrame("PIPES IN THE DESERT");
@@ -52,20 +40,29 @@ public class Main {
                 g.drawImage(imageIcon.getImage(),0,0,getWidth(),getHeight(),this);
             }
         };
-        JPanel buttonPanel = new JPanel(new GridBagLayout());
-        buttonPanel.setOpaque(false);
 
-        backgroundPanel.setLayout(new BorderLayout());
+        backgroundPanel.setLayout(null);
+
+        JLabel gameLabel = new JLabel("PIPES IN THE DESERT");
+        //gameLabel.setForeground(Color.WHITE);
+        gameLabel.setFont(loadFont("res/Sabo-Filled.otf",40));
+        gameLabel.setBounds(140, 140, 600, 50);
+
+
         JButton startButton = new JButton("Start Game");
         JButton exitButton = new JButton("Exit");
 
-        Color buttonColor = new Color(255,255,255,150);
+        Color buttonColor = new Color(255,248,199,255);
         startButton.setBackground(buttonColor);
         exitButton.setBackground(buttonColor);
+        startButton.setFocusable(false);
+        exitButton.setFocusable(false);
 
         Dimension buttonSize = new Dimension(200,50);
         startButton.setPreferredSize(buttonSize);
         exitButton.setPreferredSize(buttonSize);
+        startButton.setBounds(280, 270, 200, 50);
+        exitButton.setBounds(280, 330, 200, 50);
 
         Font buttonFont = loadFont("res/Sabo-Filled.otf", 22);
         startButton.setFont(buttonFont);
@@ -73,29 +70,23 @@ public class Main {
         startButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // Start the game
-                // Call your game initialization method here
+                Controller c = new Controller();
+                frame.dispose();
+                c.startGame();
+
             }
         });
 
         exitButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // Exit the game
-                // Call your exit method here
+                System.exit(0);
             }
         });
 
-        GridBagConstraints gbc = new GridBagConstraints();
-        gbc.gridx = 0;
-        gbc.gridy = 0;
-        gbc.insets = new Insets(10,10,10,10);
-        buttonPanel.add(startButton, gbc);
-
-        gbc.gridy = 1;
-        buttonPanel.add(exitButton, gbc);
-
-        backgroundPanel.add(buttonPanel, BorderLayout.CENTER);
+        backgroundPanel.add(startButton);
+        backgroundPanel.add(exitButton);
+        backgroundPanel.add(gameLabel);
         frame.getContentPane().add(backgroundPanel);
         frame.pack();
         frame.setLocationRelativeTo(null);

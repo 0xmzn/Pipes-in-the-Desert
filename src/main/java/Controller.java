@@ -1,7 +1,10 @@
+import javax.swing.*;
+
 import static java.lang.System.exit;
 import static java.lang.System.out;
 import java.util.*;
 import java.util.List;  // to avoid ambiguity of instantiation of the List container 
+import java.util.Timer;
 import java.util.concurrent.TimeUnit;
 import java.awt.*;
 
@@ -60,6 +63,12 @@ public class Controller {
     private Cistern cistern2;
     private Cistern cistern3;
 
+    private Spring spring1;
+    private Spring spring2;
+    private Spring spring3;
+
+    private JFrame gameFrame;
+
     /**
      * Constructs a new Controller object. Initializes the scanner to reuse for user
      * input.
@@ -77,9 +86,19 @@ public class Controller {
         gameRunning = true;
         pipes = new ArrayList<>();
         pumps = new ArrayList<>();
+
+        gameFrame = new JFrame("PIPES IN THE DESERT");
+        gameFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        gameFrame.setPreferredSize(new Dimension(800,600));
+
+
         cistern1 = new Cistern();
         cistern2 = new Cistern();
         cistern3 = new Cistern();
+
+        spring1 = new Spring();
+        spring2 = new Spring();
+        spring3 = new Spring();
     }
 
     /**
@@ -126,18 +145,7 @@ public class Controller {
     public void initGrid() {
         // TODO: update with prototype version
         printMethodName("initGrid()");
-        for (int i = 0; i < grid.length; i++) {
-            for (int j = 0; j < grid[i].length; j++) {
-                grid[i][j] = null;
-            }
-        }
-        grid[0][3] = cistern1;
-        grid[0][6] = cistern2;
-        grid[0][9] = cistern3;
 
-        grid[11][3] = new Spring();
-        grid[11][6] = new Spring();
-        grid[11][9] = new Spring();
     }
 
     /**
@@ -151,7 +159,78 @@ public class Controller {
         //start the game timer
         GameTimer.startTimer();
 
-        while(gameRunning){
+        JPanel gameGridPanel = new JPanel(){
+            @Override
+            protected void paintComponent(Graphics g){
+                super.paintComponent(g);
+                ImageIcon imageIcon = new ImageIcon("res/gamegrid2.jpg");
+                Image backImage = imageIcon.getImage();
+                g.drawImage(backImage,0,0,getWidth(),getHeight(),this);
+            }
+        };
+
+        int boardWidth = 450;
+        int boardHeight = 450;
+        JPanel gameBoard = new JPanel() {
+            @Override
+            protected void paintComponent(Graphics g) {
+                super.paintComponent(g);
+                g.setColor(new Color(139, 69, 19,240)); // Brown color
+                g.fillRect(160, 50, boardWidth, boardHeight);
+                // Draw grid lines or other game elements as needed
+                Graphics2D g2d = (Graphics2D) g;
+                g2d.setStroke(new BasicStroke(2));
+                g.setColor(Color.BLACK);
+                int cellWidth = boardWidth / 10;
+                int cellHeight = boardHeight / 10;
+                // Draw grid lines
+                for (int i = 0; i <= 10; i++) {
+                    g.drawLine(160, 50+i * cellHeight, 160+boardWidth, 50+i * cellHeight);
+                }
+                for (int j = 0; j <= 10; j++) {
+                    g.drawLine(160+j * cellWidth, 50, 160+j * cellWidth, 50+boardHeight);
+                }
+            }
+        };
+        gameBoard.setOpaque(false);
+        gameGridPanel.setLayout(new BorderLayout());
+        gameGridPanel.add(gameBoard, BorderLayout.CENTER);
+
+        //1st
+        cistern1.getCisternLabel().setBounds(-8,-30, 300,300);
+        cistern1.getCisternLabel().setOpaque(true);
+        gameFrame.getContentPane().add(cistern1.getCisternLabel());
+
+        spring1.getSpringLabel().setBounds(350,-185,600,600);
+        spring1.getSpringLabel().setOpaque(true);
+        gameFrame.getContentPane().add(spring1.getSpringLabel());
+
+        //2nd
+        cistern2.getCisternLabel().setBounds(-8,100, 300,300);
+        cistern2.getCisternLabel().setOpaque(true);
+        gameFrame.getContentPane().add(cistern2.getCisternLabel());
+
+        spring2.getSpringLabel().setBounds(350,-45,600,600);
+        spring2.getSpringLabel().setOpaque(true);
+        gameFrame.getContentPane().add(spring2.getSpringLabel());
+
+        //3rd
+        cistern3.getCisternLabel().setBounds(-8,240, 300,300);
+        cistern3.getCisternLabel().setOpaque(true);
+        gameFrame.getContentPane().add(cistern3.getCisternLabel());
+
+        spring3.getSpringLabel().setBounds(350,85,600,600);
+        spring3.getSpringLabel().setOpaque(true);
+        gameFrame.getContentPane().add(spring3.getSpringLabel());
+
+        gameFrame.getContentPane().add(gameGridPanel);
+        gameFrame.pack();
+        gameFrame.setLocationRelativeTo(null);
+        gameFrame.setVisible(true);
+
+
+
+        /*while(gameRunning){
             manageRounds();
 
             cistern1.manufactureElement();
@@ -168,7 +247,7 @@ public class Controller {
             pumps.add(cistern3.getInventoryPump());
 
         }
-        endGame();
+        endGame();*/
     }
 
     /**
