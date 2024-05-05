@@ -59,15 +59,19 @@ public class Controller {
     List<Pipe> pipes;
     List<Pump> pumps;
 
-    private Cistern cistern1;
-    private Cistern cistern2;
-    private Cistern cistern3;
+    private final Cistern cistern1;
+    private final Cistern cistern2;
+    private final Cistern cistern3;
 
-    private Spring spring1;
-    private Spring spring2;
-    private Spring spring3;
+    private final Spring spring1;
+    private final Spring spring2;
+    private final Spring spring3;
 
     private JFrame gameFrame;
+    private JLabel plumberScoreLabel;
+    private JLabel saboteurScoreLabel;
+    private JLabel timerLabel;
+    private JLabel roundLabel;
 
     /**
      * Constructs a new Controller object. Initializes the scanner to reuse for user
@@ -82,7 +86,7 @@ public class Controller {
         plumber2 = new Plumber();
         saboteur1 = new Saboteur();
         saboteur2 = new Saboteur();
-        round = 0;
+        round = 1;
         gameRunning = true;
         pipes = new ArrayList<>();
         pumps = new ArrayList<>();
@@ -99,6 +103,11 @@ public class Controller {
         spring1 = new Spring();
         spring2 = new Spring();
         spring3 = new Spring();
+
+        plumberScoreLabel = new JLabel("Plumber Score: "+ plumberScore);
+        saboteurScoreLabel = new JLabel(saboteurScore+ " :Saboteur Score");
+        timerLabel = new JLabel("Time: ");
+        roundLabel = new JLabel("Round: "+round);
     }
 
     /**
@@ -175,12 +184,12 @@ public class Controller {
             @Override
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
-                g.setColor(new Color(139, 69, 19,240)); // Brown color
+                g.setColor(new Color(232, 140, 35,200)); // Brown color
                 g.fillRect(160, 50, boardWidth, boardHeight);
                 // Draw grid lines or other game elements as needed
                 Graphics2D g2d = (Graphics2D) g;
                 g2d.setStroke(new BasicStroke(2));
-                g.setColor(Color.BLACK);
+                g.setColor(new Color(153, 88, 14,200));
                 int cellWidth = boardWidth / 10;
                 int cellHeight = boardHeight / 10;
                 // Draw grid lines
@@ -195,6 +204,20 @@ public class Controller {
         gameBoard.setOpaque(false);
         gameGridPanel.setLayout(new BorderLayout());
         gameGridPanel.add(gameBoard, BorderLayout.CENTER);
+
+        plumberScoreLabel.setForeground(Color.WHITE);
+        saboteurScoreLabel.setForeground(Color.WHITE);
+        timerLabel.setForeground(Color.WHITE);
+        roundLabel.setForeground(Color.WHITE);
+        plumberScoreLabel.setBounds(10, 20, 400, 20); // x, y, width, height
+        saboteurScoreLabel.setBounds(480, 20, 400, 20); // x, y, width, height
+        timerLabel.setBounds(620, 540, 150, 20);
+        roundLabel.setBounds(450, 540, 150, 20);
+
+        gameFrame.getContentPane().add(plumberScoreLabel);
+        gameFrame.getContentPane().add(saboteurScoreLabel);
+        gameFrame.getContentPane().add(timerLabel);
+        gameFrame.getContentPane().add(roundLabel);
 
         //1st
         cistern1.getCisternLabel().setBounds(-8,-30, 300,300);
