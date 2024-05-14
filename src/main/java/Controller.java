@@ -219,6 +219,12 @@ public class Controller {
         gameFrame.getContentPane().add(timerLabel);
         gameFrame.getContentPane().add(roundLabel);
 
+
+        //Plumber trial
+        plumber1.getPlumberLabel().setBounds(140,60,50,100);
+        plumber1.getPlumberLabel().setOpaque(true);
+        gameFrame.getContentPane().add(plumber1.getPlumberLabel());
+
         //1st
         cistern1.getCisternLabel().setBounds(-8,-30, 300,300);
         cistern1.getCisternLabel().setOpaque(true);

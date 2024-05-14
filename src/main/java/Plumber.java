@@ -1,6 +1,12 @@
+import javax.imageio.ImageIO;
+import javax.swing.*;
+
 import static java.lang.System.out;
 
 import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.Scanner;
 import java.util.Set;
 
@@ -13,6 +19,7 @@ public class Plumber extends Player {
      * The inventory of the Plumber - picked-up pipe or a pump.
      */
     Element inventory;
+    private JLabel plumberLabel;
 
     /**
      * Constructs a new Plumber object.
@@ -21,6 +28,14 @@ public class Plumber extends Player {
      */
     public Plumber() {
         super();
+        try {
+            BufferedImage image = ImageIO.read(new File("res/plumber3.png"));
+            ImageIcon plumberIcon = new ImageIcon(image);
+            plumberLabel = new JLabel(plumberIcon);
+            plumberLabel.setBackground(new Color(0,0,0,0));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     /**
@@ -54,7 +69,7 @@ public class Plumber extends Player {
      * performing any action.
      * Otherwise, it prints a success message and returns true.
      * 
-     * @param pump the pump to be picked up
+     *
      * @return true if the pump is picked up successfully, false otherwise
      */
     public boolean pickUpPump(Cistern cistern) {
@@ -123,7 +138,7 @@ public class Plumber extends Player {
      * success message.
      * *
      * 
-     * @param endOfPipe the pipe end to be placed
+     *
      * @return true if the pipe end is placed successfully, false otherwise
      */
     public boolean placePipeEnd(ActiveElement targetActiveElement) {
@@ -248,5 +263,8 @@ public class Plumber extends Player {
         printMethodName("removeInventory()");
 
         inventory = null;
+    }
+    public JLabel getPlumberLabel(){
+        return plumberLabel;
     }
 }
