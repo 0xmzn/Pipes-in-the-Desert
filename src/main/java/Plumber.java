@@ -20,14 +20,16 @@ public class Plumber extends Player {
      */
     Element inventory;
     private JLabel plumberLabel;
+    private Point currentCoordinate;
 
     /**
      * Constructs a new Plumber object.
      * It calls the constructor of the superclass (Player) using the super()
      * keyword.
      */
-    public Plumber() {
-        super();
+    public Plumber(Point coordinate) {
+        super(coordinate);
+        currentCoordinate = coordinate;
         try {
             BufferedImage image = ImageIO.read(new File("res/plumber3.png"));
             ImageIcon plumberIcon = new ImageIcon(image);
@@ -263,6 +265,16 @@ public class Plumber extends Player {
         printMethodName("removeInventory()");
 
         inventory = null;
+    }
+
+    public void movePlumberLabel(int x, int y){
+        plumberLabel.setLocation(x,y);
+        currentCoordinate.setLocation(x,y);
+    }
+    public void movePlumberLabelBy(int dx, int dy) {
+        int newX = currentCoordinate.x + dx;
+        int newY = currentCoordinate.y + dy;
+        movePlumberLabel(newX, newY);
     }
     public JLabel getPlumberLabel(){
         return plumberLabel;

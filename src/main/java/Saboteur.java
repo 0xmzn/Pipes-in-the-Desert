@@ -6,12 +6,11 @@ import java.awt.Point;
  * functionality.
  */
 public class Saboteur extends Player {
-
     /**
      * Constructs a new Saboteur object.
      */
-    public Saboteur() {
-        super();
+    public Saboteur(Point coordinate) {
+        super(coordinate);
     }
 
     /**

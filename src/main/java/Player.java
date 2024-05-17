@@ -1,20 +1,21 @@
 import java.awt.Point;
 import java.util.List;
 import java.util.Scanner;
+
 import static java.lang.System.out;
 import java.awt.Point;
-
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 /**
  * The abstract class representing a player in the game. Unites common methods
  * used by both Plumber and Saboteur.
  */
-public abstract class Player {
+public abstract class Player implements KeyListener{
 
-    protected final Scanner scanner;
-    /**
-     * The coordinate of the player on the game grid.
-     */
-    protected Point coordinate;
+    public Point coordinate;
+
+    private final int moveAmount = 10;
+
     /**
      * The possible steppable cells for the current player.
      */
@@ -24,72 +25,58 @@ public abstract class Player {
      * Constructs a new Player object. Initializes the scanner to reuse in all
      * methods.
      */
-    protected Player() {
-        scanner = new Scanner(System.in);
+    protected Player(Point coordinate) {
+        this.coordinate = coordinate;
     }
 
-    /**
-     * Moves the player to the left.
-     *
-     * @return true if the move is successful, false otherwise
-     */
-    public boolean moveA() {
-        printMethodName("moveA()");
-        if (checkStepableCell(coordinate.x - 1, coordinate.y)) {
-            coordinate = new Point(coordinate.x - 1, coordinate.y);
-            return true;
-        } else {
-            out.println("Cannot move left, obstacle detected.");
-            return false;
+    protected void move(char direction){
+        switch (direction){
+            case 'W':
+                moveForward();
+                break;
+            case 'D':
+                moveRight();
+                break;
+            case 'S':
+                moveBack();
+                break;
+            case 'A':
+                moveLeft();
+                break;
+            default:
+                System.out.println("Invalid direction");
         }
     }
 
-    /**
-     * Moves the player up.
-     *
-     * @return true if the move is successful, false otherwise
-     */
-    public boolean moveW() {
-        printMethodName("moveW()");
-        if (checkStepableCell(coordinate.x, coordinate.y - 1)) {
-            coordinate = new Point(coordinate.x, coordinate.y - 1);
-            return true;
-        } else {
-            out.println("Cannot move up, obstacle detected.");
-            return false;
-        }
+    private void moveForward(){
+        coordinate.y+=moveAmount;
+    }
+    private void moveRight(){
+        coordinate.x+=moveAmount;
+    }
+    private void moveLeft(){
+        coordinate.x-=moveAmount;
+    }
+    private void moveBack(){
+        coordinate.y-=moveAmount;
     }
 
-    /**
-     * Moves the player down.
-     *
-     * @return true if the move is successful, false otherwise
-     */
-    public boolean moveS() {
-        printMethodName("moveS()");
-        if (checkStepableCell(coordinate.x, coordinate.y + 1)) {
-            coordinate = new Point(coordinate.x, coordinate.y + 1);
-            return true;
-        } else {
-            out.println("Cannot move down, obstacle detected.");
-            return false;
-        }
+    // KeyListener methods
+    @Override
+    public void keyPressed(KeyEvent e) {
+        char keyChar = e.getKeyChar();
+        move(keyChar);
+        System.out.println("Player position: (" + coordinate.x + ", " + coordinate.y + ")");
     }
 
-    /**
-     * Moves the player to the right.
-     *
-     * @return true if the move is successful, false otherwise
-     */
-    public boolean moveD() {
-        printMethodName("moveD()");
-        if (checkStepableCell(coordinate.x + 1, coordinate.y)) {
-            coordinate = new Point(coordinate.x + 1, coordinate.y);
-            return true;
-        } else {
-            out.println("Cannot move right, obstacle detected.");
-            return false;
-        }
+    @Override
+    public void keyReleased(KeyEvent e) {
+        // You can implement this method if needed
+    }
+
+    @Override
+    public void keyTyped(KeyEvent e) {
+        // You can implement this method if needed
     }
 
     /**
