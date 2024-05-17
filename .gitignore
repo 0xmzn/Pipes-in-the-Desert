@@ -42,4 +42,4 @@ build/
 pom.xml
 
 ### Ignore compiled .class files ###
-out/
+out
