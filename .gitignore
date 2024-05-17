@@ -40,3 +40,6 @@ build/
 
 ### POM ###
 pom.xml
+
+### Ignore compiled .class files ###
+out/
