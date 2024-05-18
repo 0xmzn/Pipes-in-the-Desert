@@ -1,4 +1,3 @@
-import java.util.Scanner;
 import javax.swing.*;
 import javax.swing.plaf.FontUIResource;
 import java.awt.*;
@@ -70,7 +69,7 @@ public class Main {
         startButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Controller c = new Controller();
+                GameController c = new GameController();
                 frame.dispose();
                 c.startGame();
 

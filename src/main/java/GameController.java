@@ -14,7 +14,7 @@ import java.awt.*;
  * It also contributes to randomly breaking pumps.
  */
 
-public class Controller {
+public class GameController {
     private final Scanner scanner;
     /**
      * The grid that stores objects, which implement the <Element> interface, i.e.
@@ -78,7 +78,7 @@ public class Controller {
      * Constructs a new Controller object. Initializes the scanner to reuse for user
      * input.
      */
-    public Controller() {
+    public GameController() {
         scanner = new Scanner(System.in);
         grid = new Element[10][12];
         plumberScore = 0;
