@@ -42,4 +42,7 @@ build/
 pom.xml
 
 ### Ignore compiled .class files ###
-out
+out/
+
+### Testing.java class is used for testing newly implemented functionality ###
+src/main/java/Testing.java

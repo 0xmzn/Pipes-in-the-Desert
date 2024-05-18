@@ -69,7 +69,7 @@ public class Main {
         startButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                GameController c = new GameController();
+                Testing c = new Testing();
                 frame.dispose();
                 c.startGame();
 
