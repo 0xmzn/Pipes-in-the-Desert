@@ -15,6 +15,7 @@ public class Pipe implements Element {
      * Keeps track of the coordinates of the pipe on the game grid.
      */
     private Point coordinate;
+    private int id;
 
     /**
      * Keeps track of whether the pipe is punctured or not.
@@ -67,6 +68,16 @@ public class Pipe implements Element {
                 throw new RuntimeException(e);
             }
         }
+    }
+
+    @Override
+    public int getID() {
+        return id;
+    }
+
+    @Override
+    public void setID(int id) {
+        this.id = id;
     }
 
     @Override
