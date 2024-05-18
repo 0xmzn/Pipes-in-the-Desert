@@ -1,5 +1,12 @@
+import javax.imageio.ImageIO;
+import javax.swing.*;
+
 import static java.lang.System.out;
-import java.awt.Point;
+
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 
 /**
  * The Saboteur class extends the Player class and implements saboteur-specific
@@ -9,8 +16,22 @@ public class Saboteur extends Player {
     /**
      * Constructs a new Saboteur object.
      */
+
+    private JLabel saboteurLabel;
+    private Point currentCoordinate;
+
+
     public Saboteur(Point coordinate) {
         super(coordinate);
+        currentCoordinate = coordinate;
+        try {
+            BufferedImage image = ImageIO.read(new File("res/saboteur2.png"));
+            ImageIcon plumberIcon = new ImageIcon(image);
+            saboteurLabel = new JLabel(plumberIcon);
+            saboteurLabel.setBackground(new Color(0,0,0,0));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     /**
@@ -31,5 +52,17 @@ public class Saboteur extends Player {
             out.println("Cannot puncture pipe: Either not on the pipe or it is already punctured.");
             return false;
         }
+    }
+    public void moveSaboteurLabel(int x, int y){
+        saboteurLabel.setLocation(x,y);
+        currentCoordinate.setLocation(x,y);
+    }
+    public void moveSaboteurLabelBy(int dx, int dy) {
+        int newX = currentCoordinate.x + dx;
+        int newY = currentCoordinate.y + dy;
+        moveSaboteurLabel(newX, newY);
+    }
+    public JLabel getPlumberLabel(){
+        return saboteurLabel;
     }
 }

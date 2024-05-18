@@ -22,6 +22,7 @@ public class Cistern extends ActiveElement {
     private Timer timer;
     private boolean isManufacturing;
     private JLabel cisternLabel;
+    private JLabel pumpLabelPlace;
 
     public Cistern() {
         this.inventoryPipe = null;
@@ -33,6 +34,11 @@ public class Cistern extends ActiveElement {
             ImageIcon cisternIcon = new ImageIcon(image);
             cisternLabel = new JLabel(cisternIcon);
             cisternLabel.setBackground(new Color(0,0,0,0));
+
+            //Pump
+            pumpLabelPlace = new JLabel();
+            pumpLabelPlace.setBackground(new Color(0,0,0,0));
+
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -46,6 +52,7 @@ public class Cistern extends ActiveElement {
      * intervals.
      */
     public void manufactureElement() {
+        printMethodName("manufactureElement");
         if(isManufacturing){
             System.out.println("Manufacturing is already in progress. Cannot manufacture another element.\n");
             return;
@@ -61,19 +68,22 @@ public class Cistern extends ActiveElement {
         if(randomNumber==0) {
             System.out.println("Manufacturing pipe...");
 
-            Point cisternCoordinate = this.getCoordinate();
-            inventoryPipe = new Pipe(new EndOfPipe(cisternCoordinate), new EndOfPipe(new Point((int)cisternCoordinate.getX()+1, (int)cisternCoordinate.getY())));
+            //System.out.println("Manufacturing pump...");
+            inventoryPump = new Pump();
+            schedulePumpManufactureCompletion(5);
 
-            scheduleManufactureCompletion(15);
+            //Point cisternCoordinate = this.getCoordinate();
+            //inventoryPipe = new Pipe(new EndOfPipe(cisternCoordinate), new EndOfPipe(new Point((int)cisternCoordinate.getX()+1, (int)cisternCoordinate.getY())));
+            //schedulePipeManufactureCompletion(15);
         }
         else {
-            System.out.println("Manufacturing pipe...");
+            System.out.println("Manufacturing pump...");
             inventoryPump = new Pump();
-            scheduleManufactureCompletion(15);
+            schedulePumpManufactureCompletion(10);
         }
     }
 
-    private void scheduleManufactureCompletion(int seconds){
+    private void schedulePipeManufactureCompletion(int seconds){
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
@@ -83,6 +93,30 @@ public class Cistern extends ActiveElement {
         }, seconds*1000);
         isManufacturing = true;
     }
+
+    public void schedulePumpManufactureCompletion(int seconds){
+        printMethodName("schedulePumpManufactureCompletion");
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                System.out.println("Manufacturing of pipe completed.\n");
+                isManufacturing = false;
+                updateCisternLabelWithPump();
+            }
+        }, seconds * 1000);
+        isManufacturing = true;
+    }
+
+    private void updateCisternLabelWithPump() {
+        printMethodName("updateCisternLabel");
+        if (inventoryPump != null) {
+            JLabel pumpLabel = inventoryPump.getPumpLabel();
+            pumpLabelPlace.setIcon(pumpLabel.getIcon());
+            pumpLabel.setBounds(100,100,100,100);
+            pumpLabelPlace.repaint();
+        }
+    }
+
 
     public Pipe getInventoryPipe() {
         return inventoryPipe;
@@ -94,5 +128,16 @@ public class Cistern extends ActiveElement {
 
     public JLabel getCisternLabel(){
         return cisternLabel;
+    }
+
+    public JLabel getPumpPlaceLabel() {
+        printMethodName("getPumpLabel");
+        return pumpLabelPlace;
+    }
+
+    private static void printMethodName(String methodName) {
+        System.out.println("\n------------------------------------------------------------");
+        System.out.println(methodName + " method of the Controller class is called.");
+        System.out.println("------------------------------------------------------------\n");
     }
 }
