@@ -140,32 +140,16 @@ public class GameController {
                 g.drawImage(backImage,0,0,getWidth(),getHeight(),this);
             }
         };
-        int boardWidth = 450;
-        int boardHeight = 450;
-        JPanel gameBoard = new JPanel() {
-            @Override
-            protected void paintComponent(Graphics g) {
-                super.paintComponent(g);
-                g.setColor(new Color(232, 140, 35,200)); // Brown color
-                g.fillRect(160, 50, boardWidth, boardHeight);
-                // Draw grid lines or other game elements as needed
-                Graphics2D g2d = (Graphics2D) g;
-                g2d.setStroke(new BasicStroke(2));
-                g.setColor(new Color(153, 88, 14,200));
-                int cellWidth = boardWidth / 10;
-                int cellHeight = boardHeight / 10;
-                // Draw grid lines
-                for (int i = 0; i <= 10; i++) {
-                    g.drawLine(160, 50+i * cellHeight, 160+boardWidth, 50+i * cellHeight);
-                }
-                for (int j = 0; j <= 10; j++) {
-                    g.drawLine(160+j * cellWidth, 50, 160+j * cellWidth, 50+boardHeight);
-                }
-            }
-        };
+
+        final int boardWidth = 540;
+        final int boardHeight = 450;
+        GridController gridController = new GridController(new Grid(), new GridView(boardWidth, boardHeight));
+        JPanel gameBoard = gridController.getGridPanel();
         gameBoard.setOpaque(false);
+        gameBoard.setBounds((gameFrame.getWidth() - boardWidth) / 2,
+                (gameFrame.getHeight() - boardHeight) / 2, boardWidth, boardHeight);
         gameGridPanel.setLayout(new BorderLayout());
-        gameGridPanel.add(gameBoard, BorderLayout.CENTER);
+        gameGridPanel.add(gameBoard);
 
         plumberScoreLabel.setForeground(Color.WHITE);
         saboteurScoreLabel.setForeground(Color.WHITE);
@@ -181,6 +165,7 @@ public class GameController {
         gameFrame.getContentPane().add(timerLabel);
         gameFrame.getContentPane().add(roundLabel);
 
+        /*
         //1st
         cistern1.getCisternLabel().setBounds(-8,-30, 300,300);
         cistern1.getCisternLabel().setOpaque(true);
@@ -207,6 +192,7 @@ public class GameController {
         spring3.getSpringLabel().setBounds(350,85,600,600);
         spring3.getSpringLabel().setOpaque(true);
         gameFrame.getContentPane().add(spring3.getSpringLabel());
+         */
 
         gameFrame.getContentPane().add(gameGridPanel);
         gameFrame.pack();
