@@ -239,6 +239,9 @@ public class Controller {
 
         cistern.getPumpPlaceLabel().setBounds(location.x+60,location.y+100,100,100);
         gameFrame.add(cistern.getPumpPlaceLabel());
+
+        cistern.getPipeLabelPlace().setBounds(location.x+165,location.y+100,100,100);
+        gameFrame.add(cistern.getPipeLabelPlace());
     }
 
 
@@ -255,8 +258,14 @@ public class Controller {
         initGrid();
 
         cistern1.manufactureElement();
+        pumps.add(cistern1.getInventoryPump());
+        pipes.add(cistern1.getInventoryPipe());
         cistern2.manufactureElement();
+        pumps.add(cistern2.getInventoryPump());
+        pipes.add(cistern2.getInventoryPipe());
         cistern3.manufactureElement();
+        pumps.add(cistern3.getInventoryPump());
+        pipes.add(cistern3.getInventoryPipe());
 
         startNewRound();
     }

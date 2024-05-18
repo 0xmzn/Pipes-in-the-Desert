@@ -1,4 +1,9 @@
+import javax.imageio.ImageIO;
+import javax.swing.*;
 import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 import java.util.ArrayList;
 
@@ -24,20 +29,46 @@ public class Pipe implements Element {
     /**
      * Stores 2 <EndOfPipe> elements referring to both sides of the pipe.
      */
-    private List<EndOfPipe> pipeEnds;
+    private EndOfPipe pipeEnd1;
+    private EndOfPipe pipeEnd2;
 
-    public Pipe(EndOfPipe endOfPipe1, EndOfPipe endOfPipe2) {
-        // stupid, we will change it...
-        endOfPipe1.setPairEndOfPipe(endOfPipe2);
-        endOfPipe2.setPairEndOfPipe(endOfPipe1);
+    private JLabel pipeLabel;
 
-        this.pipeEnds.add(endOfPipe1);
-        this.pipeEnds.add(endOfPipe2);
-    }
 
     public Pipe() {
-        this.pipeEnds = new ArrayList<EndOfPipe>();
+        isPunctured = false;
+        isWaterFlowing = false;
+        pipeEnd1 = new EndOfPipe(coordinate);
+        pipeEnd2 = new EndOfPipe(coordinate);
+        initializePipeLabel();
+
     }
+
+    public void initializePipeLabel(){
+        BufferedImage image;
+        if(!isPunctured){
+            try{
+                image = ImageIO.read(new File("res/pipe.png"));
+                ImageIcon pumpIcon = new ImageIcon(image);
+                pipeLabel = new JLabel(pumpIcon);
+                pipeLabel.setBackground(new Color(0, 0, 0, 0));
+            }
+            catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }else{
+            try{
+                image = ImageIO.read(new File("res/leaking.png"));
+                ImageIcon pumpIcon = new ImageIcon(image);
+                pipeLabel = new JLabel(pumpIcon);
+                pipeLabel.setBackground(new Color(0, 0, 0, 0));
+            }
+            catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
+    }
+
     @Override
     public Point getCoordinate() {
         return coordinate;
@@ -83,14 +114,14 @@ public class Pipe implements Element {
     public void setIsWaterFlowing(boolean waterFlowingState) {
         isWaterFlowing = waterFlowingState;
     }
-
-    /**
-     * Returns the list of pipe ends.
-     *
-     * @return the list of pipe ends.
-     */
-    public List<EndOfPipe> getPipeEnds() {
-        return pipeEnds;
+    public JLabel getPipeLabel(){
+        printMethodName("getPumpLabel()");
+        return pipeLabel;
+    }
+    private static void printMethodName(String methodName) {
+        System.out.println("\n------------------------------------------------------------");
+        System.out.println(methodName + " method of the Controller class is called.");
+        System.out.println("------------------------------------------------------------\n");
     }
 
 }

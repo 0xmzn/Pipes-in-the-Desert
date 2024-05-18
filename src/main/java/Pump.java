@@ -47,7 +47,7 @@ public class Pump extends ActiveElement {
     private EndOfPipe outputEndOfPipe;
 
     private JLabel pumpLabel;
-    int pumpType;
+    private int pumpType;
 
 
     public Pump() {

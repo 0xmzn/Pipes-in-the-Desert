@@ -11,6 +11,8 @@ public interface Element {
      * coordinates in the game grid.
      */
 
+    int getID();
+    void setID(int id);
     Point getCoordinate();
 
 
