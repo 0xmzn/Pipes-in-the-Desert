@@ -226,6 +226,7 @@ public class Controller {
         gameFrame.pack();
         gameFrame.setLocationRelativeTo(null);
         gameFrame.setVisible(true);
+        gameFrame.repaint();
     }
 
     private void handleKeyPress(KeyEvent e, Player activePlayer){
@@ -323,9 +324,9 @@ public class Controller {
                 if(plumber.pickUpPump(target)){
                     System.out.println("Picked up");
                     gameFrame.getContentPane().remove(target.getPumpPlaceLabel());
+                    target.manufactureElement();
                     gameFrame.repaint();
                 }
-
             }else{
                 System.out.println("No pump to pick up");
             }
@@ -342,6 +343,7 @@ public class Controller {
         return plumberPos.distance(cisternPos)<proximity;
     }
     private void addCisternLabels(Cistern cistern, Point location){
+        printMethodName("addCisternLabels()");
         cistern.getCisternLabel().setBounds(location.x,location.y, 300,300);
         gameFrame.add(cistern.getCisternLabel());
 
@@ -350,6 +352,25 @@ public class Controller {
 
         cistern.getPipeLabelPlace().setBounds(location.x+165,location.y+100,100,100);
         gameFrame.add(cistern.getPipeLabelPlace());
+
+        cistern1.manufactureElement();
+        pumps.add(cistern1.getInventoryPump());
+        pipes.add(cistern1.getInventoryPipe());
+        /*if(cistern1.getInventoryPipe()!=null){
+            placePipeorPump(1,0, cistern1.getInventoryPipe());
+        }*/
+        cistern2.manufactureElement();
+        pumps.add(cistern2.getInventoryPump());
+        pipes.add(cistern2.getInventoryPipe());
+        /*if(cistern2.getInventoryPipe()!=null){
+            placePipeorPump(4,0, cistern2.getInventoryPipe());
+        }*/
+        cistern3.manufactureElement();
+        pumps.add(cistern3.getInventoryPump());
+        pipes.add(cistern3.getInventoryPipe());
+        /*if(cistern3.getInventoryPipe()!=null){
+            placePipeorPump(7,0, cistern3.getInventoryPipe());
+        }*/
         gameFrame.repaint();
 
     }
@@ -371,24 +392,7 @@ public class Controller {
 
         initGrid();
 
-        cistern1.manufactureElement();
-        pumps.add(cistern1.getInventoryPump());
-        pipes.add(cistern1.getInventoryPipe());
-        if(cistern1.getInventoryPipe()!=null){
-            placePipeorPump(1,0, cistern1.getInventoryPipe());
-        }
-        cistern2.manufactureElement();
-        pumps.add(cistern2.getInventoryPump());
-        pipes.add(cistern2.getInventoryPipe());
-        if(cistern2.getInventoryPipe()!=null){
-            placePipeorPump(4,0, cistern2.getInventoryPipe());
-        }
-        cistern3.manufactureElement();
-        pumps.add(cistern3.getInventoryPump());
-        pipes.add(cistern3.getInventoryPipe());
-        if(cistern3.getInventoryPipe()!=null){
-            placePipeorPump(7,0, cistern3.getInventoryPipe());
-        }
+
         startNewRound();
     }
     /**

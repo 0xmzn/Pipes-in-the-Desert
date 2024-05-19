@@ -41,6 +41,7 @@ public class Cistern extends ActiveElement {
             //Pump
             pumpLabelPlace = new JLabel();
             pumpLabelPlace.setBackground(new Color(0,0,0,0));
+            pumpLabelPlace.setVisible(true);
 
             //Pipe
             pipeLabelPlace = new JLabel();
@@ -74,10 +75,14 @@ public class Cistern extends ActiveElement {
         Random random = new Random();
         int randomNumber = random.nextInt(2);
         if(randomNumber==0) {
-            System.out.println("Manufacturing pipe...");
+            /*System.out.println("Manufacturing pipe...");
             inventoryPipe = new Pipe();
             inventoryPipe.setID(idCounter++);
-            schedulePipeManufactureCompletion(5);
+            schedulePipeManufactureCompletion(5);*/
+            System.out.println("Manufacturing pump...");
+            inventoryPump = new Pump();
+            inventoryPump.setID(idCounter++);
+            schedulePumpManufactureCompletion(5);
         }
         else {
             System.out.println("Manufacturing pump...");
@@ -166,7 +171,7 @@ public class Cistern extends ActiveElement {
         this.coordinate = coordinate;
     }
     public void takePump(){
+        printMethodName("takePump");
         inventoryPump = null;
-        manufactureElement();
     }
 }
