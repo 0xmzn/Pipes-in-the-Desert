@@ -3,6 +3,7 @@ import static java.lang.System.out;
 
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.io.Console;
 import java.util.*;
 import java.util.List;  // to avoid ambiguity of instantiation of the List container 
 import java.util.Timer;
@@ -260,11 +261,22 @@ public class Controller {
         // Calculate the new position
         int newX = activePlayer.getCurrentCoordinate().x + moveX;
         int newY = activePlayer.getCurrentCoordinate().y + moveY;
+        int j=(newX-maxX1)/45;
+        int i=(newY)/45;
+        Element tmp= null;
+        if(i >= 0 && j>=0 && i<10 && j<10) {
+            tmp = grid[i][j];
+        }
 
         // Check if the new position is within bounds
-        if ((newX >= minX1 && newX <= maxX1 && newY >= minY1 && newY <= maxY1)
-                ||(newX >= minX2 && newX <= maxX2 && newY >= minY2 && newY <= maxY2)) {
-            activePlayer.move(moveX, moveY);  // Move player
+        if ((newX >= minX1 && newY >= minY1 && newX <=maxX2 && newY <= maxY2)) {
+            if((newX <= maxX1 && newY<=maxY1) ||  (newX>=minX2 && newY>=minY2)) {
+                activePlayer.move(moveX, moveY);  // Move player
+            } else if(((newX > maxX1 || newY>maxY1) && (newX <minX2 || newY<minY2)) && tmp !=null ){
+                if(tmp.isWalkable()){
+                    activePlayer.move(moveX, moveY);
+                }
+            }
             gameFrame.repaint();
         }
 

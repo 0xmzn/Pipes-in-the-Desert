@@ -52,6 +52,11 @@ public class ActiveElement implements Element {
         this.coordinate = coordinate;
     }
 
+    @Override
+    public boolean isWalkable() {
+        return false;
+    }
+
     /**
      * Connects the active element to an end of a pipe.
      *
