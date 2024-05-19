@@ -131,12 +131,12 @@ public class Pipe implements Element {
         isWaterFlowing = waterFlowingState;
     }
     public JLabel getPipeLabel(){
-        printMethodName("getPumpLabel()");
+        printMethodName("getPipeLabel()");
         return pipeLabel;
     }
     private static void printMethodName(String methodName) {
         System.out.println("\n------------------------------------------------------------");
-        System.out.println(methodName + " method of the Controller class is called.");
+        System.out.println(methodName + " method of the Pipe class is called.");
         System.out.println("------------------------------------------------------------\n");
     }
 

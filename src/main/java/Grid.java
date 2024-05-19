@@ -2,7 +2,7 @@ import java.awt.Point;
 
 public class Grid {
     final private int numRows = 10;
-    final private int numColumns = 12;
+    final private int numColumns = 10;
 
     private Element[][] elementsGrid = new Element[numRows][numColumns];
 

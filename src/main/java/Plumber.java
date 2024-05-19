@@ -83,19 +83,21 @@ public class Plumber extends Player {
     public boolean pickUpPump(Cistern cistern) {
         printMethodName("pickUpPump");
 
-        if (inventory != null) {
-            out.println("Your inventory is full!");
-            return false;
-        } 
+
         
         if (cistern.getInventoryPump() == null) {
             out.println("There is no pump in the cistern!");
             return false;
+        }else if (inventory != null) {
+            out.println("Your inventory is full!");
+            return false;
         } else {
             inventory = cistern.getInventoryPump();
+            cistern.takePump();
             out.println("Plumber has picked up a pump from the cistern!");
             return true;
         }
+
     }
 
     /**
@@ -279,5 +281,8 @@ public class Plumber extends Player {
 
     public JLabel getPlumberLabel(){
         return plumberLabel;
+    }
+    public Element getInventory(){
+        return inventory;
     }
 }

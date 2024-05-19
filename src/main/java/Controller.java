@@ -202,6 +202,9 @@ public class Controller {
         addCisternLabels(cistern1, new Point(-10,-30));
         addCisternLabels(cistern2, new Point(-10,100));
         addCisternLabels(cistern3, new Point(-10,240));
+        cistern1.setCoordinate(new Point(90,80));
+        cistern2.setCoordinate(new Point(90,210));
+        cistern3.setCoordinate(new Point(90,350));
 
         //walking area
         walkArea(gameFrame.getContentPane(), new Color(94, 59, 28), new Point(99, 50), new Dimension(60, 450));
@@ -224,6 +227,7 @@ public class Controller {
         gameFrame.pack();
         gameFrame.setLocationRelativeTo(null);
         gameFrame.setVisible(true);
+        gameFrame.repaint();
     }
 
     private void handleKeyPress(KeyEvent e, Player activePlayer){
@@ -243,6 +247,11 @@ public class Controller {
             case KeyEvent.VK_D:
                 moveX = 10;   // Move plumber right
                 break;
+            case KeyEvent.VK_P:
+                if(activePlayer instanceof Plumber){
+                    pickUpPumpAction((Plumber)activePlayer);
+                }
+                break;
         }
 
         //Defining the walking area at cisterns bounds
@@ -261,24 +270,14 @@ public class Controller {
         // Calculate the new position
         int newX = activePlayer.getCurrentCoordinate().x + moveX;
         int newY = activePlayer.getCurrentCoordinate().y + moveY;
-        int j=(newX-maxX1)/45;
-        int i=(newY)/45;
-        Element tmp= null;
-        if(i >= 0 && j>=0 && i<10 && j<10) {
-            tmp = grid[i][j];
-        }
 
         // Check if the new position is within bounds
-        if ((newX >= minX1 && newY >= minY1 && newX <=maxX2 && newY <= maxY2)) {
-            if((newX <= maxX1 && newY<=maxY1) ||  (newX>=minX2 && newY>=minY2)) {
-                activePlayer.move(moveX, moveY);  // Move player
-            } else if(((newX > maxX1 || newY>maxY1) && (newX <minX2 || newY<minY2)) && tmp !=null ){
-                if(tmp.isWalkable()){
-                    activePlayer.move(moveX, moveY);
-                }
-            }
+        if ((newX >= minX1 && newX <= maxX1 && newY >= minY1 && newY <= maxY1)
+                ||(newX >= minX2 && newX <= maxX2 && newY >= minY2 && newY <= maxY2)) {
+            activePlayer.move(moveX, moveY);  // Move player
             gameFrame.repaint();
         }
+        //System.out.println(newX+" "+newY);
 
     }
     //Rendering the players
@@ -300,7 +299,52 @@ public class Controller {
         gameFrame.getContentPane().add(saboteur2.getPlumberLabel());
     }
 
+    private void pickUpPumpAction(Plumber plumber){
+        printMethodName("PickUpPump");
+        Point plumberPos = plumber.getCurrentCoordinate();
+        System.out.println(plumberPos);
+
+        Cistern target = null;
+        if(isNear(plumberPos, cistern1)){
+
+            printMethodName("Picking up from cistern1");
+            target = cistern1;
+        } else if(isNear(plumberPos,cistern2)) {
+
+            printMethodName("Picking up from cistern2");
+            target = cistern2;
+        } else if(isNear(plumberPos, cistern3)){
+
+            printMethodName("Picking up from cistern3");
+            target = cistern3;
+        }
+
+        if(target!=null){
+            Pump pump = target.getInventoryPump();
+            if(pump!=null){
+                if(plumber.pickUpPump(target)){
+                    System.out.println("Picked up");
+                    gameFrame.getContentPane().remove(target.getPumpPlaceLabel());
+                    target.manufactureElement();
+                    gameFrame.repaint();
+                }
+            }else{
+                System.out.println("No pump to pick up");
+            }
+        }else{
+            System.out.println("Not close to cisterns");
+        }
+
+    }
+    private boolean isNear(Point plumberPos, Cistern cistern){
+        printMethodName("IsNear");
+        Point cisternPos = cistern.getCoordinate();
+        //System.out.println(cisternPos);
+        int proximity = 20;
+        return plumberPos.distance(cisternPos)<proximity;
+    }
     private void addCisternLabels(Cistern cistern, Point location){
+        printMethodName("addCisternLabels()");
         cistern.getCisternLabel().setBounds(location.x,location.y, 300,300);
         gameFrame.add(cistern.getCisternLabel());
 
@@ -309,6 +353,27 @@ public class Controller {
 
         cistern.getPipeLabelPlace().setBounds(location.x+165,location.y+100,100,100);
         gameFrame.add(cistern.getPipeLabelPlace());
+
+        cistern1.manufactureElement();
+        pumps.add(cistern1.getInventoryPump());
+        pipes.add(cistern1.getInventoryPipe());
+        /*if(cistern1.getInventoryPipe()!=null){
+            placePipeorPump(1,0, cistern1.getInventoryPipe());
+        }*/
+        cistern2.manufactureElement();
+        pumps.add(cistern2.getInventoryPump());
+        pipes.add(cistern2.getInventoryPipe());
+        /*if(cistern2.getInventoryPipe()!=null){
+            placePipeorPump(4,0, cistern2.getInventoryPipe());
+        }*/
+        cistern3.manufactureElement();
+        pumps.add(cistern3.getInventoryPump());
+        pipes.add(cistern3.getInventoryPipe());
+        /*if(cistern3.getInventoryPipe()!=null){
+            placePipeorPump(7,0, cistern3.getInventoryPipe());
+        }*/
+        gameFrame.repaint();
+
     }
     public void placePipeorPump(int row, int col, Element element){
         if(row >=0 &&row<GRID_ROWS&&col>=0 && col<GRID_COLS){
@@ -327,25 +392,6 @@ public class Controller {
         renderPlayers();
 
         initGrid();
-
-        cistern1.manufactureElement();
-        pumps.add(cistern1.getInventoryPump());
-        pipes.add(cistern1.getInventoryPipe());
-        if(cistern1.getInventoryPipe()!=null){
-            placePipeorPump(1,0, cistern1.getInventoryPipe());
-        }
-        cistern2.manufactureElement();
-        pumps.add(cistern2.getInventoryPump());
-        pipes.add(cistern2.getInventoryPipe());
-        if(cistern2.getInventoryPipe()!=null){
-            placePipeorPump(4,0, cistern2.getInventoryPipe());
-        }
-        cistern3.manufactureElement();
-        pumps.add(cistern3.getInventoryPump());
-        pipes.add(cistern3.getInventoryPipe());
-        if(cistern3.getInventoryPipe()!=null){
-            placePipeorPump(7,0, cistern3.getInventoryPipe());
-        }
 
 
         startNewRound();
