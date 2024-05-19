@@ -149,6 +149,7 @@ public class Controller {
                 grid[i][j] = null; //initially nothing
             }
         }
+
         JPanel gameGridPanel = new JPanel(){
             @Override
             protected void paintComponent(Graphics g){
@@ -158,32 +159,14 @@ public class Controller {
                 g.drawImage(backImage,0,0,getWidth(),getHeight(),this);
             }
         };
+
+
         int boardWidth = 450;
         int boardHeight = 450;
-        JPanel gameBoard = new JPanel() {
-            @Override
-            protected void paintComponent(Graphics g) {
-                super.paintComponent(g);
-                g.setColor(new Color(232, 140, 35,200)); // Brown color
-                g.fillRect(160, 50, boardWidth, boardHeight);
-                // Draw grid lines or other game elements as needed
-                Graphics2D g2d = (Graphics2D) g;
-                g2d.setStroke(new BasicStroke(2));
-                g.setColor(new Color(153, 88, 14,200));
-                int cellWidth = boardWidth / 10;
-                int cellHeight = boardHeight / 10;
-                // Draw grid lines
-                for (int i = 0; i <= 10; i++) {
-                    g.drawLine(160, 50+i * cellHeight, 160+boardWidth, 50+i * cellHeight);
-                }
-                for (int j = 0; j <= 10; j++) {
-                    g.drawLine(160+j * cellWidth, 50, 160+j * cellWidth, 50+boardHeight);
-                }
-            }
-        };
+        GridController gridController = new GridController(new GridView(boardWidth, boardHeight));
+        JPanel gameBoard = gridController.getGridPanel();
+        gameBoard.setBounds(160, 50, boardWidth, boardHeight);
         gameBoard.setOpaque(false);
-        gameGridPanel.setLayout(new BorderLayout());
-        gameGridPanel.add(gameBoard, BorderLayout.CENTER);
 
         plumberScoreLabel.setForeground(Color.WHITE);
         saboteurScoreLabel.setForeground(Color.WHITE);
@@ -235,7 +218,7 @@ public class Controller {
             }
         });
 
-
+        gameFrame.add(gameBoard, BorderLayout.CENTER);
         gameFrame.getContentPane().add(gameGridPanel);
         gameFrame.pack();
         gameFrame.setLocationRelativeTo(null);
