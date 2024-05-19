@@ -107,4 +107,7 @@ public abstract class Player{
     public Point getCurrentCoordinate() {
         return coordinate;
     }
+    public void setCoordinate(Point coordinate){
+        this.coordinate = coordinate;
+    }
 }
