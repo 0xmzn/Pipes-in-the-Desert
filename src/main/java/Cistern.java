@@ -20,6 +20,7 @@ public class Cistern extends ActiveElement {
     private Pipe inventoryPipe;
     private Pump inventoryPump;
     private Timer timer;
+    private Point coordinate;
     private boolean isManufacturing;
     private JLabel cisternLabel;
     private JLabel pumpLabelPlace;
@@ -48,6 +49,7 @@ public class Cistern extends ActiveElement {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+        manufactureElement();
     }
 
     /**
@@ -73,8 +75,6 @@ public class Cistern extends ActiveElement {
         int randomNumber = random.nextInt(2);
         if(randomNumber==0) {
             System.out.println("Manufacturing pipe...");
-
-            Point cisternCoordinate = this.getCoordinate();
             inventoryPipe = new Pipe();
             inventoryPipe.setID(idCounter++);
             schedulePipeManufactureCompletion(5);
@@ -114,17 +114,19 @@ public class Cistern extends ActiveElement {
     }
 
     private void updateCisternLabelWithPump() {
-        printMethodName("updateCisternLabel");
         if (inventoryPump != null) {
+            System.out.println("Inventory is not NULL from updateCisternLabelWithPump");
             JLabel pumpLabel = inventoryPump.getPumpLabel();
             pumpLabelPlace.setIcon(pumpLabel.getIcon());
             pumpLabel.setBounds(100,100,100,100);
             pumpLabelPlace.repaint();
+            System.out.println("Finished from updateCisternLabelWithPump");
+        }else{
+            System.out.println("Inventory NULL from updateCisternLabelWithPump");
         }
     }
 
     private void updateCisternLabelWithPipe(){
-        printMethodName("updateCisternLabelWithPipe");
         if(inventoryPipe!=null){
             JLabel pipeLabel = inventoryPipe.getPipeLabel();
             pipeLabelPlace.setIcon(pipeLabel.getIcon());
@@ -146,17 +148,25 @@ public class Cistern extends ActiveElement {
     }
 
     public JLabel getPumpPlaceLabel() {
-        printMethodName("getPumpLabel");
         return pumpLabelPlace;
     }
 
     public JLabel getPipeLabelPlace(){
-        printMethodName("getPipeLabelPlace");
         return pipeLabelPlace;
     }
     private static void printMethodName(String methodName) {
         System.out.println("\n------------------------------------------------------------");
         System.out.println(methodName + " method of the Controller class is called.");
         System.out.println("------------------------------------------------------------\n");
+    }
+    public Point getCoordinate(){
+        return coordinate;
+    }
+    public void setCoordinate(Point coordinate){
+        this.coordinate = coordinate;
+    }
+    public void takePump(){
+        inventoryPump = null;
+        manufactureElement();
     }
 }

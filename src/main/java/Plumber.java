@@ -93,6 +93,7 @@ public class Plumber extends Player {
             return false;
         } else {
             inventory = cistern.getInventoryPump();
+            cistern.takePump();
             out.println("Plumber has picked up a pump from the cistern!");
             return true;
         }
@@ -279,5 +280,8 @@ public class Plumber extends Player {
 
     public JLabel getPlumberLabel(){
         return plumberLabel;
+    }
+    public Element getInventory(){
+        return inventory;
     }
 }
