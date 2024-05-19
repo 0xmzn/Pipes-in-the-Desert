@@ -1,3 +1,10 @@
+import javax.imageio.ImageIO;
+import javax.swing.*;
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+
 /**
  * Represents a Spring, which is an ActiveElement in the pipe system.
  */
@@ -12,6 +19,8 @@ public class Spring extends ActiveElement {
      */
     boolean active;
 
+    private JLabel springLabel;
+
     /**
      * Constructs a new Spring object with default values.
      * The speed is set to 1 and the spring is initially inactive.
@@ -20,6 +29,14 @@ public class Spring extends ActiveElement {
         super();
         speed = 1;
         active = false;
+        try {
+            BufferedImage image = ImageIO.read(new File("res/spring.png"));
+            ImageIcon cisternIcon = new ImageIcon(image);
+            springLabel = new JLabel(cisternIcon);
+            springLabel.setBackground(new Color(0,0,0,0));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     /**
@@ -36,5 +53,8 @@ public class Spring extends ActiveElement {
      */
     public boolean getIsActive() {
         return active;
+    }
+    public JLabel getSpringLabel(){
+        return springLabel;
     }
 }

@@ -1,20 +1,21 @@
 import java.awt.Point;
 import java.util.List;
 import java.util.Scanner;
+
 import static java.lang.System.out;
 import java.awt.Point;
-
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 /**
  * The abstract class representing a player in the game. Unites common methods
  * used by both Plumber and Saboteur.
  */
-public abstract class Player {
+public abstract class Player{
 
-    protected final Scanner scanner;
-    /**
-     * The coordinate of the player on the game grid.
-     */
-    protected Point coordinate;
+    public Point coordinate;
+
+    private final int moveAmount = 10;
+
     /**
      * The possible steppable cells for the current player.
      */
@@ -24,73 +25,12 @@ public abstract class Player {
      * Constructs a new Player object. Initializes the scanner to reuse in all
      * methods.
      */
-    protected Player() {
-        scanner = new Scanner(System.in);
+    protected Player(Point coordinate) {
+        this.coordinate = coordinate;
     }
 
-    /**
-     * Moves the player to the left.
-     *
-     * @return true if the move is successful, false otherwise
-     */
-    public boolean moveA() {
-        printMethodName("moveA()");
-        if (checkStepableCell(coordinate.x - 1, coordinate.y)) {
-            coordinate = new Point(coordinate.x - 1, coordinate.y);
-            return true;
-        } else {
-            out.println("Cannot move left, obstacle detected.");
-            return false;
-        }
-    }
+    public abstract void move(int dx, int dy);
 
-    /**
-     * Moves the player up.
-     *
-     * @return true if the move is successful, false otherwise
-     */
-    public boolean moveW() {
-        printMethodName("moveW()");
-        if (checkStepableCell(coordinate.x, coordinate.y - 1)) {
-            coordinate = new Point(coordinate.x, coordinate.y - 1);
-            return true;
-        } else {
-            out.println("Cannot move up, obstacle detected.");
-            return false;
-        }
-    }
-
-    /**
-     * Moves the player down.
-     *
-     * @return true if the move is successful, false otherwise
-     */
-    public boolean moveS() {
-        printMethodName("moveS()");
-        if (checkStepableCell(coordinate.x, coordinate.y + 1)) {
-            coordinate = new Point(coordinate.x, coordinate.y + 1);
-            return true;
-        } else {
-            out.println("Cannot move down, obstacle detected.");
-            return false;
-        }
-    }
-
-    /**
-     * Moves the player to the right.
-     *
-     * @return true if the move is successful, false otherwise
-     */
-    public boolean moveD() {
-        printMethodName("moveD()");
-        if (checkStepableCell(coordinate.x + 1, coordinate.y)) {
-            coordinate = new Point(coordinate.x + 1, coordinate.y);
-            return true;
-        } else {
-            out.println("Cannot move right, obstacle detected.");
-            return false;
-        }
-    }
 
     /**
      * Prints the name of the current method for debugging purposes.
@@ -164,4 +104,10 @@ public abstract class Player {
         }
     }
 
+    public Point getCurrentCoordinate() {
+        return coordinate;
+    }
+    public void setCoordinate(Point coordinate){
+        this.coordinate = coordinate;
+    }
 }

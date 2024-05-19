@@ -1,7 +1,12 @@
+import javax.imageio.ImageIO;
+import javax.swing.*;
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
-import java.awt.Point;
 
 /**
  * Represents a cistern that manufactures and stores elements.
@@ -16,13 +21,35 @@ public class Cistern extends ActiveElement {
     private Pump inventoryPump;
     private Timer timer;
     private boolean isManufacturing;
+    private JLabel cisternLabel;
+    private JLabel pumpLabelPlace;
+    private JLabel pipeLabelPlace;
+    private static int idCounter = 0;
 
     public Cistern() {
         this.inventoryPipe = null;
         this.inventoryPump = null;
         this.timer = new Timer();
         this.isManufacturing = false;
+        try {
+            BufferedImage image = ImageIO.read(new File("res/Cistern.png"));
+            ImageIcon cisternIcon = new ImageIcon(image);
+            cisternLabel = new JLabel(cisternIcon);
+            cisternLabel.setBackground(new Color(0,0,0,0));
+
+            //Pump
+            pumpLabelPlace = new JLabel();
+            pumpLabelPlace.setBackground(new Color(0,0,0,0));
+
+            //Pipe
+            pipeLabelPlace = new JLabel();
+            pipeLabelPlace.setBackground(new Color(0,0,0,0));
+
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
+
     /**
      * Manufactures new elements in the cistern.
      * The method checks whether the inventoryElement attribute is instantiated or
@@ -31,6 +58,7 @@ public class Cistern extends ActiveElement {
      * intervals.
      */
     public void manufactureElement() {
+        printMethodName("manufactureElement");
         if(isManufacturing){
             System.out.println("Manufacturing is already in progress. Cannot manufacture another element.\n");
             return;
@@ -47,26 +75,62 @@ public class Cistern extends ActiveElement {
             System.out.println("Manufacturing pipe...");
 
             Point cisternCoordinate = this.getCoordinate();
-            inventoryPipe = new Pipe(new EndOfPipe(cisternCoordinate), new EndOfPipe(new Point((int)cisternCoordinate.getX()+1, (int)cisternCoordinate.getY())));
-
-            scheduleManufactureCompletion(15);
+            inventoryPipe = new Pipe();
+            inventoryPipe.setID(idCounter++);
+            schedulePipeManufactureCompletion(5);
         }
         else {
-            System.out.println("Manufacturing pipe...");
+            System.out.println("Manufacturing pump...");
             inventoryPump = new Pump();
-            scheduleManufactureCompletion(15);
+            inventoryPump.setID(idCounter++);
+            schedulePumpManufactureCompletion(10);
         }
     }
 
-    private void scheduleManufactureCompletion(int seconds){
+    private void schedulePipeManufactureCompletion(int seconds){
+        printMethodName("schedulePipeManufactureCompletion");
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
-                System.out.println("Manufacturing completed.\n");
+                System.out.println("Manufacturing of pipe completed.\n");
                 isManufacturing = false;
+                updateCisternLabelWithPipe();
             }
-        }, seconds*1000);
+        }, seconds * 1000);
         isManufacturing = true;
+    }
+
+    public void schedulePumpManufactureCompletion(int seconds){
+        printMethodName("schedulePumpManufactureCompletion");
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                System.out.println("Manufacturing of pump completed.\n");
+                isManufacturing = false;
+                updateCisternLabelWithPump();
+            }
+        }, seconds * 1000);
+        isManufacturing = true;
+    }
+
+    private void updateCisternLabelWithPump() {
+        printMethodName("updateCisternLabel");
+        if (inventoryPump != null) {
+            JLabel pumpLabel = inventoryPump.getPumpLabel();
+            pumpLabelPlace.setIcon(pumpLabel.getIcon());
+            pumpLabel.setBounds(100,100,100,100);
+            pumpLabelPlace.repaint();
+        }
+    }
+
+    private void updateCisternLabelWithPipe(){
+        printMethodName("updateCisternLabelWithPipe");
+        if(inventoryPipe!=null){
+            JLabel pipeLabel = inventoryPipe.getPipeLabel();
+            pipeLabelPlace.setIcon(pipeLabel.getIcon());
+            pipeLabel.setBounds(100,100,100,100);
+            pipeLabelPlace.repaint();
+        }
     }
 
     public Pipe getInventoryPipe() {
@@ -75,5 +139,24 @@ public class Cistern extends ActiveElement {
 
     public Pump getInventoryPump() {
         return inventoryPump;
+    }
+
+    public JLabel getCisternLabel(){
+        return cisternLabel;
+    }
+
+    public JLabel getPumpPlaceLabel() {
+        printMethodName("getPumpLabel");
+        return pumpLabelPlace;
+    }
+
+    public JLabel getPipeLabelPlace(){
+        printMethodName("getPipeLabelPlace");
+        return pipeLabelPlace;
+    }
+    private static void printMethodName(String methodName) {
+        System.out.println("\n------------------------------------------------------------");
+        System.out.println(methodName + " method of the Controller class is called.");
+        System.out.println("------------------------------------------------------------\n");
     }
 }

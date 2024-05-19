@@ -1,7 +1,11 @@
-import static java.lang.System.exit;
+import javax.swing.*;
 import static java.lang.System.out;
+
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.util.*;
 import java.util.List;  // to avoid ambiguity of instantiation of the List container 
+import java.util.Timer;
 import java.util.concurrent.TimeUnit;
 import java.awt.*;
 
@@ -46,40 +50,81 @@ public class Controller {
      * network or not.
      */
     private boolean isWaterFlowing;
-    private Plumber plumber1;
-    private Plumber plumber2;
-    private Saboteur saboteur1;
-    private Saboteur saboteur2;
+    private final Plumber plumber1;
+    private final Plumber plumber2;
+    private final Saboteur saboteur1;
+    private final Saboteur saboteur2;
     private int round;
     private boolean gameRunning;
 
     List<Pipe> pipes;
     List<Pump> pumps;
 
-    private Cistern cistern1;
-    private Cistern cistern2;
-    private Cistern cistern3;
+    private final Cistern cistern1;
+    private final Cistern cistern2;
+    private final Cistern cistern3;
 
+    private final Spring spring1;
+    private final Spring spring2;
+    private final Spring spring3;
+
+    private final JFrame gameFrame;
+    private JLabel plumberScoreLabel;
+    private JLabel saboteurScoreLabel;
+    private final JLabel timerLabel;
+    private final JLabel roundLabel;
+
+    private int remainingTime;
+
+    private Point Plumber1Coordinate;
+    private Point Plumber2Coordinate;
+    private Point Saboteur1Coordinate;
+    private Point Saboteur2Coordinate;
+
+    private Player activePlayer;
+    private final int GRID_ROWS = 10;
+    private final int GRID_COLS = 10;
     /**
      * Constructs a new Controller object. Initializes the scanner to reuse for user
      * input.
      */
     public Controller() {
         scanner = new Scanner(System.in);
-        grid = new Element[10][12];
+        grid = new Element[GRID_ROWS][GRID_COLS];
         plumberScore = 0;
         saboteurScore = 0;
-        plumber1 = new Plumber();
-        plumber2 = new Plumber();
-        saboteur1 = new Saboteur();
-        saboteur2 = new Saboteur();
-        round = 0;
+        Plumber1Coordinate = new Point(115,130);
+        Plumber2Coordinate = new Point(115,270);
+        Saboteur1Coordinate = new Point(605,130);
+        Saboteur2Coordinate = new Point(605,280);
+        plumber1 = new Plumber(Plumber1Coordinate);
+        plumber2 = new Plumber(Plumber2Coordinate);
+        saboteur1 = new Saboteur(Saboteur1Coordinate);
+        saboteur2 = new Saboteur(Saboteur2Coordinate);
+
+        round = 1;
+
         gameRunning = true;
+
         pipes = new ArrayList<>();
         pumps = new ArrayList<>();
+
+        gameFrame = new JFrame("PIPES IN THE DESERT");
+        gameFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        gameFrame.setPreferredSize(new Dimension(800,600));
+
         cistern1 = new Cistern();
         cistern2 = new Cistern();
         cistern3 = new Cistern();
+
+        spring1 = new Spring();
+        spring2 = new Spring();
+        spring3 = new Spring();
+
+        plumberScoreLabel = new JLabel("Plumber Score: "+ plumberScore);
+        saboteurScoreLabel = new JLabel(saboteurScore+ " :Saboteur Score");
+        timerLabel = new JLabel("Time: "+remainingTime);
+        roundLabel = new JLabel("Round: "+round);
     }
 
     /**
@@ -94,83 +139,226 @@ public class Controller {
     }
 
     /**
-     * Displays the initial main menu of the game and handles user input.
-     */
-    public void displayMenu() {
-        // TODO: update with prototype version
-        printMethodName("displayMenu()");
-
-        System.out.println("WELCOME TO THE \"PIPES IN THE DESERT\" GAME\n");
-        System.out.println("Choose the following options:");
-        System.out.println("1.Start Game\n2.Exit");
-
-        int choice = scanner.nextInt();
-        switch (choice) {
-            case 1:
-                initGrid();
-                startGame();
-                break;
-            case 2:
-                onExit();
-                break;
-            default:
-                System.out.println("Invalid choice! Please try again.");
-                displayMenu();
-                break;
-        }
-    }
-
-    /**
      * Initializes the game grid.
      */
     public void initGrid() {
-        // TODO: update with prototype version
         printMethodName("initGrid()");
-        for (int i = 0; i < grid.length; i++) {
-            for (int j = 0; j < grid[i].length; j++) {
-                grid[i][j] = null;
+
+        for(int i = 0; i<GRID_ROWS; i++){
+            for(int j = 0; j<GRID_COLS; j++){
+                grid[i][j] = null; //initially nothing
             }
         }
-        grid[0][3] = cistern1;
-        grid[0][6] = cistern2;
-        grid[0][9] = cistern3;
 
-        grid[11][3] = new Spring();
-        grid[11][6] = new Spring();
-        grid[11][9] = new Spring();
+        JPanel gameGridPanel = new JPanel(){
+            @Override
+            protected void paintComponent(Graphics g){
+                super.paintComponent(g);
+                ImageIcon imageIcon = new ImageIcon("res/gamegrid2.jpg");
+                Image backImage = imageIcon.getImage();
+                g.drawImage(backImage,0,0,getWidth(),getHeight(),this);
+            }
+        };
+
+
+        int boardWidth = 450;
+        int boardHeight = 450;
+        GridController gridController = new GridController(new GridView(boardWidth, boardHeight));
+        JPanel gameBoard = gridController.getGridPanel();
+        gameBoard.setBounds(160, 50, boardWidth, boardHeight);
+        gameBoard.setOpaque(false);
+
+        plumberScoreLabel.setForeground(Color.WHITE);
+        saboteurScoreLabel.setForeground(Color.WHITE);
+        timerLabel.setForeground(Color.WHITE);
+        roundLabel.setForeground(Color.WHITE);
+        plumberScoreLabel.setBounds(10, 20, 400, 20); // x, y, width, height
+        saboteurScoreLabel.setBounds(480, 20, 400, 20); // x, y, width, height
+        timerLabel.setBounds(620, 540, 150, 20);
+        roundLabel.setBounds(450, 540, 150, 20);
+
+        gameFrame.getContentPane().add(plumberScoreLabel);
+        gameFrame.getContentPane().add(saboteurScoreLabel);
+        gameFrame.getContentPane().add(timerLabel);
+        gameFrame.getContentPane().add(roundLabel);
+
+        //1st
+        spring1.getSpringLabel().setBounds(350,-185,600,600);
+        spring1.getSpringLabel().setOpaque(true);
+        gameFrame.getContentPane().add(spring1.getSpringLabel());
+
+        //2nd
+        spring2.getSpringLabel().setBounds(350,-45,600,600);
+        spring2.getSpringLabel().setOpaque(true);
+        gameFrame.getContentPane().add(spring2.getSpringLabel());
+
+        //3rd
+        spring3.getSpringLabel().setBounds(350,85,600,600);
+        spring3.getSpringLabel().setOpaque(true);
+        gameFrame.getContentPane().add(spring3.getSpringLabel());
+
+        //Cisterns
+        addCisternLabels(cistern1, new Point(-10,-30));
+        addCisternLabels(cistern2, new Point(-10,100));
+        addCisternLabels(cistern3, new Point(-10,240));
+
+        //walking area
+        walkArea(gameFrame.getContentPane(), new Color(94, 59, 28), new Point(99, 50), new Dimension(60, 450));
+        walkArea(gameFrame.getContentPane(), new Color(94, 59, 28), new Point(612, 50), new Dimension(60, 450));
+
+        //pumps manufacture area
+        walkArea(gameFrame.getContentPane(),new Color(51,25,0), new Point(50,95), new Dimension(50,50));
+        walkArea(gameFrame.getContentPane(),new Color(51,25,0), new Point(50,225), new Dimension(50,50));
+        walkArea(gameFrame.getContentPane(),new Color(51,25,0), new Point(50,365), new Dimension(50,50));
+
+        gameFrame.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                handleKeyPress(e, activePlayer);
+            }
+        });
+
+        gameFrame.add(gameBoard, BorderLayout.CENTER);
+        gameFrame.getContentPane().add(gameGridPanel);
+        gameFrame.pack();
+        gameFrame.setLocationRelativeTo(null);
+        gameFrame.setVisible(true);
     }
 
+    private void handleKeyPress(KeyEvent e, Player activePlayer){
+        int key = e.getKeyCode();
+        int moveX=0;
+        int moveY=0;
+        switch (key){
+            case KeyEvent.VK_W:
+                moveY = -10;  // Move plumber up
+                break;
+            case KeyEvent.VK_S:
+                moveY = 10;   // Move plumber down
+                break;
+            case KeyEvent.VK_A:
+                moveX = -10;  // Move plumber left
+                break;
+            case KeyEvent.VK_D:
+                moveX = 10;   // Move plumber right
+                break;
+        }
+
+        //Defining the walking area at cisterns bounds
+        int minX1 = 90;
+        int maxX1 = 130;
+        int minY1 = 10;
+        int maxY1 = 440;
+
+        //Defining the walking area at springs bounds
+        int minX2 = 590;
+        int maxX2 = 630;
+        int minY2 = -10;
+        int maxY2 = 430;
+
+
+        // Calculate the new position
+        int newX = activePlayer.getCurrentCoordinate().x + moveX;
+        int newY = activePlayer.getCurrentCoordinate().y + moveY;
+
+        // Check if the new position is within bounds
+        if ((newX >= minX1 && newX <= maxX1 && newY >= minY1 && newY <= maxY1)
+                ||(newX >= minX2 && newX <= maxX2 && newY >= minY2 && newY <= maxY2)) {
+            activePlayer.move(moveX, moveY);  // Move player
+            gameFrame.repaint();
+        }
+
+    }
+    //Rendering the players
+    public void renderPlayers(){
+        plumber1.getPlumberLabel().setBounds(Plumber1Coordinate.x, Plumber1Coordinate.y, 40, 70);
+        plumber1.getPlumberLabel().setOpaque(true);
+        gameFrame.getContentPane().add(plumber1.getPlumberLabel());
+
+        plumber2.getPlumberLabel().setBounds(Plumber2Coordinate.x, Plumber2Coordinate.y, 40, 70);
+        plumber2.getPlumberLabel().setOpaque(true);
+        gameFrame.getContentPane().add(plumber2.getPlumberLabel());
+
+        saboteur1.getPlumberLabel().setBounds(Saboteur1Coordinate.x, Saboteur1Coordinate.y, 60, 70);
+        saboteur1.getPlumberLabel().setOpaque(true);
+        gameFrame.getContentPane().add(saboteur1.getPlumberLabel());
+
+        saboteur2.getPlumberLabel().setBounds(Saboteur2Coordinate.x, Saboteur2Coordinate.y, 60, 70);
+        saboteur2.getPlumberLabel().setOpaque(true);
+        gameFrame.getContentPane().add(saboteur2.getPlumberLabel());
+    }
+
+    private void addCisternLabels(Cistern cistern, Point location){
+        cistern.getCisternLabel().setBounds(location.x,location.y, 300,300);
+        gameFrame.add(cistern.getCisternLabel());
+
+        cistern.getPumpPlaceLabel().setBounds(location.x+60,location.y+100,100,100);
+        gameFrame.add(cistern.getPumpPlaceLabel());
+
+        cistern.getPipeLabelPlace().setBounds(location.x+165,location.y+100,100,100);
+        gameFrame.add(cistern.getPipeLabelPlace());
+    }
+    public void placePipeorPump(int row, int col, Element element){
+        if(row >=0 &&row<GRID_ROWS&&col>=0 && col<GRID_COLS){
+            grid[row][col] = element;
+        }
+    }
     /**
      * Starts the game and handles user commands. Called in the main game loop.
      * Gives users all the callable methods to interact with the game.
      */
     public void startGame() {
-        // TODO: update with prototype version
         printMethodName("startGame()");
         System.out.println("THE GAME HAS STARTED!!\n");
-        //start the game timer
-        GameTimer.startTimer();
 
-        while(gameRunning){
-            manageRounds();
+        activePlayer = plumber1;
+        renderPlayers();
 
-            cistern1.manufactureElement();
-            cistern2.manufactureElement();
-            cistern3.manufactureElement();
+        initGrid();
 
-            pipes.add(cistern1.getInventoryPipe());
-            pumps.add(cistern1.getInventoryPump());
-
-            pipes.add(cistern2.getInventoryPipe());
-            pumps.add(cistern2.getInventoryPump());
-
-            pipes.add(cistern3.getInventoryPipe());
-            pumps.add(cistern3.getInventoryPump());
-
+        cistern1.manufactureElement();
+        pumps.add(cistern1.getInventoryPump());
+        pipes.add(cistern1.getInventoryPipe());
+        if(cistern1.getInventoryPipe()!=null){
+            placePipeorPump(1,0, cistern1.getInventoryPipe());
         }
-        endGame();
-    }
+        cistern2.manufactureElement();
+        pumps.add(cistern2.getInventoryPump());
+        pipes.add(cistern2.getInventoryPipe());
+        if(cistern2.getInventoryPipe()!=null){
+            placePipeorPump(4,0, cistern2.getInventoryPipe());
+        }
+        cistern3.manufactureElement();
+        pumps.add(cistern3.getInventoryPump());
+        pipes.add(cistern3.getInventoryPipe());
+        if(cistern3.getInventoryPipe()!=null){
+            placePipeorPump(7,0, cistern3.getInventoryPipe());
+        }
 
+
+        startNewRound();
+    }
+    /**
+     * Draw walking area on the content pane.
+     *
+     * @param contentPane The content pane to draw on.
+     * @param color       The color of the rectangle.
+     * @param location    The location of the rectangle.
+     * @param size        The size of the rectangle.
+     */
+    private void walkArea(Container contentPane, Color color, Point location, Dimension size) {
+        JPanel rectanglePanel = new JPanel() {
+            @Override
+            protected void paintComponent(Graphics g) {
+                super.paintComponent(g);
+                g.setColor(color);
+                g.fillRect(0, 0, getWidth(), getHeight());
+            }
+        };
+        rectanglePanel.setBounds(location.x, location.y, size.width, size.height);
+        rectanglePanel.setOpaque(false);
+        contentPane.add(rectanglePanel);
+    }
     /**
      * Tracks the water flow in the game and increments corresponding saboteur or
      * plumber scores.
@@ -237,6 +425,40 @@ public class Controller {
     }
 
     /**
+     * Updates the timer label with the remaining time.
+     *
+     * @param seconds the remaining time in seconds
+     */
+    public void updateTimerLabel(int seconds) {
+        SwingUtilities.invokeLater(() -> {
+            timerLabel.setText("Time: " + seconds);
+        });
+    }
+
+    // Modified method to start a new round
+    public void startNewRound() {
+        if (!gameRunning) {
+            endGame();
+            return;
+        }
+        remainingTime = 30;
+        updateTimerLabel(remainingTime);
+        Timer roundTimer = new Timer();
+        roundTimer.scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                if (remainingTime > 0) {
+                    remainingTime--;
+                    updateTimerLabel(remainingTime);
+                } else {
+                    roundTimer.cancel();
+                    manageRounds();
+                    startNewRound();
+                }
+            }
+        }, 0, 1000);
+    }
+    /**
      * Breaks a pump if there is one not broken currently.
      */
     public void breakPump() {
@@ -272,155 +494,21 @@ public class Controller {
 
     /**
      * Takes the turn from the active player and gives to the next player.
-     * 
-     * @param nextPlayer The next player to receive the turn.
-     * @return true if the turn was successfully given, false otherwise.
-     */
-    public boolean giveTurn(Player nextPlayer) {
-        // TODO: update with prototype version
-        printMethodName("giveTurn()");
-
-        if (nextPlayer instanceof Plumber) {
-            System.out.println("List of commands:\n");
-            System.out.println("moveA\n");
-            System.out.println("moveD\n");
-            System.out.println("moveS\n");
-            System.out.println("moveW\n");
-            System.out.println("fix\n");
-            System.out.println("pickPipeEnd\n");
-            System.out.println("pickPump\n");
-            System.out.println("placePipeEnd\n");
-            System.out.println("installPump\n");
-            System.out.println("changeWaterDirection\n");
-            System.out.println("connect\n");
-            System.out.println("disconnect\n");
-        } else if (nextPlayer instanceof Saboteur) {
-            System.out.println("List of commands:\n");
-            System.out.println("moveA\n");
-            System.out.println("moveD\n");
-            System.out.println("moveS\n");
-            System.out.println("moveW\n");
-            System.out.println("puncture\n");
-            System.out.println("changeWaterDirection\n");
-        }
-
-        Timer timer = new Timer();
-        timer.schedule(new TimerTask() {
-            @Override
-            public void run() {
-                System.out.println("Time's up! Next player's turn.");
-                takeTurn();
-                timer.cancel();
-            }
-        },30*1000);
-
-        String command = scanner.nextLine().trim().toLowerCase();
-        switch(command){
-            case "fix":
-                if (nextPlayer instanceof Plumber) {
-                    ((Plumber) nextPlayer).fixElement(new Pump()); // Call fixPipe method from Plumber class
-                } else {
-                    System.out.println("Invalid command for current player.");
-                }
-                break;
-            case "puncture":
-                if (nextPlayer instanceof Saboteur) {
-                    ((Saboteur) nextPlayer).puncturePipe(new Pipe(new EndOfPipe(nextPlayer.coordinate), new EndOfPipe(new Point((int)nextPlayer.coordinate.getX()+1, (int)nextPlayer.coordinate.getY()))));
-                } else {
-                    System.out.println("Invalid command for current player.");
-                }
-                break;
-            case "changeWaterDirection":
-                nextPlayer.changeInputPipe(new Pump(), new EndOfPipe(nextPlayer.coordinate));
-                nextPlayer.changeOutputPipe(new Pump(), new EndOfPipe(nextPlayer.coordinate));
-                break;
-            case "moveA":
-                nextPlayer.moveA();
-                break;
-            case "moveS":
-                nextPlayer.moveS();
-                break;
-            case "moveW":
-                nextPlayer.moveW();
-                break;
-            case "moveD":
-                nextPlayer.moveD();
-                break;
-            case "pickPipeEnd":
-                if (nextPlayer instanceof Plumber) {
-                    ((Plumber) nextPlayer).pickUpPipeEnd(new EndOfPipe(nextPlayer.coordinate));
-                } else {
-                    System.out.println("Invalid command for current player.");
-                }
-                break;
-            case "pickPump":
-                if (nextPlayer instanceof Plumber) {
-                    ((Plumber) nextPlayer).pickUpPump(new Cistern()); // Call fixPipe method from Plumber class
-                } else {
-                    System.out.println("Invalid command for current player.");
-                }
-                break;
-            case "placePipeEnd":
-                if (nextPlayer instanceof Plumber) {
-                    ((Plumber) nextPlayer).placePipeEnd(new Pump()); // Call fixPipe method from Plumber class
-                } else {
-                    System.out.println("Invalid command for current player.");
-                }
-                break;
-            case "installPump":
-                if (nextPlayer instanceof Plumber) {
-                    ((Plumber) nextPlayer).installPump(nextPlayer.coordinate); // Call fixPipe method from Plumber class
-                } else {
-                    System.out.println("Invalid command for current player.");
-                }
-                break;
-            case "connect":
-                if (nextPlayer instanceof Plumber) {
-                    ((Plumber) nextPlayer).connect(new Pump()); // Call fixPipe method from Plumber class
-                } else {
-                    System.out.println("Invalid command for current player.");
-                }
-                break;
-            case "disconnect":
-                if (nextPlayer instanceof Plumber) {
-                    ((Plumber) nextPlayer).disconnect(new Pump()); // Call fixPipe method from Plumber class
-                } else {
-                    System.out.println("Invalid command for current player.");
-                }
-                break;
-        }
-        return true;
-    }
-
-    /**
-     * Takes the current player's turn.
      *
-     * @return true if the turn was successfully taken, false otherwise.
      */
-    public boolean takeTurn() {
-        printMethodName("takeTurn()");
-        // Increment the round manually
-        round++;
-
-        // Print the round value
-        System.out.println("Round " + round % 4);
-
-        // Switch the turn to the next player based on the round
-        switch ((round - 1) % 4) {
-            case 0:
-                giveTurn(plumber1);
-                break;
-            case 1:
-                giveTurn(plumber2);
-                break;
-            case 2:
-                giveTurn(saboteur1);
-                break;
-            case 3:
-                giveTurn(saboteur2);
-                break;
+    public void giveTurn() {
+        printMethodName("giveTurn()");
+        if(activePlayer == plumber1){
+            activePlayer = plumber2;
+        }else if(activePlayer == plumber2){
+            activePlayer = saboteur1;
+        }else if(activePlayer== saboteur1){
+            activePlayer = saboteur2;
+        }else if(activePlayer==saboteur2){
+            activePlayer = plumber1;
+            round++;
         }
-        return true;
+        roundLabel.setText("Round: " + round);
     }
 
     /**
@@ -428,37 +516,10 @@ public class Controller {
      * players have played their turns.
      */
     public void manageRounds() {
-        // TODO: update with prototype version
         printMethodName("manageRounds()");
-        // Increment the round
-        round++;
-
         // Print the round value
-        System.out.println("Round " + round / 4);
-
-        // Switch the turn to the next player based on the round
-        switch (round % 4) {
-            case 0:
-                giveTurn(plumber1);
-                break;
-            case 1:
-                giveTurn(plumber2);
-                break;
-            case 2:
-                giveTurn(saboteur1);
-                break;
-            case 3:
-                giveTurn(saboteur2);
-                break;
-        }
-
-        // Set up the listener for the next round
-        GameTimer.setListener(new GameTimer.TimerListener() {
-            @Override
-            public void onTurnExpired() {
-                manageRounds();
-            }
-        });
+        System.out.println("Round " + round);
+        giveTurn();
         if(round > 40){
             gameRunning = false;
         }
@@ -468,7 +529,6 @@ public class Controller {
      * Ends the game and performs cleanup tasks.
      */
     public void endGame() {
-        // TODO: update with prototype version
         printMethodName("endGame()");
         System.out.println("GAME OVER");
         System.out.println("Plumber Score: " + plumberScore);
@@ -481,7 +541,6 @@ public class Controller {
      * Performs cleanup tasks and exits the game.
      */
     public void onExit() {
-        // TODO: update with prototype version
         printMethodName("onExit()");
         scanner.close();
         System.exit(0);

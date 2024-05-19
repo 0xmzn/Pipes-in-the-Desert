@@ -11,6 +11,7 @@ public class ActiveElement implements Element {
      * Keeps track of the coordinates of the pipe on the game grid.
      */
     protected Point coordinate;
+    int id;
     /**
      * List of currently connected ends of pipes to this active element.
      */
@@ -19,6 +20,16 @@ public class ActiveElement implements Element {
     public ActiveElement() {
         this.coordinate = new Point();
         this.connectedEndsOfPipes = new ArrayList<EndOfPipe>();
+    }
+
+    @Override
+    public int getID() {
+        return id;
+    }
+
+    @Override
+    public void setID(int id) {
+        this.id = id;
     }
 
     /**

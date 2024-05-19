@@ -1,6 +1,12 @@
+import javax.imageio.ImageIO;
+import javax.swing.*;
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import java.util.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.ArrayList;
 
 
 /**
@@ -40,9 +46,41 @@ public class Pump extends ActiveElement {
      */
     private EndOfPipe outputEndOfPipe;
 
+    private JLabel pumpLabel;
+    private int pumpType;
+
+
     public Pump() {
         waterInReservoir = 0;
         connectedEndsOfPipes = new ArrayList<EndOfPipe>();
+        Random random = new Random();
+        pumpType = random.nextInt(3)+1;
+        initializePumpLabel(pumpType);
+    }
+
+    private void initializePumpLabel(int pumpType){
+        try{
+            BufferedImage image;
+            switch (pumpType) {
+                case 1:
+                    image = ImageIO.read(new File("res/Pump2.png"));
+                    break;
+                case 2:
+                    image = ImageIO.read(new File("res/Pump3.png"));
+                    break;
+                case 3:
+                    image = ImageIO.read(new File("res/Pump4.png"));
+                    break;
+                default:
+                    throw new IllegalArgumentException("Invalid pump type");
+            }
+        ImageIcon pumpIcon = new ImageIcon(image);
+        pumpLabel = new JLabel(pumpIcon);
+        pumpLabel.setBackground(new Color(0, 0, 0, 0));
+        }
+        catch (IOException e) {
+                throw new RuntimeException(e);
+        }
     }
 
     /**
@@ -134,4 +172,14 @@ public class Pump extends ActiveElement {
     public boolean isReservoirFull() {
         return waterInReservoir >= reservoirCapacity;
     }
+    public JLabel getPumpLabel(){
+        printMethodName("getPumpLabel()");
+        return pumpLabel;
+    }
+    private static void printMethodName(String methodName) {
+        System.out.println("\n------------------------------------------------------------");
+        System.out.println(methodName + " method of the Controller class is called.");
+        System.out.println("------------------------------------------------------------\n");
+    }
+
 }

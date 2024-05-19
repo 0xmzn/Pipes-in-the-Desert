@@ -23,6 +23,7 @@ public class GameTimer {
      */
     public interface TimerListener {
         void onTurnExpired();
+        void onTimeUpdated(int timeLeft);
     }
 
     /**
@@ -33,7 +34,6 @@ public class GameTimer {
     public static void setListener(TimerListener timerListener) {
         listener = timerListener;
     }
-
     /**
      * Prints the name of the method that is called.
      *
@@ -44,14 +44,6 @@ public class GameTimer {
         out.println(methodName + " method of the Timer class is called.");
         out.println("------------------------------------------------------------\n");
     }
-
-    /**
-     * Asks a question and returns the user's answer.
-     *
-     * @param question the question to ask
-     * @param options  the options for the answer
-     * @return the user's answer
-     */
     /**
      * Starts the timer.
      */
@@ -60,16 +52,22 @@ public class GameTimer {
 
         timer = new Timer();
         task = new TimerTask() {
+            int timeLeft = turnTime;
+
             @Override
             public void run() {
                 if (listener != null) {
-                    listener.onTurnExpired();
-                    out.println("30 seconds have passed.\n");
+                    listener.onTimeUpdated(timeLeft);
+                    if (timeLeft <= 0) {
+                        listener.onTurnExpired();
+                        out.println("30 seconds have passed.\n");
+                        resetTimer();
+                    }
+                    timeLeft--;
                 }
-                resetTimer();
             }
         };
-        timer.schedule(task, turnTime * 1000);
+        timer.scheduleAtFixedRate(task, 0, 1000);
     }
 
     /**
