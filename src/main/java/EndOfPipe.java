@@ -58,6 +58,11 @@ public class EndOfPipe implements Element{
         coordinate = newCoordinate;
     }
 
+    @Override
+    public boolean isWalkable() {
+        return false;
+    }
+
     public ActiveElement getActiveElement() {
         return connectedActiveElement;
     }

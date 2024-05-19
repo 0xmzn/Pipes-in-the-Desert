@@ -4,7 +4,7 @@ import java.awt.*;
 public class GridView {
     private JPanel gridPanel;
 
-    final private int numCellsX = 12;
+    final private int numCellsX = 10;
     final private int numCellsY = 10;
     // coordinates assigned to each grid cell
     private Point[][] cellCoordinatesGrid = new Point[numCellsX][numCellsY];
