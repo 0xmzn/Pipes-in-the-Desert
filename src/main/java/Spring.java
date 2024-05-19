@@ -33,6 +33,7 @@ public class Spring extends ActiveElement {
             BufferedImage image = ImageIO.read(new File("res/spring.png"));
             ImageIcon cisternIcon = new ImageIcon(image);
             springLabel = new JLabel(cisternIcon);
+            springLabel.setOpaque(false);
             springLabel.setBackground(new Color(0,0,0,0));
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -54,7 +55,8 @@ public class Spring extends ActiveElement {
     public boolean getIsActive() {
         return active;
     }
-    public JLabel getSpringLabel(){
+
+    public JLabel getLabel(){
         return springLabel;
     }
 }

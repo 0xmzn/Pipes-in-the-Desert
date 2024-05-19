@@ -9,6 +9,11 @@ public class GridController {
         this.gridView = gridView;
     }
 
+    public GridController(GridView gridView) {
+        this.gridModel = new Grid();
+        this.gridView = gridView;
+    }
+
     static public JPanel getGridPanel() {
         return gridView.getGridPanel();
     }

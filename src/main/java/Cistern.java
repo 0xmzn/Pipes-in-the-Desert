@@ -32,6 +32,7 @@ public class Cistern extends ActiveElement {
             BufferedImage image = ImageIO.read(new File("res/Cistern.png"));
             ImageIcon cisternIcon = new ImageIcon(image);
             cisternLabel = new JLabel(cisternIcon);
+            cisternLabel.setOpaque(false);
             cisternLabel.setBackground(new Color(0,0,0,0));
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -92,7 +93,7 @@ public class Cistern extends ActiveElement {
         return inventoryPump;
     }
 
-    public JLabel getCisternLabel(){
+    public JLabel getLabel(){
         return cisternLabel;
     }
 }

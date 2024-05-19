@@ -1,4 +1,5 @@
 import javax.swing.*;
+
 import static java.lang.System.out;
 import java.util.*;
 import java.util.List;  // to avoid ambiguity of instantiation of the List container 
@@ -97,7 +98,9 @@ public class GameController {
 
         gameFrame = new JFrame("PIPES IN THE DESERT");
         gameFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        gameFrame.setPreferredSize(new Dimension(800,600));
+        gameFrame.setPreferredSize(new Dimension(1100,700));
+        gameFrame.setSize(1100,700);
+        gameFrame.setLayout(new BorderLayout());
 
 
         cistern1 = new Cistern();
@@ -140,79 +143,81 @@ public class GameController {
                 g.drawImage(backImage,0,0,getWidth(),getHeight(),this);
             }
         };
-        int boardWidth = 450;
-        int boardHeight = 450;
-        JPanel gameBoard = new JPanel() {
-            @Override
-            protected void paintComponent(Graphics g) {
-                super.paintComponent(g);
-                g.setColor(new Color(232, 140, 35,200)); // Brown color
-                g.fillRect(160, 50, boardWidth, boardHeight);
-                // Draw grid lines or other game elements as needed
-                Graphics2D g2d = (Graphics2D) g;
-                g2d.setStroke(new BasicStroke(2));
-                g.setColor(new Color(153, 88, 14,200));
-                int cellWidth = boardWidth / 10;
-                int cellHeight = boardHeight / 10;
-                // Draw grid lines
-                for (int i = 0; i <= 10; i++) {
-                    g.drawLine(160, 50+i * cellHeight, 160+boardWidth, 50+i * cellHeight);
-                }
-                for (int j = 0; j <= 10; j++) {
-                    g.drawLine(160+j * cellWidth, 50, 160+j * cellWidth, 50+boardHeight);
-                }
-            }
-        };
-        gameBoard.setOpaque(false);
-        gameGridPanel.setLayout(new BorderLayout());
-        gameGridPanel.add(gameBoard, BorderLayout.CENTER);
 
         plumberScoreLabel.setForeground(Color.WHITE);
         saboteurScoreLabel.setForeground(Color.WHITE);
         timerLabel.setForeground(Color.WHITE);
         roundLabel.setForeground(Color.WHITE);
-        plumberScoreLabel.setBounds(10, 20, 400, 20); // x, y, width, height
-        saboteurScoreLabel.setBounds(480, 20, 400, 20); // x, y, width, height
-        timerLabel.setBounds(620, 540, 150, 20);
-        roundLabel.setBounds(450, 540, 150, 20);
 
-        gameFrame.getContentPane().add(plumberScoreLabel);
-        gameFrame.getContentPane().add(saboteurScoreLabel);
-        gameFrame.getContentPane().add(timerLabel);
-        gameFrame.getContentPane().add(roundLabel);
+        plumberScoreLabel.setBounds(gameFrame.getWidth()*15/100, 20, 400, 20); // x, y, width, height
+        saboteurScoreLabel.setBounds(gameFrame.getWidth()*6/10, 20, 400, 20); // x, y, width, height
+        timerLabel.setBounds(gameFrame.getWidth()*55/100, gameFrame.getHeight()*85/100, 150, 20);
+        roundLabel.setBounds(gameFrame.getWidth()*7/10, gameFrame.getHeight()*85/100, 150, 20);
 
-        //1st
-        cistern1.getCisternLabel().setBounds(-8,-30, 300,300);
-        cistern1.getCisternLabel().setOpaque(true);
-        gameFrame.getContentPane().add(cistern1.getCisternLabel());
+        gameFrame.add(plumberScoreLabel);
+        gameFrame.add(saboteurScoreLabel);
+        gameFrame.add(timerLabel);
+        gameFrame.add(roundLabel);
 
-        spring1.getSpringLabel().setBounds(350,-185,600,600);
-        spring1.getSpringLabel().setOpaque(true);
-        gameFrame.getContentPane().add(spring1.getSpringLabel());
+        initCentralPanel();
 
-        //2nd
-        cistern2.getCisternLabel().setBounds(-8,100, 300,300);
-        cistern2.getCisternLabel().setOpaque(true);
-        gameFrame.getContentPane().add(cistern2.getCisternLabel());
-
-        spring2.getSpringLabel().setBounds(350,-45,600,600);
-        spring2.getSpringLabel().setOpaque(true);
-        gameFrame.getContentPane().add(spring2.getSpringLabel());
-
-        //3rd
-        cistern3.getCisternLabel().setBounds(-8,240, 300,300);
-        cistern3.getCisternLabel().setOpaque(true);
-        gameFrame.getContentPane().add(cistern3.getCisternLabel());
-
-        spring3.getSpringLabel().setBounds(350,85,600,600);
-        spring3.getSpringLabel().setOpaque(true);
-        gameFrame.getContentPane().add(spring3.getSpringLabel());
-
-        gameFrame.getContentPane().add(gameGridPanel);
+        //rendering the game
+        gameFrame.add(gameGridPanel);
         gameFrame.pack();
         gameFrame.setLocationRelativeTo(null);
         gameFrame.setVisible(true);
     }
+
+    /**
+     * Initializes the central panel of the game:
+     * Cisterns, Springs, the Game Grid and the Players
+     */
+    public void initCentralPanel(){
+        //Panel containing all game elements
+        int centerPanelWidth = gameFrame.getWidth()*6/10;
+        int centerPanelHeight = gameFrame.getHeight()*65/100;
+        JPanel centerPanel = new JPanel(new BorderLayout());
+        centerPanel.setOpaque(false);
+        centerPanel.setBounds(gameFrame.getWidth()*2/10, gameFrame.getHeight()*15/100, centerPanelWidth, centerPanelHeight );
+        gameFrame.add(centerPanel);
+
+        //Panel for game grid
+        int boardWidth = centerPanelWidth*12/16;
+        int boardHeight = centerPanelHeight;
+        GridController gridController = new GridController(new GridView(boardWidth, boardHeight));
+        JPanel gridTable = gridController.getGridPanel();
+        gridTable.setBounds(centerPanelWidth*2/16, 0, boardWidth, boardHeight);
+        centerPanel.add(gridTable);
+
+        //The city with cisterns
+        JPanel cisternsPanel = new JPanel();
+        cisternsPanel.setLayout(new BoxLayout(cisternsPanel, BoxLayout.Y_AXIS));
+        cisternsPanel.setOpaque(false);
+        cisternsPanel.setBounds(0, 0, centerPanelWidth*2/16, boardHeight);
+        centerPanel.add(cisternsPanel);
+
+        cisternsPanel.add(Box.createVerticalStrut(centerPanelHeight*5/100));
+        cisternsPanel.add(cistern1.getLabel());
+        cisternsPanel.add(Box.createVerticalStrut(centerPanelHeight*8/100));
+        cisternsPanel.add(cistern2.getLabel());
+        cisternsPanel.add(Box.createVerticalStrut(centerPanelHeight*8/100));
+        cisternsPanel.add(cistern3.getLabel());
+
+        //The forest with springs
+        JPanel springsPanel = new JPanel();
+        springsPanel.setLayout(new BoxLayout(springsPanel, BoxLayout.Y_AXIS));
+        springsPanel.setBounds(centerPanel.getWidth()*14/16, 0, centerPanelWidth*2/16, centerPanel.getHeight());
+        springsPanel.setOpaque(false);
+        centerPanel.add(springsPanel, BorderLayout.EAST);
+
+        springsPanel.add(Box.createVerticalStrut(centerPanelHeight*5/100));
+        springsPanel.add(spring1.getLabel());
+        springsPanel.add(Box.createVerticalStrut(centerPanelHeight*8/100));
+        springsPanel.add(spring2.getLabel());
+        springsPanel.add(Box.createVerticalStrut(centerPanelHeight*8/100));
+        springsPanel.add(spring3.getLabel());
+    }
+
     /**
      * Starts the game and handles user commands. Called in the main game loop.
      * Gives users all the callable methods to interact with the game.
