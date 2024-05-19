@@ -237,21 +237,44 @@ public class Controller {
 
     private void handleKeyPress(KeyEvent e, Player activePlayer){
         int key = e.getKeyCode();
+        int moveX=0;
+        int moveY=0;
         switch (key){
             case KeyEvent.VK_W:
-                activePlayer.move(0, -10);  // Move plumber up
+                moveY = -10;  // Move plumber up
                 break;
             case KeyEvent.VK_S:
-                activePlayer.move(0, 10);   // Move plumber down
+                moveY = 10;   // Move plumber down
                 break;
             case KeyEvent.VK_A:
-                activePlayer.move(-10, 0);  // Move plumber left
+                moveX = -10;  // Move plumber left
                 break;
             case KeyEvent.VK_D:
-                activePlayer.move(10, 0);   // Move plumber right
+                moveX = 10;   // Move plumber right
                 break;
         }
-        gameFrame.repaint();
+
+        //Defining the walking area at cisterns bounds
+        int minX1 = 90;
+        int maxX1 = 130;
+        int minY1 = 10;
+        int maxY1 = 440;
+
+        //Defining the walking area at cisterns bounds
+        int minX2 = 590;
+        int maxX2 = 630;
+        int minY2 = -10;
+        int maxY2 = 430;
+
+
+        // Calculate the new position
+        int newX = activePlayer.getCurrentCoordinate().x + moveX;
+        int newY = activePlayer.getCurrentCoordinate().y + moveY;
+        // Check if the new position is within bounds
+        if ((newX >= minX1 && newX <= maxX1 && newY >= minY1 && newY <= maxY1)||(newX >= minX2 && newX <= maxX2 && newY >= minY2 && newY <= maxY2)) {
+            activePlayer.move(moveX, moveY);  // Move player
+            gameFrame.repaint();
+        }
     }
 
     //Rendering the players
