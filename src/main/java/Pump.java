@@ -178,7 +178,7 @@ public class Pump extends ActiveElement {
     }
     private static void printMethodName(String methodName) {
         System.out.println("\n------------------------------------------------------------");
-        System.out.println(methodName + " method of the Controller class is called.");
+        System.out.println(methodName + " method of the Pump class is called.");
         System.out.println("------------------------------------------------------------\n");
     }
 

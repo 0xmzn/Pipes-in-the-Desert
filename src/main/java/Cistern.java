@@ -156,7 +156,7 @@ public class Cistern extends ActiveElement {
     }
     private static void printMethodName(String methodName) {
         System.out.println("\n------------------------------------------------------------");
-        System.out.println(methodName + " method of the Controller class is called.");
+        System.out.println(methodName + " method of the Cistern class is called.");
         System.out.println("------------------------------------------------------------\n");
     }
     public Point getCoordinate(){

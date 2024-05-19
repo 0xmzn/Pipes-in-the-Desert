@@ -275,7 +275,7 @@ public class Controller {
             activePlayer.move(moveX, moveY);  // Move player
             gameFrame.repaint();
         }
-        System.out.println(newX+" "+newY);
+        //System.out.println(newX+" "+newY);
 
     }
     //Rendering the players
@@ -350,6 +350,7 @@ public class Controller {
 
         cistern.getPipeLabelPlace().setBounds(location.x+165,location.y+100,100,100);
         gameFrame.add(cistern.getPipeLabelPlace());
+        gameFrame.repaint();
 
     }
     public void placePipeorPump(int row, int col, Element element){
@@ -388,8 +389,6 @@ public class Controller {
         if(cistern3.getInventoryPipe()!=null){
             placePipeorPump(7,0, cistern3.getInventoryPipe());
         }
-
-
         startNewRound();
     }
     /**
