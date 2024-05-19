@@ -40,6 +40,12 @@ public class Plumber extends Player {
         }
     }
 
+    @Override
+    public void move(int dx, int dy) {
+        currentCoordinate.translate(dx,dy);
+        movePlumberLabel(currentCoordinate.x,currentCoordinate.y);
+    }
+
     /**
      * Picks up a pipe end from the current location.
      * Checks for all preconditions before picking up the pipe end: player type,
@@ -269,13 +275,8 @@ public class Plumber extends Player {
 
     public void movePlumberLabel(int x, int y){
         plumberLabel.setLocation(x,y);
-        currentCoordinate.setLocation(x,y);
     }
-    public void movePlumberLabelBy(int dx, int dy) {
-        int newX = currentCoordinate.x + dx;
-        int newY = currentCoordinate.y + dy;
-        movePlumberLabel(newX, newY);
-    }
+
     public JLabel getPlumberLabel(){
         return plumberLabel;
     }

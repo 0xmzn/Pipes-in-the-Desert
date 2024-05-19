@@ -10,7 +10,7 @@ import java.awt.event.KeyListener;
  * The abstract class representing a player in the game. Unites common methods
  * used by both Plumber and Saboteur.
  */
-public abstract class Player implements KeyListener{
+public abstract class Player{
 
     public Point coordinate;
 
@@ -29,55 +29,8 @@ public abstract class Player implements KeyListener{
         this.coordinate = coordinate;
     }
 
-    protected void move(char direction){
-        switch (direction){
-            case 'W':
-                moveForward();
-                break;
-            case 'D':
-                moveRight();
-                break;
-            case 'S':
-                moveBack();
-                break;
-            case 'A':
-                moveLeft();
-                break;
-            default:
-                System.out.println("Invalid direction");
-        }
-    }
+    public abstract void move(int dx, int dy);
 
-    private void moveForward(){
-        coordinate.y+=moveAmount;
-    }
-    private void moveRight(){
-        coordinate.x+=moveAmount;
-    }
-    private void moveLeft(){
-        coordinate.x-=moveAmount;
-    }
-    private void moveBack(){
-        coordinate.y-=moveAmount;
-    }
-
-    // KeyListener methods
-    @Override
-    public void keyPressed(KeyEvent e) {
-        char keyChar = e.getKeyChar();
-        move(keyChar);
-        System.out.println("Player position: (" + coordinate.x + ", " + coordinate.y + ")");
-    }
-
-    @Override
-    public void keyReleased(KeyEvent e) {
-        // You can implement this method if needed
-    }
-
-    @Override
-    public void keyTyped(KeyEvent e) {
-        // You can implement this method if needed
-    }
 
     /**
      * Prints the name of the current method for debugging purposes.
@@ -151,4 +104,7 @@ public abstract class Player implements KeyListener{
         }
     }
 
+    public Point getCurrentCoordinate() {
+        return coordinate;
+    }
 }

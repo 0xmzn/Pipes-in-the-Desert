@@ -34,6 +34,12 @@ public class Saboteur extends Player {
         }
     }
 
+    @Override
+    public void move(int dx, int dy) {
+        currentCoordinate.translate(dx, dy);
+        moveSaboteurLabel(currentCoordinate.x, currentCoordinate.y);
+    }
+
     /**
      * Punctures the pipe if the Saboteur is on the pipe and it's not already
      * punctured.
@@ -55,12 +61,6 @@ public class Saboteur extends Player {
     }
     public void moveSaboteurLabel(int x, int y){
         saboteurLabel.setLocation(x,y);
-        currentCoordinate.setLocation(x,y);
-    }
-    public void moveSaboteurLabelBy(int dx, int dy) {
-        int newX = currentCoordinate.x + dx;
-        int newY = currentCoordinate.y + dy;
-        moveSaboteurLabel(newX, newY);
     }
     public JLabel getPlumberLabel(){
         return saboteurLabel;

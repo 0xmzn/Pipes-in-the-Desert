@@ -7,6 +7,7 @@ import java.awt.Point;
  */
 public class EndOfPipe implements Element{
     private EndOfPipe pairEndOfPipe;
+    private int id;
 
     /**
      * The coordinate of the end of the pipe in the game grid.
@@ -29,6 +30,16 @@ public class EndOfPipe implements Element{
 
     public void setPairEndOfPipe(EndOfPipe endOfPipe) {
         pairEndOfPipe = endOfPipe;
+    }
+
+    @Override
+    public int getID() {
+        return id;
+    }
+
+    @Override
+    public void setID(int id) {
+        this.id = id;
     }
 
     /**

@@ -1,5 +1,8 @@
 import javax.swing.*;
 import static java.lang.System.out;
+
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.util.*;
 import java.util.List;  // to avoid ambiguity of instantiation of the List container 
 import java.util.Timer;
@@ -73,7 +76,12 @@ public class Controller {
 
     private int remainingTime;
 
-    private Point coordinate;
+    private Point Plumber1Coordinate;
+    private Point Plumber2Coordinate;
+    private Point Saboteur1Coordinate;
+    private Point Saboteur2Coordinate;
+
+    private Player activePlayer;
     /**
      * Constructs a new Controller object. Initializes the scanner to reuse for user
      * input.
@@ -83,11 +91,15 @@ public class Controller {
         grid = new Element[10][12];
         plumberScore = 0;
         saboteurScore = 0;
-        coordinate = new Point(115,130);
-        plumber1 = new Plumber(coordinate);
-        plumber2 = new Plumber(coordinate);
-        saboteur1 = new Saboteur(coordinate);
-        saboteur2 = new Saboteur(coordinate);
+        Plumber1Coordinate = new Point(115,130);
+        Plumber2Coordinate = new Point(115,270);
+        Saboteur1Coordinate = new Point(605,130);
+        Saboteur2Coordinate = new Point(605,280);
+        plumber1 = new Plumber(Plumber1Coordinate);
+        plumber2 = new Plumber(Plumber2Coordinate);
+        saboteur1 = new Saboteur(Saboteur1Coordinate);
+        saboteur2 = new Saboteur(Saboteur2Coordinate);
+
         round = 1;
 
         gameRunning = true;
@@ -209,26 +221,54 @@ public class Controller {
         walkArea(gameFrame.getContentPane(),new Color(51,25,0), new Point(50,225), new Dimension(50,50));
         walkArea(gameFrame.getContentPane(),new Color(51,25,0), new Point(50,365), new Dimension(50,50));
 
+        gameFrame.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                handleKeyPress(e, activePlayer);
+            }
+        });
+
+
         gameFrame.getContentPane().add(gameGridPanel);
         gameFrame.pack();
         gameFrame.setLocationRelativeTo(null);
         gameFrame.setVisible(true);
     }
+
+    private void handleKeyPress(KeyEvent e, Player activePlayer){
+        int key = e.getKeyCode();
+        switch (key){
+            case KeyEvent.VK_W:
+                activePlayer.move(0, -10);  // Move plumber up
+                break;
+            case KeyEvent.VK_S:
+                activePlayer.move(0, 10);   // Move plumber down
+                break;
+            case KeyEvent.VK_A:
+                activePlayer.move(-10, 0);  // Move plumber left
+                break;
+            case KeyEvent.VK_D:
+                activePlayer.move(10, 0);   // Move plumber right
+                break;
+        }
+        gameFrame.repaint();
+    }
+
     //Rendering the players
     public void renderPlayers(){
-        plumber1.getPlumberLabel().setBounds(coordinate.x, coordinate.y, 40, 100);
+        plumber1.getPlumberLabel().setBounds(Plumber1Coordinate.x, Plumber1Coordinate.y, 40, 70);
         plumber1.getPlumberLabel().setOpaque(true);
         gameFrame.getContentPane().add(plumber1.getPlumberLabel());
 
-        plumber2.getPlumberLabel().setBounds(coordinate.x, coordinate.y+140, 40, 100);
+        plumber2.getPlumberLabel().setBounds(Plumber2Coordinate.x, Plumber2Coordinate.y, 40, 70);
         plumber2.getPlumberLabel().setOpaque(true);
         gameFrame.getContentPane().add(plumber2.getPlumberLabel());
 
-        saboteur1.getPlumberLabel().setBounds(coordinate.x+490, coordinate.y, 60, 70);
+        saboteur1.getPlumberLabel().setBounds(Saboteur1Coordinate.x, Saboteur1Coordinate.y, 60, 70);
         saboteur1.getPlumberLabel().setOpaque(true);
         gameFrame.getContentPane().add(saboteur1.getPlumberLabel());
 
-        saboteur2.getPlumberLabel().setBounds(coordinate.x+490, coordinate.y+150, 60, 70);
+        saboteur2.getPlumberLabel().setBounds(Saboteur2Coordinate.x, Saboteur2Coordinate.y, 60, 70);
         saboteur2.getPlumberLabel().setOpaque(true);
         gameFrame.getContentPane().add(saboteur2.getPlumberLabel());
     }
@@ -253,6 +293,7 @@ public class Controller {
         printMethodName("startGame()");
         System.out.println("THE GAME HAS STARTED!!\n");
 
+        activePlayer = plumber1;
         renderPlayers();
 
         initGrid();
@@ -266,6 +307,7 @@ public class Controller {
         cistern3.manufactureElement();
         pumps.add(cistern3.getInventoryPump());
         pipes.add(cistern3.getInventoryPipe());
+
 
         startNewRound();
     }
@@ -366,12 +408,6 @@ public class Controller {
         });
     }
 
-    public void updateRoundLabel(int rounds) {
-        SwingUtilities.invokeLater(() -> {
-            roundLabel.setText("Round: " + rounds);
-        });
-    }
-
     // Modified method to start a new round
     public void startNewRound() {
         if (!gameRunning) {
@@ -431,13 +467,22 @@ public class Controller {
 
     /**
      * Takes the turn from the active player and gives to the next player.
-     * 
-     * @param nextPlayer The next player to receive the turn.
+     *
      */
-    public void giveTurn(Player nextPlayer) {
+    public void giveTurn() {
         // TODO: update with prototype version
         printMethodName("giveTurn()");
-
+        if(activePlayer == plumber1){
+            activePlayer = plumber2;
+        }else if(activePlayer == plumber2){
+            activePlayer = saboteur1;
+        }else if(activePlayer== saboteur1){
+            activePlayer = saboteur2;
+        }else if(activePlayer==saboteur2){
+            activePlayer = plumber1;
+            round++;
+        }
+        roundLabel.setText("Round: " + round);
     }
 
     /**
@@ -446,27 +491,9 @@ public class Controller {
      */
     public void manageRounds() {
         printMethodName("manageRounds()");
-        // Increment the round
-        round++;
         // Print the round value
         System.out.println("Round " + round);
-        updateRoundLabel(round);
-
-        // Switch the turn to the next player based on the round
-        switch (round % 4) {
-            case 0:
-                giveTurn(saboteur1);
-                break;
-            case 1:
-                giveTurn(saboteur2);
-                break;
-            case 2:
-                giveTurn(plumber1);
-                break;
-            case 3:
-                giveTurn(plumber2);
-                break;
-        }
+        giveTurn();
         if(round > 40){
             gameRunning = false;
         }
