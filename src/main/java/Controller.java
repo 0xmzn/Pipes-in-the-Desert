@@ -202,6 +202,9 @@ public class Controller {
         addCisternLabels(cistern1, new Point(-10,-30));
         addCisternLabels(cistern2, new Point(-10,100));
         addCisternLabels(cistern3, new Point(-10,240));
+        cistern1.setCoordinate(new Point(90,80));
+        cistern2.setCoordinate(new Point(90,210));
+        cistern3.setCoordinate(new Point(90,350));
 
         //walking area
         walkArea(gameFrame.getContentPane(), new Color(94, 59, 28), new Point(99, 50), new Dimension(60, 450));
@@ -243,6 +246,10 @@ public class Controller {
             case KeyEvent.VK_D:
                 moveX = 10;   // Move plumber right
                 break;
+            case KeyEvent.VK_P:
+                pickUpPumpAction((Plumber)activePlayer);
+                break;
+
         }
 
         //Defining the walking area at cisterns bounds
@@ -557,4 +564,51 @@ public class Controller {
         scanner.close();
         System.exit(0);
     }
+
+    private void pickUpPumpAction(Plumber plumber){
+        printMethodName("PickUpPump");
+        Point plumberPos = plumber.getCurrentCoordinate();
+        System.out.println(plumberPos);
+
+        Cistern target = null;
+        if(isNear(plumberPos, cistern1)){
+
+            printMethodName("Picking up from cistern1");
+            target = cistern1;
+        } else if(isNear(plumberPos,cistern2)) {
+
+            printMethodName("Picking up from cistern2");
+            target = cistern2;
+        } else if(isNear(plumberPos, cistern3)){
+
+            printMethodName("Picking up from cistern3");
+            target = cistern3;
+        }
+
+        if(target!=null){
+            Pump pump = target.getInventoryPump();
+            if(pump!=null){
+                if(plumber.pickUpPump(target)){
+                    System.out.println("Picked up");
+                    gameFrame.getContentPane().remove(target.getPumpPlaceLabel());
+                    target.manufactureElement();
+                    gameFrame.repaint();
+                }
+            }else{
+                System.out.println("No pump to pick up");
+            }
+        }else{
+            System.out.println("Not close to cisterns");
+        }
+
+    }
+
+    private boolean isNear(Point plumberPos, Cistern cistern){
+        printMethodName("IsNear");
+        Point cisternPos = cistern.getCoordinate();
+        System.out.println(cisternPos);
+        int proximity = 20;
+        return plumberPos.distance(cisternPos) < proximity;
+    }
+
 }

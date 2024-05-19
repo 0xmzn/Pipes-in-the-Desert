@@ -20,6 +20,7 @@ public class Cistern extends ActiveElement {
     private Pipe inventoryPipe;
     private Pump inventoryPump;
     private Timer timer;
+    private Point coordinate;
     private boolean isManufacturing;
     private JLabel cisternLabel;
     private JLabel pumpLabelPlace;
@@ -48,6 +49,8 @@ public class Cistern extends ActiveElement {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+
+        manufactureElement();
     }
 
     /**
@@ -158,5 +161,10 @@ public class Cistern extends ActiveElement {
         System.out.println("\n------------------------------------------------------------");
         System.out.println(methodName + " method of the Controller class is called.");
         System.out.println("------------------------------------------------------------\n");
+    }
+
+    public void takePump(){
+        printMethodName("takePump");
+        inventoryPump = null;
     }
 }
