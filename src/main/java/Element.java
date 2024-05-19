@@ -18,4 +18,6 @@ public interface Element {
 
     void setCoordinate(Point coordinate);
 
+    boolean isWalkable();
+
 }

@@ -90,6 +90,11 @@ public class Pipe implements Element {
         this.coordinate = coordinate;
     }
 
+    @Override
+    public boolean isWalkable() {
+        return true;
+    }
+
     /**
      * Returns the punctured state of the pipe.
      *
