@@ -43,9 +43,9 @@ public class EndOfPipe implements Element{
     }
 
     /**
-     * Returns the coordinate coordinate of the end of the pipe.
+     * Returns the coordinate of the end of the pipe.
      * 
-     * @return The coordinate coordinate.
+     * @return The coordinate.
      */
     public Point getCoordinate() {
         return coordinate;
@@ -53,9 +53,6 @@ public class EndOfPipe implements Element{
 
     /**
      * Sets the coordinate of the end of the pipe.
-     * 
-     * @param x The x-coordinate of the coordinate.
-     * @param y The y-coordinate of the coordinate.
      */
     public void setCoordinate(Point newCoordinate) {
         coordinate = newCoordinate;
