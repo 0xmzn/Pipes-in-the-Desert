@@ -89,7 +89,7 @@ public class Controller {
     private Player activePlayer;
     private static final int GRID_ROWS = 10;
     private static final int GRID_COLS = 10;
-    private boolean pipePickedUp;
+    private boolean isPipePickedUp;
 
     /**
      * Constructs a new Controller object. Initializes the scanner to reuse for user
@@ -286,6 +286,8 @@ public class Controller {
             } else if (((newX > maxX1 || newY > maxY1) && (newX < minX2 || newY < minY2)) && tmp != null) {
                 if (tmp.isWalkable()) {
                     activePlayer.move(moveX, moveY);
+                } else if (isPipePickedUp) {
+                    placePipeorPump();
                 }
                 else{
                     out.println("The index is out of bounds: i: "+ i+ "j: "+ j);
@@ -667,7 +669,6 @@ public class Controller {
         return plumberPos.distance(cisternPos) < proximity;
     }
 
-
     private void pickUpPipeAction(Plumber plumber){
         printMethodName("PickUpPump");
         Point plumberPos = plumber.getCurrentCoordinate();
@@ -675,7 +676,7 @@ public class Controller {
         Element currentElement = grid.getElementsGrid()[currentPos.x][currentPos.y];
 
         if(currentElement instanceof Pipe) {
-            pipePickedUp = true;
+            isPipePickedUp = true;
         }
     }
 
