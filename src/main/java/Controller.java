@@ -257,11 +257,37 @@ public class Controller {
                 break;
             case KeyEvent.VK_I:
                 installPumpAction((Plumber)activePlayer);
-
+            case KeyEvent.VK_B:
+                puncturePipe((Plumber) activePlayer);
         }
 
     }
 
+    private void puncturePipe(Plumber saboteur){
+        Point saboteurPos = saboteur.getCurrentCoordinate();
+        Point gridCoordinate = convertCoordinates(saboteurPos);
+
+        int row = gridCoordinate.x;
+        int col = gridCoordinate.y;
+
+        Element elementAtPos = grid.getElementsGrid()[row][col];
+        if(elementAtPos instanceof Pipe){
+            Pipe pipe = (Pipe) elementAtPos;
+            pipe.setIsPunctured(true);
+
+            grid.getElementsGrid()[row][col] = pipe;
+
+            JLabel puncturedPipeLabel = pipe.getPipeLabel();
+            puncturedPipeLabel.setBounds(saboteurPos.x, saboteurPos.y, puncturedPipeLabel.getWidth(), puncturedPipeLabel.getHeight());
+            gameFrame.getContentPane().add(puncturedPipeLabel);
+            gameFrame.repaint();
+            System.out.println("Pipe punctured at position: " + row + ", " + col);
+        }
+        else {
+            System.out.println("No pipe to puncture at position: " + row + ", " + col);
+        }
+
+    }
     private void handleMove(int moveX, int moveY){
 
         //Defining the walking area at cisterns bounds
@@ -702,9 +728,13 @@ public class Controller {
                 int x = convertToPixels(chosenCell).x;
                 int y = convertToPixels(chosenCell).y;
                 JLabel pumpLabel = ((Pump) plumber.inventory).getPumpLabel();
+
                 pumpLabel.setBounds(x, y, pumpLabel.getWidth(), pumpLabel.getHeight());
-                gameFrame.add(pumpLabel);
+
+                gameFrame.getContentPane().add(pumpLabel);
+                pumpLabel.setVisible(true);
                 gameFrame.repaint();
+
                 out.println("THE PUMP IS AT X: " + pumpLabel.getX() + " Y: " + pumpLabel.getY());
                 plumber.installPump(chosenCell);
             }

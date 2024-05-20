@@ -43,7 +43,7 @@ public class GridController {
      *
      * @return The elements grid.
      */
-    public static Element[][] getElementsGrid() {
+    public Element[][] getElementsGrid() {
         return gridModel.getElementsGrid();
     }
 }
