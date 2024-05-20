@@ -86,7 +86,7 @@ public class Controller {
     private Point Saboteur1Coordinate;
     private Point Saboteur2Coordinate;
 
-    private Player activePlayer;
+    private static Player activePlayer;
     private static final int GRID_ROWS = 10;
     private static final int GRID_COLS = 10;
     private boolean isPipePickedUp;
@@ -287,7 +287,8 @@ public class Controller {
                 if (tmp.isWalkable()) {
                     activePlayer.move(moveX, moveY);
                 } else if (isPipePickedUp) {
-                    placePipeorPump();
+
+//                    placePipeorPump(activePlayer.getCurrentCoordinate(), ((Plumber)activePlayer).checkInventory());
                 }
                 else{
                     out.println("The index is out of bounds: i: "+ i+ "j: "+ j);
@@ -326,17 +327,33 @@ public class Controller {
         gameFrame.add(cistern.getPipeLabelPlace());
     }
 
-    public static void placePipeorPump(int row, int col, Element element){
+    public static void placePipeorPump(int row, int col, Element element) {
+        if (activePlayer instanceof Saboteur) {
+            out.println("Saboteur cannot place pipes or pumps!");
+            return;
+        }
+
         if(row >=0 &&row<GRID_ROWS&&col>=0 && col<GRID_COLS){
-            grid.getElementsGrid()[row][col] = element;
+            if (grid.setElement(activePlayer.getCurrentCoordinate(), element))
+                out.println("Element is placed!");
+            else
+                out.println("Element is not placed!");
         }
     }
 
-    public static void placePipeorPump(Point coordinate, Element element){
+    public static void placePipeorPump(Point coordinate, Element element) {
+        if (activePlayer instanceof Saboteur) {
+            out.println("Saboteur cannot place pipes or pumps!");
+            return;
+        }
+
         int row = coordinate.x;
         int col = coordinate.y;
-        if(row >=0 &&row<GRID_ROWS&&col>=0 && col<GRID_COLS){
-            grid.getElementsGrid()[row][col] = element;
+        if (row >= 0 && row < GRID_ROWS && col >= 0 && col < GRID_COLS) {
+            if (grid.setElement(activePlayer.getCurrentCoordinate(), element))
+                out.println("Element is placed!");
+            else
+                out.println("Element is not placed!");
         }
 
     }
@@ -676,7 +693,9 @@ public class Controller {
         Element currentElement = grid.getElementsGrid()[currentPos.x][currentPos.y];
 
         if(currentElement instanceof Pipe) {
+            plumber.placeToInventory((Pipe)currentElement);
             isPipePickedUp = true;
+            placePipeorPump(currentPos.x + 1, currentPos.y, currentElement);
         }
     }
 

@@ -1,4 +1,5 @@
 import javax.swing.*;
+import java.awt.Point;
 
 public class GridController {
     static private Grid gridModel;
@@ -20,5 +21,9 @@ public class GridController {
 
     public static Element[][] getElementsGrid() {
         return gridModel.getElementsGrid();
+    }
+
+    public static boolean setElement(Point targetCoordinate, Element newElement) {
+        return gridModel.setElement(targetCoordinate, newElement);
     }
 }

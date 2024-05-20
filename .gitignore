@@ -40,3 +40,5 @@ build/
 
 ### POM ###
 pom.xml
+
+out/

@@ -30,6 +30,7 @@ public class Plumber extends Player {
         super(coordinate);
         currentCoordinate = coordinate;
         this.plumberView = new PlumberView();
+        inventory = null;
     }
 
     @Override
@@ -250,14 +251,26 @@ public class Plumber extends Player {
      * 
      * @return true if the inventory is free, false otherwise.
      */
-    private boolean checkInventory() {
+    public Element checkInventory() {
         printMethodName("checkInventory()");
-        
-        return inventory == null;
+
+        return inventory;
+    }
+
+    private Element takeFromInventory() {
+        printMethodName("checkInventory()");
+
+        Element pickedUpElement = inventory;
+        inventory = null;
+        return pickedUpElement;
+    }
+
+    public void placeToInventory(Element newElement) {
+        inventory = newElement;
     }
 
     /**
-     * Removes the item from the inventory.
+     * Legacy code. DON'T USE IT!
      */
     private void removeInventory() {
         printMethodName("removeInventory()");

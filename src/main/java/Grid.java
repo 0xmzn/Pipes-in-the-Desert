@@ -15,6 +15,7 @@ public class Grid {
             elementsGrid[targetCoordinate.x][targetCoordinate.y] = newElement;
             return true;
         } else {
+            System.out.println("The target coordinate is not empty!");
             return false;
         }
     }
