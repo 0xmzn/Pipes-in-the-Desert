@@ -46,43 +46,13 @@ public class Pump extends ActiveElement {
      */
     private EndOfPipe outputEndOfPipe;
 
-    private JLabel pumpLabel;
-    private int pumpType;
-
+    private PumpView pumpView;
 
     public Pump() {
         waterInReservoir = 0;
         connectedEndsOfPipes = new ArrayList<EndOfPipe>();
-        Random random = new Random();
-        pumpType = random.nextInt(3)+1;
-        initializePumpLabel(pumpType);
+        pumpView = new PumpView(new Point(0,0));
     }
-
-    private void initializePumpLabel(int pumpType){
-        try{
-            BufferedImage image;
-            switch (pumpType) {
-                case 1:
-                    image = ImageIO.read(new File("res/Pump2.png"));
-                    break;
-                case 2:
-                    image = ImageIO.read(new File("res/Pump3.png"));
-                    break;
-                case 3:
-                    image = ImageIO.read(new File("res/Pump4.png"));
-                    break;
-                default:
-                    throw new IllegalArgumentException("Invalid pump type");
-            }
-        ImageIcon pumpIcon = new ImageIcon(image);
-        pumpLabel = new JLabel(pumpIcon);
-        pumpLabel.setBackground(new Color(0, 0, 0, 0));
-        }
-        catch (IOException e) {
-                throw new RuntimeException(e);
-        }
-    }
-
     /**
      * Returns the value of isPunctured.
      *
