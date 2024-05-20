@@ -46,13 +46,28 @@ public class Pipe implements Element {
 
     public void initializePipeLabel(){
         printMethodName("initializePipeLabel");
+
+        BufferedImage image;
+        try{
+            image = ImageIO.read(new File("res/pipe.png"));
+            ImageIcon pumpIcon = new ImageIcon(image);
+            pipeLabel = new JLabel(pumpIcon);
+            pipeLabel.setBackground(new Color(0, 0, 0, 0));
+        }
+        catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        setLabel();
+    }
+
+    private void setLabel(){
         BufferedImage image;
         if(!isPunctured){
             System.out.println("NOT PUNCTURED PIPE");
             try{
                 image = ImageIO.read(new File("res/pipe.png"));
                 ImageIcon pumpIcon = new ImageIcon(image);
-                pipeLabel = new JLabel(pumpIcon);
+                pipeLabel.setIcon(pumpIcon);
                 pipeLabel.setBackground(new Color(0, 0, 0, 0));
             }
             catch (IOException e) {
@@ -63,13 +78,15 @@ public class Pipe implements Element {
             try{
                 image = ImageIO.read(new File("res/leakingPipe.png"));
                 ImageIcon pumpIcon = new ImageIcon(image);
-                pipeLabel = new JLabel(pumpIcon);
+                pipeLabel.setIcon(pumpIcon);
                 pipeLabel.setBackground(new Color(0, 0, 0, 0));
             }
             catch (IOException e) {
                 throw new RuntimeException(e);
             }
         }
+
+        pipeLabel.repaint();
     }
 
     @Override
@@ -114,7 +131,7 @@ public class Pipe implements Element {
     public void setIsPunctured(boolean puncturedState) {
         printMethodName("setIsPunctured()");
         isPunctured = puncturedState;
-        pipeLabel.repaint();
+        setLabel();
     }
 
     /**

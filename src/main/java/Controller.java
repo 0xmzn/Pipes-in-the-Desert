@@ -306,9 +306,6 @@ public class Controller {
 
             grid.getElementsGrid()[row][col] = pipe;
 
-            JLabel puncturedPipeLabel = pipe.getPipeLabel();
-            puncturedPipeLabel.setBounds(saboteurPos.x, saboteurPos.y, puncturedPipeLabel.getWidth(), puncturedPipeLabel.getHeight());
-            gameFrame.getContentPane().add(puncturedPipeLabel);
             gameFrame.repaint();
             System.out.println("Pipe punctured at position: " + row + ", " + col);
         }
