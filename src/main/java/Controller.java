@@ -24,7 +24,7 @@ public class Controller {
      * The grid that stores objects, which implement the <Element> interface, i.e.
      * <Cistern>, <Pump>, <Pipe>, <Spring> objects.
      */
-    private Element[][] grid;
+    private static GridController grid;
 
     /**
      * An amount of water collected by the team of plumbers.
@@ -83,15 +83,14 @@ public class Controller {
     private Point Saboteur2Coordinate;
 
     private Player activePlayer;
-    private final int GRID_ROWS = 10;
-    private final int GRID_COLS = 10;
+    private static final int GRID_ROWS = 10;
+    private static final int GRID_COLS = 10;
     /**
      * Constructs a new Controller object. Initializes the scanner to reuse for user
      * input.
      */
     public Controller() {
         scanner = new Scanner(System.in);
-        grid = new Element[GRID_ROWS][GRID_COLS];
         plumberScore = 0;
         saboteurScore = 0;
         Plumber1Coordinate = new Point(115,130);
@@ -145,12 +144,6 @@ public class Controller {
     public void initGrid() {
         printMethodName("initGrid()");
 
-        for(int i = 0; i<GRID_ROWS; i++){
-            for(int j = 0; j<GRID_COLS; j++){
-                grid[i][j] = null; //initially nothing
-            }
-        }
-
         JPanel gameGridPanel = new JPanel(){
             @Override
             protected void paintComponent(Graphics g){
@@ -161,11 +154,10 @@ public class Controller {
             }
         };
 
-
         int boardWidth = 450;
         int boardHeight = 450;
-        GridController gridController = new GridController(new GridView(boardWidth, boardHeight));
-        JPanel gameBoard = gridController.getGridPanel();
+        grid = new GridController(new GridView(boardWidth, boardHeight));
+        JPanel gameBoard = grid.getGridPanel();
         gameBoard.setBounds(160, 50, boardWidth, boardHeight);
         gameBoard.setOpaque(false);
 
@@ -264,29 +256,33 @@ public class Controller {
         int minY2 = -10;
         int maxY2 = 430;
 
-
         // Calculate the new position
         int newX = activePlayer.getCurrentCoordinate().x + moveX;
         int newY = activePlayer.getCurrentCoordinate().y + moveY;
-        int j=(newX-maxX1)/45;
-        int i=(newY)/45;
+        int i=(newX-maxX1)/45;
+        int j=(newY)/45;
         Element tmp= null;
         if(i >= 0 && j>=0 && i<10 && j<10) {
-            tmp = grid[i][j];
+            tmp = grid.getElementsGrid()[i][j];
+        }
+        else{
+            out.println("The index is out of bounds: i: "+ i+ "j: "+ j);
         }
 
         // Check if the new position is within bounds
         if ((newX >= minX1 && newY >= minY1 && newX <=maxX2 && newY <= maxY2)) {
-            if((newX <= maxX1 && newY<=maxY1) ||  (newX>=minX2 && newY>=minY2)) {
+            if ((newX <= maxX1 && newY <= maxY1) || (newX >= minX2 && newY >= minY2)) {
                 activePlayer.move(moveX, moveY);  // Move player
-            } else if(((newX > maxX1 || newY>maxY1) && (newX <minX2 || newY<minY2)) && tmp !=null ){
-                if(tmp.isWalkable()){
+            } else if (((newX > maxX1 || newY > maxY1) && (newX < minX2 || newY < minY2)) && tmp != null) {
+                if (tmp.isWalkable()) {
                     activePlayer.move(moveX, moveY);
+                }
+                else{
+                    out.println("We had a problem! i: "+ i+ " j: "+ j);
                 }
             }
             gameFrame.repaint();
         }
-
     }
     //Rendering the players
     public void renderPlayers(){
@@ -317,11 +313,17 @@ public class Controller {
         cistern.getPipeLabelPlace().setBounds(location.x+165,location.y+100,100,100);
         gameFrame.add(cistern.getPipeLabelPlace());
     }
-    public void placePipeorPump(int row, int col, Element element){
+
+    public static void placePipeorPump(int row, int col, Element element){
         if(row >=0 &&row<GRID_ROWS&&col>=0 && col<GRID_COLS){
-            grid[row][col] = element;
+            grid.getElementsGrid()[row][col] = element;
         }
     }
+
+    public static Point convertCoordinates(Point pixelCoordinates){
+        return new Point((int)(pixelCoordinates.getX() - 160)/45,(int) (pixelCoordinates.getY() - 50)/45);
+    }
+
     /**
      * Starts the game and handles user commands. Called in the main game loop.
      * Gives users all the callable methods to interact with the game.
@@ -339,19 +341,19 @@ public class Controller {
         pumps.add(cistern1.getInventoryPump());
         pipes.add(cistern1.getInventoryPipe());
         if(cistern1.getInventoryPipe()!=null){
-            placePipeorPump(1,0, cistern1.getInventoryPipe());
+            placePipeorPump(0,1, cistern1.getInventoryPipe());
         }
         cistern2.manufactureElement();
         pumps.add(cistern2.getInventoryPump());
         pipes.add(cistern2.getInventoryPipe());
         if(cistern2.getInventoryPipe()!=null){
-            placePipeorPump(4,0, cistern2.getInventoryPipe());
+            placePipeorPump(0,4, cistern2.getInventoryPipe());
         }
         cistern3.manufactureElement();
         pumps.add(cistern3.getInventoryPump());
         pipes.add(cistern3.getInventoryPipe());
         if(cistern3.getInventoryPipe()!=null){
-            placePipeorPump(7,0, cistern3.getInventoryPipe());
+            placePipeorPump(0,7, cistern3.getInventoryPipe());
         }
 
 
@@ -392,7 +394,7 @@ public class Controller {
         int activeSpringX = (int)activeSpringCoordinate.getX();
         int activeSpringY = (int)activeSpringCoordinate.getY();
 
-        ActiveElement nextConnectedActiveElement = ((EndOfPipe)grid[activeSpringX][activeSpringY]).getPairEndOfPipe().getActiveElement();
+        ActiveElement nextConnectedActiveElement = ((EndOfPipe)grid.getElementsGrid()[activeSpringX][activeSpringY]).getPairEndOfPipe().getActiveElement();
         
         while (activeSpring.getIsActive()) {
             // need to implement in a separate thread in GUI application
@@ -508,7 +510,6 @@ public class Controller {
     public void fillUpPump() {
         // TODO: update with prototype version
         printMethodName("fillUpPump()");
-
     }
 
     /**

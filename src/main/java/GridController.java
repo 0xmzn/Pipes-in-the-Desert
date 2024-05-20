@@ -17,4 +17,8 @@ public class GridController {
     static public JPanel getGridPanel() {
         return gridView.getGridPanel();
     }
+
+    public static Element[][] getElementsGrid() {
+        return gridModel.getElementsGrid();
+    }
 }

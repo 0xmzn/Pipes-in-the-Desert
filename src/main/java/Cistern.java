@@ -76,16 +76,18 @@ public class Cistern extends ActiveElement {
         int randomNumber = random.nextInt(2);
         if(randomNumber==0) {
             System.out.println("Manufacturing pipe...");
-
-            Point cisternCoordinate = this.getCoordinate();
+            Point pipeCoordinates = new Point(0, (int)Controller.convertCoordinates(this.getCoordinate()).getY()+1);
             inventoryPipe = new Pipe();
             inventoryPipe.setID(idCounter++);
+            Grid.setElement(pipeCoordinates, inventoryPipe);
             schedulePipeManufactureCompletion(5);
         }
         else {
             System.out.println("Manufacturing pump...");
             inventoryPump = new Pump();
             inventoryPump.setID(idCounter++);
+            Point gridCoordinate = new Point(0, (int)Controller.convertCoordinates(this.getCoordinate()).getY()+1);
+            Grid.setElement(gridCoordinate, inventoryPump);
             schedulePumpManufactureCompletion(10);
         }
     }

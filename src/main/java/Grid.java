@@ -1,16 +1,16 @@
 import java.awt.Point;
 
 public class Grid {
-    final private int numRows = 10;
-    final private int numColumns = 12;
+    final static private int numRows = 10;
+    final static private int numColumns = 10;
 
-    private Element[][] elementsGrid = new Element[numRows][numColumns];
+    private static Element[][] elementsGrid = new Element[numRows][numColumns];
 
-    public Element[][] getElementsGrid() {
+    public static Element[][] getElementsGrid() {
         return elementsGrid;
     }
 
-    public boolean setElement(final Point targetCoordinate, Element newElement) {
+    public static boolean setElement(final Point targetCoordinate, Element newElement) {
         if (elementsGrid[targetCoordinate.x][targetCoordinate.y] == null) {
             elementsGrid[targetCoordinate.x][targetCoordinate.y] = newElement;
             return true;
