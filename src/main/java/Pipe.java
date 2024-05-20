@@ -114,6 +114,12 @@ public class Pipe implements Element {
         return true;
     }
 
+
+    @Override
+    public boolean WaterGoing() {
+        return this.isWaterFlowing;
+    }
+
     /**
      * Returns the punctured state of the pipe.
      *

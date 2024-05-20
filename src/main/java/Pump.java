@@ -54,6 +54,12 @@ public class Pump extends ActiveElement {
         connectedEndsOfPipes = new ArrayList<EndOfPipe>();
         pumpView = new PumpView(new Point(0,0));
     }
+
+
+    @Override
+    public boolean WaterGoing(){
+        return !isPunctured;
+    }
     /**
      * Returns the value of isPunctured.
      *

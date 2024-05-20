@@ -25,6 +25,7 @@ import java.awt.*;
  */
 
 public class Controller {
+    private List<Integer> startPoints= new ArrayList<>(){{add(1);add(4); add(7); }};
     private final Scanner scanner;
     /**
      * The grid that stores objects, which implement the <Element> interface, i.e.
@@ -634,6 +635,7 @@ public class Controller {
      * @param seconds the remaining time in seconds
      */
     public void updateTimerLabel(int seconds) {
+        this.checkWater();
         SwingUtilities.invokeLater(() -> {
             timerLabel.setText("Time: " + seconds);
         });
@@ -662,6 +664,30 @@ public class Controller {
             }
         }, 0, 1000);
     }
+
+    public void checkWater(){
+        boolean test=true;
+        for(int i : this.startPoints){
+            test=true;
+            for(int j=9; j>=0; j--){
+                if(!grid.getElementsGrid()[j][i].WaterGoing())
+                {
+                    test=false;
+                    break;
+                }
+            }
+            if(test){
+                this.plumberScore++;
+            }
+            else{
+                this.saboteurScore++;
+            }
+        }
+        this.saboteurScoreLabel.setText(Integer.toString(this.saboteurScore));
+        this.plumberScoreLabel.setText(Integer.toString(this.plumberScore));
+
+    }
+
     /**
      * Breaks a pump if there is one not broken currently.
      */

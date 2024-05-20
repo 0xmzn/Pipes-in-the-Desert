@@ -57,6 +57,12 @@ public class ActiveElement implements Element {
         return true;
     }
 
+
+    @Override
+    public boolean WaterGoing() {
+        return false;
+    }
+
     /**
      * Connects the active element to an end of a pipe.
      *
