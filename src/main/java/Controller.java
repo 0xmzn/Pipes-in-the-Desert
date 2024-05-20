@@ -683,8 +683,8 @@ public class Controller {
                 this.saboteurScore++;
             }
         }
-        this.saboteurScoreLabel.setText(Integer.toString(this.saboteurScore));
-        this.plumberScoreLabel.setText(Integer.toString(this.plumberScore));
+        this.saboteurScoreLabel.setText("sabutoer:"+Integer.toString(this.saboteurScore));
+        this.plumberScoreLabel.setText("plumber:"+Integer.toString(this.plumberScore));
 
     }
 

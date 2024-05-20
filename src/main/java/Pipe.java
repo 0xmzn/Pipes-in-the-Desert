@@ -117,7 +117,7 @@ public class Pipe implements Element {
 
     @Override
     public boolean WaterGoing() {
-        return this.isWaterFlowing;
+        return !this.isPunctured;
     }
 
     /**
