@@ -311,13 +311,20 @@ public class Controller {
             Pipe pipe = (Pipe) elementAtPos;
             pipe.setIsPunctured(false);
 
-            grid.getElementsGrid()[row][col] = pipe;
-
             gameFrame.repaint();
             System.out.println("Pipe fixed at position: " + row + ", " + col);
         }
         else {
-            System.out.println("No pipe to fix at position: " + row + ", " + col);
+            if (elementAtPos instanceof Pump){
+                Pump pump = (Pump) elementAtPos;
+                pump.setIsPunctured(false);
+
+                gameFrame.repaint();
+
+                System.out.println("Pump fixed at position: " + row + ", " + col);
+            }
+
+            System.out.println("No pipe or pump to fix at position: " + row + ", " + col);
         }
     }
 
