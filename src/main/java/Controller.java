@@ -286,10 +286,37 @@ public class Controller {
                 break;
             case KeyEvent.VK_I:
                 installPumpAction((Plumber)activePlayer);
+                break;
             case KeyEvent.VK_B:
                 puncturePipe((Plumber) activePlayer);
+                break;
+            case KeyEvent.VK_F:
+                fixPipe((Plumber) activePlayer);
+                break;
         }
 
+    }
+
+    private void fixPipe(Plumber plumber){
+        Point saboteurPos = plumber.getCurrentCoordinate();
+        Point gridCoordinate = convertCoordinates(saboteurPos);
+
+        int row = gridCoordinate.x;
+        int col = gridCoordinate.y;
+
+        Element elementAtPos = grid.getElementsGrid()[row][col];
+        if(elementAtPos instanceof Pipe){
+            Pipe pipe = (Pipe) elementAtPos;
+            pipe.setIsPunctured(false);
+
+            grid.getElementsGrid()[row][col] = pipe;
+
+            gameFrame.repaint();
+            System.out.println("Pipe fixed at position: " + row + ", " + col);
+        }
+        else {
+            System.out.println("No pipe to fix at position: " + row + ", " + col);
+        }
     }
 
     private void puncturePipe(Plumber saboteur){
@@ -312,7 +339,6 @@ public class Controller {
         else {
             System.out.println("No pipe to puncture at position: " + row + ", " + col);
         }
-
     }
     private void handleMove(int moveX, int moveY){
 
