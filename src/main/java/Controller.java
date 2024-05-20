@@ -89,6 +89,8 @@ public class Controller {
     private Player activePlayer;
     private static final int GRID_ROWS = 10;
     private static final int GRID_COLS = 10;
+    private boolean pipePickedUp;
+
     /**
      * Constructs a new Controller object. Initializes the scanner to reuse for user
      * input.
@@ -247,7 +249,10 @@ public class Controller {
                 break;
             case KeyEvent.VK_I:
                 installPumpAction((Plumber)activePlayer);
-
+                break;
+            case KeyEvent.VK_Q:
+                pickUpPipeAction((Plumber)activePlayer);
+                break;
         }
 
         //Defining the walking area at cisterns bounds
@@ -336,7 +341,7 @@ public class Controller {
 
     public static Point convertCoordinates(Point pixelCoordinates){
         return new Point(
-                (int)(pixelCoordinates.getX() - 130)/45,
+                (int)(pixelCoordinates.getX() - 125)/45,
                 (int) (pixelCoordinates.getY())/45);
     }
 
@@ -660,6 +665,18 @@ public class Controller {
         System.out.println(cisternPos);
         int proximity = 20;
         return plumberPos.distance(cisternPos) < proximity;
+    }
+
+
+    private void pickUpPipeAction(Plumber plumber){
+        printMethodName("PickUpPump");
+        Point plumberPos = plumber.getCurrentCoordinate();
+        Point currentPos = convertCoordinates(plumberPos);
+        Element currentElement = grid.getElementsGrid()[currentPos.x][currentPos.y];
+
+        if(currentElement instanceof Pipe) {
+            pipePickedUp = true;
+        }
     }
 
 }
