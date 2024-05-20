@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.util.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
 
 
 /**
@@ -68,7 +69,9 @@ public class Pump extends ActiveElement {
      * @param isPunctured the new value of isPunctured
      */
     public void setIsPunctured(boolean isPunctured) {
+
         this.isPunctured = isPunctured;
+        pumpView.SetLabel(isPunctured);
     }
 
     /**
@@ -157,4 +160,14 @@ public class Pump extends ActiveElement {
         System.out.println("------------------------------------------------------------\n");
     }
 
+    public void RandomBreak(){
+        Timer timer = new Timer();
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                System.out.println("Pump is BROKEN!");
+                setIsPunctured(true);
+            }
+        }, 5 * 1000);
+    }
 }

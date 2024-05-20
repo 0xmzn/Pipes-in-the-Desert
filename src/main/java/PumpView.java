@@ -36,29 +36,45 @@ public class PumpView {
      */
     private void initializePumpLabel(int pumpType) {
         try {
+            BufferedImage image = ImageIO.read(new File("res/Pump2.png"));
+            ImageIcon pumpIcon = new ImageIcon(image);
+            pumpLabel = new JLabel(pumpIcon);
+            pumpLabel.setBackground(new Color(0, 0, 0, 0));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        SetLabel(false);
+    }
+
+    public void SetLabel(boolean isBroken){
+        try {
             BufferedImage image;
             switch (pumpType) {
                 case 1:
-                    image = ImageIO.read(new File("res/Pump2.png"));
+                    if (isBroken)
+                        image = ImageIO.read(new File("res/Pump2Broken.png"));
+                    else
+                        image = ImageIO.read(new File("res/Pump2.png"));
                     break;
                 case 2:
-                    image = ImageIO.read(new File("res/Pump3.png"));
+                    if (isBroken)
+                        image = ImageIO.read(new File("res/Pump3Broken.png"));
+                    else
+                        image = ImageIO.read(new File("res/Pump3.png"));
                     break;
                 case 3:
-                    image = ImageIO.read(new File("res/Pump4.png"));
+                    if (isBroken)
+                        image = ImageIO.read(new File("res/Pump4Broken.png"));
+                    else
+                        image = ImageIO.read(new File("res/Pump4.png"));
                     break;
                 default:
                     throw new IllegalArgumentException("Invalid pump type");
             }
             ImageIcon pumpIcon = new ImageIcon(image);
-            pumpLabel = new JLabel(pumpIcon);
+            pumpLabel.setIcon(pumpIcon);
             pumpLabel.setBackground(new Color(0, 0, 0, 0));
-
-            BufferedImage brokenImage;
-            brokenImage = ImageIO.read(new File("res/Broken.png"));
-            ImageIcon brokenIcon = new ImageIcon(brokenImage);
-            brokenLabel = new JLabel(brokenIcon);
-            brokenLabel.setBackground(new Color(0, 0, 0, 0));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

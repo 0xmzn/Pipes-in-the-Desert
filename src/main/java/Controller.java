@@ -11,6 +11,8 @@ import java.io.IOException;
 import java.util.*;
 import java.util.List;  // to avoid ambiguity of instantiation of the List container 
 import java.util.Timer;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.awt.*;
 
@@ -436,6 +438,9 @@ public class Controller {
         placePipeorPump(location.x, location.y, pump);
         pumps.put(pump.getID(), pump);
         gameFrame.repaint();
+
+        // BREAKS ALL PUMPS BY DEFAULT
+        //pump.RandomBreak();
     }
     /**
      * Places a pipe or pump element at the specified row and column in the grid.
