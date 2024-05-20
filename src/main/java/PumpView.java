@@ -12,6 +12,7 @@ import java.util.Random;
  */
 public class PumpView {
     private JLabel pumpLabel;
+    private JLabel brokenLabel;
     private int pumpType;
     private Point coordinate;
 
@@ -52,6 +53,12 @@ public class PumpView {
             ImageIcon pumpIcon = new ImageIcon(image);
             pumpLabel = new JLabel(pumpIcon);
             pumpLabel.setBackground(new Color(0, 0, 0, 0));
+
+            BufferedImage brokenImage;
+            brokenImage = ImageIO.read(new File("res/Broken.png"));
+            ImageIcon brokenIcon = new ImageIcon(brokenImage);
+            brokenLabel = new JLabel(brokenIcon);
+            brokenLabel.setBackground(new Color(0, 0, 0, 0));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

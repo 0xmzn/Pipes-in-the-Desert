@@ -515,19 +515,19 @@ public class Controller {
 
         initGrid();
 
-        cistern1.manufactureElement();
+        //cistern1.manufactureElement();
 //        pumps.add(cistern1.getInventoryPump());
 //        pipes.add(cistern1.getInventoryPipe());
 //        if(cistern1.getInventoryPipe()!=null){
 //            placePipeorPump(0,1, cistern1.getInventoryPipe());
 //        }
-        cistern2.manufactureElement();
+        //cistern2.manufactureElement();
 //        pumps.add(cistern2.getInventoryPump());
 //        pipes.add(cistern2.getInventoryPipe());
 //        if(cistern2.getInventoryPipe()!=null){
 //            placePipeorPump(0,4, cistern2.getInventoryPipe());
 //        }
-        cistern3.manufactureElement();
+        //cistern3.manufactureElement();
 //        pumps.add(cistern3.getInventoryPump());
 //        pipes.add(cistern3.getInventoryPipe());
 //        if(cistern3.getInventoryPipe()!=null){
