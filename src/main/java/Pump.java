@@ -144,7 +144,7 @@ public class Pump extends ActiveElement {
     }
     public JLabel getPumpLabel(){
         printMethodName("getPumpLabel()");
-        return pumpLabel;
+        return pumpView.getLabel();
     }
     private static void printMethodName(String methodName) {
         System.out.println("\n------------------------------------------------------------");
