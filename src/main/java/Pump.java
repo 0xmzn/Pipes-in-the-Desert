@@ -146,6 +146,11 @@ public class Pump extends ActiveElement {
         printMethodName("getPumpLabel()");
         return pumpView.getLabel();
     }
+
+    public JLabel drawPump(Point coordinate){
+        printMethodName("drawPump()");
+        return pumpView.drawPump(coordinate);
+    }
     private static void printMethodName(String methodName) {
         System.out.println("\n------------------------------------------------------------");
         System.out.println(methodName + " method of the Controller class is called.");

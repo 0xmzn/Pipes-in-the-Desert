@@ -11,6 +11,10 @@ import java.util.TimerTask;
 /**
  * Represents a cistern that manufactures and stores elements.
  */
+/**
+ * Represents a cistern, which is an active element in the system.
+ * It can manufacture and store pipes and pumps.
+ */
 public class Cistern extends ActiveElement {
     /**
      * A <Pipe> or <Pump> object, which implements Element interface, that was
@@ -27,6 +31,12 @@ public class Cistern extends ActiveElement {
     private static int idCounter = 0;
 
     private CisternView cisternView;
+
+    /**
+     * Constructs a new Cistern object.
+     * Initializes the inventoryPipe, inventoryPump, timer, isManufacturing, cisternView, pumpLabelPlace, and pipeLabelPlace.
+     * Calls the manufactureElement method.
+     */
     public Cistern() {
         this.inventoryPipe = null;
         this.inventoryPump = null;
@@ -82,6 +92,11 @@ public class Cistern extends ActiveElement {
         }
     }
 
+    /**
+     * Schedules the completion of pipe manufacture after a specified number of seconds.
+     *
+     * @param seconds the number of seconds after which the pipe manufacture should be completed
+     */
     private void schedulePipeManufactureCompletion(int seconds){
         printMethodName("schedulePipeManufactureCompletion");
         timer.schedule(new TimerTask() {
@@ -95,6 +110,11 @@ public class Cistern extends ActiveElement {
         isManufacturing = true;
     }
 
+    /**
+     * Schedules the completion of pump manufacturing after a specified number of seconds.
+     *
+     * @param seconds the number of seconds after which the pump manufacturing should be completed
+     */
     public void schedulePumpManufactureCompletion(int seconds){
         printMethodName("schedulePumpManufactureCompletion");
         timer.schedule(new TimerTask() {
@@ -108,6 +128,12 @@ public class Cistern extends ActiveElement {
         isManufacturing = true;
     }
 
+    
+    /**
+     * Updates the cistern label with the pump's label.
+     * If the inventory pump is not null, it sets the icon of the pump label
+     * to the cistern's pump label place, and repaints the pump label place.
+     */
     private void updateCisternLabelWithPump() {
         printMethodName("updateCisternLabel");
         if (inventoryPump != null) {
@@ -118,6 +144,11 @@ public class Cistern extends ActiveElement {
         }
     }
 
+    /**
+     * Updates the cistern label with the current pipe.
+     * If there is a pipe in the inventory, this method sets the icon of the pipe label
+     * and repaints the pipe label place.
+     */
     private void updateCisternLabelWithPipe(){
         printMethodName("updateCisternLabelWithPipe");
         if(inventoryPipe!=null){
@@ -128,33 +159,62 @@ public class Cistern extends ActiveElement {
         }
     }
 
+    /**
+     * Gets the inventory pipe.
+     *
+     * @return the inventory pipe
+     */
     public Pipe getInventoryPipe() {
         return inventoryPipe;
     }
 
+    /**
+     * Gets the inventory pump.
+     *
+     * @return the inventory pump
+     */
     public Pump getInventoryPump() {
         return inventoryPump;
     }
 
+    /**
+     * Gets the cistern label.
+     *
+     * @return the cistern label
+     */
     public JLabel getCisternLabel(){
         return cisternView.getLabel();
     }
 
+    /**
+     * Gets the pump place label.
+     *
+     * @return the pump place label
+     */
     public JLabel getPumpPlaceLabel() {
         printMethodName("getPumpLabel");
         return pumpLabelPlace;
     }
 
+    /**
+     * Gets the pipe label place.
+     *
+     * @return the pipe label place
+     */
     public JLabel getPipeLabelPlace(){
         printMethodName("getPipeLabelPlace");
         return pipeLabelPlace;
     }
+
     private static void printMethodName(String methodName) {
         System.out.println("\n------------------------------------------------------------");
         System.out.println(methodName + " method of the Controller class is called.");
         System.out.println("------------------------------------------------------------\n");
     }
 
+    /**
+     * Takes the pump from the cistern.
+     */
     public void takePump(){
         printMethodName("takePump");
         inventoryPump = null;

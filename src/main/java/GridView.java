@@ -1,6 +1,10 @@
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * Represents a grid view for a game.
+ * Provides methods to draw and update the grid view.
+ */
 public class GridView {
     private JPanel gridPanel;
 
@@ -12,6 +16,12 @@ public class GridView {
     final private int gridWidth;
     final private int gridHeight;
 
+    /**
+     * Constructs a GridView object with the specified grid width and height.
+     *
+     * @param gridWidth  the width of the grid
+     * @param gridHeight the height of the grid
+     */
     public GridView(int gridWidth, int gridHeight) {
         this.gridWidth = gridWidth;
         this.gridHeight = gridHeight;
@@ -19,13 +29,17 @@ public class GridView {
         // set coordinates for each grid cell
         for (int i = 0; i < numCellsX; i++) {
             for (int j = 0; j < numCellsY; j++) {
-                cellCoordinatesGrid[i][j] = new Point(i *  gridWidth / numCellsX, j * gridHeight / numCellsY);
+                cellCoordinatesGrid[i][j] = new Point(i * gridWidth / numCellsX, j * gridHeight / numCellsY);
             }
         }
 
         drawInitialGridView();
     }
 
+    /**
+     * Draws the initial grid view.
+     * This method is called internally during the construction of the GridView object.
+     */
     private void drawInitialGridView() {
         gridPanel = new JPanel() {
             @Override
@@ -40,14 +54,12 @@ public class GridView {
                 for (int i = 0; i < numCellsX; i++) {
                     for (int j = 0; j < numCellsY; j++) {
                         Point cellCoordinates = cellCoordinatesGrid[i][j];
-                        g2d.setColor(new Color(232, 140, 35,200));  // light-brown
+                        g2d.setColor(new Color(232, 140, 35, 200));  // light-brown
                         g2d.fillRect(cellCoordinates.x, cellCoordinates.y, cellWidth, cellHeight);
-                        g2d.setColor(new Color(153, 88, 14,200));  // dark-brown
+                        g2d.setColor(new Color(153, 88, 14, 200));  // dark-brown
                         g2d.drawRect(cellCoordinates.x, cellCoordinates.y, cellWidth, cellHeight);
                     }
                 }
-
-                // TODO: add initial characters, i.e. saboteurs & plumbers, and objects, i.e. springs & cisterns
             }
         };
     }

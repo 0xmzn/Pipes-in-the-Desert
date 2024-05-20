@@ -27,6 +27,10 @@ public class Main {
         });
 
     }
+
+    /**
+     * Creates the GUI for the game menu.
+     */
     private static void createGUI(){
         JFrame frame = new JFrame("PIPES IN THE DESERT");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -93,6 +97,13 @@ public class Main {
         frame.setVisible(true);
     }
 
+    /**
+         * Loads a font from the specified file path with the given size.
+         *
+         * @param path the file path of the font file
+         * @param size the size of the font
+         * @return the loaded font
+         */
     private static Font loadFont(String path, int size){
         try {
             File fontFile = new File (path);
@@ -103,6 +114,12 @@ public class Main {
             return new Font("Arial", Font.PLAIN,size);
         }
     }
+
+    /**
+     * Sets the font for various UI components in the application.
+     *
+     * @param f the font to be set for the UI components
+     */
     public static void setUIFont(FontUIResource f) {
         UIManager.put("Button.font", f);
         UIManager.put("Label.font", f);

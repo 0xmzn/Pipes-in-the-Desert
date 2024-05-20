@@ -225,6 +225,12 @@ public class Controller {
         gameFrame.setVisible(true);
     }
 
+    /**
+     * Handles the key press event and performs the corresponding actions based on the pressed key.
+     *
+     * @param e            the KeyEvent object representing the key press event
+     * @param activePlayer the active player object
+     */
     private void handleKeyPress(KeyEvent e, Player activePlayer){
         int key = e.getKeyCode();
         int moveX=0;
@@ -308,6 +314,12 @@ public class Controller {
         gameFrame.getContentPane().add(saboteur2.getSaboteurLabel());
     }
 
+    /**
+     * Adds labels for the cistern, pump place, and pipe label place to the game frame at the specified location.
+     *
+     * @param cistern   the cistern object containing the labels to be added
+     * @param location  the location where the labels should be placed
+     */
     private void addCisternLabels(Cistern cistern, Point location){
         cistern.getCisternLabel().setBounds(location.x,location.y, 300,300);
         gameFrame.add(cistern.getCisternLabel());
@@ -319,12 +331,26 @@ public class Controller {
         gameFrame.add(cistern.getPipeLabelPlace());
     }
 
+    /**
+     * Places a pipe or pump element at the specified row and column in the grid.
+     *
+     * @param row     the row index of the grid
+     * @param col     the column index of the grid
+     * @param element the element to be placed (pipe or pump)
+     */
     public static void placePipeorPump(int row, int col, Element element){
         if(row >=0 &&row<GRID_ROWS&&col>=0 && col<GRID_COLS){
             grid.getElementsGrid()[row][col] = element;
         }
     }
 
+    /**
+     * Places a pipe or pump element at the specified coordinate in the grid.
+     * Overload with Point parameter
+     *
+     * @param coordinate the coordinate where the element should be placed
+     * @param element the element to be placed (pipe or pump)
+     */
     public static void placePipeorPump(Point coordinate, Element element){
         int row = coordinate.x;
         int col = coordinate.y;
@@ -334,18 +360,38 @@ public class Controller {
 
     }
 
+    /**
+     * Converts pixel coordinates to a custom coordinate system.
+     *
+     * @param pixelCoordinates the pixel coordinates to convert
+     * @return the converted coordinates
+     */
     public static Point convertCoordinates(Point pixelCoordinates){
         return new Point(
                 (int)(pixelCoordinates.getX() - 130)/45,
                 (int) (pixelCoordinates.getY())/45);
     }
 
+    /**
+     * Converts pixel coordinates to a custom coordinate system.
+     * Overload with int parameters
+     *
+     * @param x the x-coordinate to convert
+     * @param y the y-coordinate to convert
+     * @return the converted coordinates
+     */
     public static Point convertCoordinates(int x, int y){
         return new Point(
                 (x- 130)/45,
                 y/45);
     }
 
+    /**
+     * Converts custom coordinates to pixel coordinates.
+     *
+     * @param coordinates the custom coordinates to convert
+     * @return the converted pixel coordinates
+     */
     public static Point convertToPixels(Point coordinates){
         return new Point( 45*coordinates.x +130, 45*coordinates.y);
     }
@@ -629,6 +675,12 @@ public class Controller {
 
     }
 
+
+    /**
+     * Installs a pump at the next cell in the grid, if possible.
+     *
+     * @param plumber the plumber object
+     */
     private void installPumpAction(Plumber plumber){
         printMethodName("InstallPump");
 
@@ -654,6 +706,13 @@ public class Controller {
         }
     }
 
+    /**
+     * Checks if the plumber is near a cistern.
+     *
+     * @param plumberPos the plumber's position
+     * @param cistern    the cistern object
+     * @return true if the plumber is near the cistern, false otherwise
+     */
     private boolean isNear(Point plumberPos, Cistern cistern){
         printMethodName("IsNear");
         Point cisternPos = cistern.getCoordinate();

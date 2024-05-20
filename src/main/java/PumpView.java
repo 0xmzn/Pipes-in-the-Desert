@@ -6,21 +6,35 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Random;
 
+/**
+ * The PumpView class represents a view component for a pump in a graphical user interface.
+ * It displays an image of a pump based on its type and coordinates.
+ */
 public class PumpView {
     private JLabel pumpLabel;
     private int pumpType;
     private Point coordinate;
 
+    /**
+     * Constructs a PumpView object with the specified coordinates.
+     *
+     * @param coordinate the coordinates of the pump
+     */
     public PumpView(Point coordinate) {
         this.coordinate = coordinate;
         pumpLabel = new JLabel();
         Random random = new Random();
-        pumpType = random.nextInt(3)+1;
+        pumpType = random.nextInt(3) + 1;
         initializePumpLabel(pumpType);
     }
 
-    private void initializePumpLabel(int pumpType){
-        try{
+    /**
+     * Initializes the pump label based on the pump type.
+     *
+     * @param pumpType the type of the pump
+     */
+    private void initializePumpLabel(int pumpType) {
+        try {
             BufferedImage image;
             switch (pumpType) {
                 case 1:
@@ -38,19 +52,30 @@ public class PumpView {
             ImageIcon pumpIcon = new ImageIcon(image);
             pumpLabel = new JLabel(pumpIcon);
             pumpLabel.setBackground(new Color(0, 0, 0, 0));
-        }
-        catch (IOException e) {
+        } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
 
-    public void drawPump(Point coordinate){
-        pumpLabel.setLocation(coordinate.x, coordinate.y);
+    /**
+     * Draws the pump at the specified coordinates.
+     *
+     * @param coordinate the coordinates to draw the pump
+     * @return the JLabel representing the pump
+     */
+    public JLabel drawPump(Point coordinate) {
+        pumpLabel.setBounds(coordinate.x, coordinate.y, 100, 100);
         pumpLabel.setVisible(true);
         pumpLabel.repaint();
+        return pumpLabel;
     }
 
-    public JLabel getLabel(){
+    /**
+     * Returns the label of the pump.
+     *
+     * @return the JLabel representing the pump
+     */
+    public JLabel getLabel() {
         printMethodName("getPumpLabel()");
         return pumpLabel;
     }
