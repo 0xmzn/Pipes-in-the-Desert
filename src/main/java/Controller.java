@@ -591,7 +591,6 @@ public class Controller {
             if(pump!=null){
                 if(plumber.pickUpPump(target)){
                     System.out.println("Picked up");
-                    gameFrame.getContentPane().remove(target.getPumpPlaceLabel());
                     target.manufactureElement();
                     gameFrame.repaint();
                 }

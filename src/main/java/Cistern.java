@@ -168,5 +168,7 @@ public class Cistern extends ActiveElement {
     public void takePump(){
         printMethodName("takePump");
         inventoryPump = null;
+        pumpLabelPlace.setIcon(null);
+        pumpLabelPlace.repaint();
     }
 }
