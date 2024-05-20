@@ -54,7 +54,7 @@ public class ActiveElement implements Element {
 
     @Override
     public boolean isWalkable() {
-        return false;
+        return true;
     }
 
     /**

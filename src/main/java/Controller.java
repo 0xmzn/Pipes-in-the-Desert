@@ -1,9 +1,13 @@
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import static java.lang.System.out;
 
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.image.BufferedImage;
 import java.io.Console;
+import java.io.File;
+import java.io.IOException;
 import java.util.*;
 import java.util.List;  // to avoid ambiguity of instantiation of the List container 
 import java.util.Timer;
@@ -241,6 +245,8 @@ public class Controller {
             case KeyEvent.VK_P:
                 pickUpPumpAction((Plumber)activePlayer);
                 break;
+            case KeyEvent.VK_I:
+                installPumpAction((Plumber)activePlayer);
 
         }
 
@@ -251,7 +257,7 @@ public class Controller {
         int maxY1 = 440;
 
         //Defining the walking area at springs bounds
-        int minX2 = 590;
+        int minX2 = 585;
         int maxX2 = 630;
         int minY2 = -10;
         int maxY2 = 430;
@@ -259,16 +265,15 @@ public class Controller {
         // Calculate the new position
         int newX = activePlayer.getCurrentCoordinate().x + moveX;
         int newY = activePlayer.getCurrentCoordinate().y + moveY;
-        int i=(newX-maxX1)/45;
-        int j=(newY)/45;
+        Point gridnum = convertCoordinates(newX, newY);
+
+        int i = gridnum.x;
+        int j = gridnum.y;
         Element tmp= null;
         if(i >= 0 && j>=0 && i<10 && j<10) {
             tmp = grid.getElementsGrid()[i][j];
         }
-        else{
-            out.println("The index is out of bounds: i: "+ i+ "j: "+ j);
-        }
-
+        out.println("X: "+ activePlayer.getCurrentCoordinate().x+" Y: "+ activePlayer.getCurrentCoordinate().y + " X: "+ gridnum.x+" Y: "+ gridnum.y);
         // Check if the new position is within bounds
         if ((newX >= minX1 && newY >= minY1 && newX <=maxX2 && newY <= maxY2)) {
             if ((newX <= maxX1 && newY <= maxY1) || (newX >= minX2 && newY >= minY2)) {
@@ -278,7 +283,7 @@ public class Controller {
                     activePlayer.move(moveX, moveY);
                 }
                 else{
-                    out.println("We had a problem! i: "+ i+ " j: "+ j);
+                    out.println("The index is out of bounds: i: "+ i+ "j: "+ j);
                 }
             }
             gameFrame.repaint();
@@ -320,8 +325,29 @@ public class Controller {
         }
     }
 
+    public static void placePipeorPump(Point coordinate, Element element){
+        int row = coordinate.x;
+        int col = coordinate.y;
+        if(row >=0 &&row<GRID_ROWS&&col>=0 && col<GRID_COLS){
+            grid.getElementsGrid()[row][col] = element;
+        }
+
+    }
+
     public static Point convertCoordinates(Point pixelCoordinates){
-        return new Point((int)(pixelCoordinates.getX() - 160)/45,(int) (pixelCoordinates.getY() - 50)/45);
+        return new Point(
+                (int)(pixelCoordinates.getX() - 130)/45,
+                (int) (pixelCoordinates.getY())/45);
+    }
+
+    public static Point convertCoordinates(int x, int y){
+        return new Point(
+                (x- 130)/45,
+                y/45);
+    }
+
+    public static Point convertToPixels(Point coordinates){
+        return new Point( 45*coordinates.x +130, 45*coordinates.y);
     }
 
     /**
@@ -356,7 +382,6 @@ public class Controller {
             placePipeorPump(0,7, cistern3.getInventoryPipe());
         }
 
-
         startNewRound();
     }
     /**
@@ -380,6 +405,7 @@ public class Controller {
         rectanglePanel.setOpaque(false);
         contentPane.add(rectanglePanel);
     }
+
     /**
      * Tracks the water flow in the game and increments corresponding saboteur or
      * plumber scores.
@@ -601,6 +627,31 @@ public class Controller {
             System.out.println("Not close to cisterns");
         }
 
+    }
+
+    private void installPumpAction(Plumber plumber){
+        printMethodName("InstallPump");
+
+        Point chosenCell = convertCoordinates(plumber.getCurrentCoordinate());
+        chosenCell.x +=1;
+
+        if (chosenCell.getX() >= 0 && chosenCell.getY() >=0 && chosenCell.getX() < 10 && chosenCell.getY() < 10){
+            if (grid.getElementsGrid()[chosenCell.x][chosenCell.y] == null
+                    && plumber.inventory != null
+                    && plumber.inventory instanceof Pump) {
+                int x = convertToPixels(chosenCell).x;
+                int y = convertToPixels(chosenCell).y;
+                JLabel pumpLabel = ((Pump) plumber.inventory).getPumpLabel();
+                pumpLabel.setBounds(x, y, pumpLabel.getWidth(), pumpLabel.getHeight());
+                gameFrame.add(pumpLabel);
+                gameFrame.repaint();
+                out.println("THE PUMP IS AT X: " + pumpLabel.getX() + " Y: " + pumpLabel.getY());
+                plumber.installPump(chosenCell);
+            }
+            else{
+                out.println("The pump can not be installed!!");
+            }
+        }
     }
 
     private boolean isNear(Point plumberPos, Cistern cistern){

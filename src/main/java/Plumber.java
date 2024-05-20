@@ -83,8 +83,6 @@ public class Plumber extends Player {
     public boolean pickUpPump(Cistern cistern) {
         printMethodName("pickUpPump");
 
-
-
         if (cistern.getInventoryPump() == null) {
             out.println("There is no pump in the cistern!");
             return false;
@@ -116,14 +114,14 @@ public class Plumber extends Player {
      * Finally, it prints a success message.
      */
     public boolean installPump(Point targetCoordinate) {
-        // we are sure that targetCoordinate is empty
-        // if it is not, it should fail on the stage of the Controller
-
         // unnecessary duplication of logic, instead of installPump we could have install Element
         printMethodName("installPump");
 
         if (inventory instanceof Pump) {
+            Grid.setElement(targetCoordinate, inventory);
+            Controller.placePipeorPump(Controller.convertToPixels(targetCoordinate), inventory);
             inventory = null;  // empty the inventory, the actual instantiate will happen in the Controller
+            out.println("The pump has been installed in "+ targetCoordinate.x + " x " + targetCoordinate.y);
             return true;
         } else if (inventory instanceof EndOfPipe) {
             out.println("You have EndOfPipe in your inventory!");
