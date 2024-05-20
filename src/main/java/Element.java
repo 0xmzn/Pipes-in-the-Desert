@@ -20,4 +20,6 @@ public interface Element {
 
     boolean isWalkable();
 
+    boolean WaterGoing();
+
 }

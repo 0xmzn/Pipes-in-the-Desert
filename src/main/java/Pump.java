@@ -65,6 +65,12 @@ public class Pump extends ActiveElement {
         };
         scheduler.scheduleAtFixedRate(task, 0, 1, TimeUnit.SECONDS);
     }
+
+
+    @Override
+    public boolean WaterGoing(){
+        return !isPunctured;
+    }
     /**
      * Returns the value of isPunctured.
      *

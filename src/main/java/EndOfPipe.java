@@ -63,6 +63,11 @@ public class EndOfPipe implements Element{
         return false;
     }
 
+    @Override
+    public boolean WaterGoing() {
+        return false;
+    }
+
     public ActiveElement getActiveElement() {
         return connectedActiveElement;
     }
