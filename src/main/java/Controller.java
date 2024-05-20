@@ -238,15 +238,19 @@ public class Controller {
         switch (key){
             case KeyEvent.VK_W:
                 moveY = -10;  // Move plumber up
+                handleMove(moveX, moveY);
                 break;
             case KeyEvent.VK_S:
                 moveY = 10;   // Move plumber down
+                handleMove(moveX, moveY);
                 break;
             case KeyEvent.VK_A:
                 moveX = -10;  // Move plumber left
+                handleMove(moveX, moveY);
                 break;
             case KeyEvent.VK_D:
                 moveX = 10;   // Move plumber right
+                handleMove(moveX, moveY);
                 break;
             case KeyEvent.VK_P:
                 pickUpPumpAction((Plumber)activePlayer);
@@ -255,6 +259,10 @@ public class Controller {
                 installPumpAction((Plumber)activePlayer);
 
         }
+
+    }
+
+    private void handleMove(int moveX, int moveY){
 
         //Defining the walking area at cisterns bounds
         int minX1 = 90;
