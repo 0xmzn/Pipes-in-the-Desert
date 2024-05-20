@@ -33,41 +33,14 @@ public class Pipe implements Element {
     private EndOfPipe pipeEnd1;
     private EndOfPipe pipeEnd2;
 
-    private JLabel pipeLabel;
-
+    private PipeView pipeView;
 
     public Pipe() {
         isPunctured = false;
         isWaterFlowing = false;
         pipeEnd1 = new EndOfPipe(coordinate);
         pipeEnd2 = new EndOfPipe(coordinate);
-        initializePipeLabel();
-
-    }
-
-    public void initializePipeLabel(){
-        BufferedImage image;
-        if(!isPunctured){
-            try{
-                image = ImageIO.read(new File("res/pipe.png"));
-                ImageIcon pumpIcon = new ImageIcon(image);
-                pipeLabel = new JLabel(pumpIcon);
-                pipeLabel.setBackground(new Color(0, 0, 0, 0));
-            }
-            catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        }else{
-            try{
-                image = ImageIO.read(new File("res/leaking.png"));
-                ImageIcon pumpIcon = new ImageIcon(image);
-                pipeLabel = new JLabel(pumpIcon);
-                pipeLabel.setBackground(new Color(0, 0, 0, 0));
-            }
-            catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        }
+        pipeView = new PipeView();
     }
 
     @Override
@@ -132,7 +105,7 @@ public class Pipe implements Element {
     }
     public JLabel getPipeLabel(){
         printMethodName("getPumpLabel()");
-        return pipeLabel;
+        return pipeView.getLabel();
     }
     private static void printMethodName(String methodName) {
         System.out.println("\n------------------------------------------------------------");
