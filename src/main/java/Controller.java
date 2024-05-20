@@ -205,15 +205,30 @@ public class Controller {
         cistern3.setCoordinate(new Point(90,350));
 
         for(int i = 0; i<GRID_ROWS; i++){
-            placePipes(new Pipe(), new Point(i,0));
+            if(i!=3 && i!=6){
+                placePipes(new Pipe(), new Point(i,1));
+            }
+            else{
+                placePumps(new Pump(), new Point(i,1));
+            }
         }
 
         for(int i = 0; i<GRID_ROWS; i++){
-            placePipes(new Pipe(), new Point(i,3));
+            if(i!=3 && i!=6){
+                placePipes(new Pipe(), new Point(i,4));
+            }
+            else{
+                placePumps(new Pump(), new Point(i,4));
+            }
         }
 
         for(int i = 0; i<GRID_ROWS; i++){
-            placePipes(new Pipe(), new Point(i,6));
+            if(i!=3 && i!=6){
+                placePipes(new Pipe(), new Point(i,7));
+            }
+            else{
+                placePumps(new Pump(), new Point(i,7));
+            }
         }
 
         //walking area
@@ -382,11 +397,21 @@ public class Controller {
     private void placePipes(Pipe pipe, Point location){
         Point coordinate = convertToPixels(location);
         pipe.setID(pipeId++);
-        pipe.getPipeLabel().setBounds(coordinate.x+2,coordinate.y+65,100,100);
+        pipe.getPipeLabel().setBounds(coordinate.x+2,coordinate.y+20,100,100);
         gameFrame.add(pipe.getPipeLabel());
         Grid.setElement(location, pipe);
         placePipeorPump(location.x, location.y, pipe);
         pipes.put(pipe.getID(), pipe);
+        gameFrame.repaint();
+    }
+    private void placePumps(Pump pump, Point location){
+        Point coordinate = convertToPixels(location);
+        pump.setID(pipeId++);
+        pump.getPumpLabel().setBounds(coordinate.x+2,coordinate.y+20,100,100);
+        gameFrame.add(pump.getPumpLabel());
+        Grid.setElement(location, pump);
+        placePipeorPump(location.x, location.y, pump);
+        pumps.put(pump.getID(), pump);
         gameFrame.repaint();
     }
     /**
