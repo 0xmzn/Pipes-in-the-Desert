@@ -19,9 +19,8 @@ public class Plumber extends Player {
      * The inventory of the Plumber - picked-up pipe or a pump.
      */
     Element inventory;
-    private JLabel plumberLabel;
     private Point currentCoordinate;
-
+    private PlumberView plumberView;
     /**
      * Constructs a new Plumber object.
      * It calls the constructor of the superclass (Player) using the super()
@@ -30,14 +29,7 @@ public class Plumber extends Player {
     public Plumber(Point coordinate) {
         super(coordinate);
         currentCoordinate = coordinate;
-        try {
-            BufferedImage image = ImageIO.read(new File("res/plumber3.png"));
-            ImageIcon plumberIcon = new ImageIcon(image);
-            plumberLabel = new JLabel(plumberIcon);
-            plumberLabel.setBackground(new Color(0,0,0,0));
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        this.plumberView = new PlumberView();
     }
 
     @Override
@@ -274,10 +266,10 @@ public class Plumber extends Player {
     }
 
     public void movePlumberLabel(int x, int y){
-        plumberLabel.setLocation(x,y);
+        getPlumberLabel().setLocation(x,y);
     }
 
     public JLabel getPlumberLabel(){
-        return plumberLabel;
+        return plumberView.getLabel();
     }
 }

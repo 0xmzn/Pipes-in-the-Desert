@@ -299,13 +299,13 @@ public class Controller {
         plumber2.getPlumberLabel().setOpaque(true);
         gameFrame.getContentPane().add(plumber2.getPlumberLabel());
 
-        saboteur1.getPlumberLabel().setBounds(Saboteur1Coordinate.x, Saboteur1Coordinate.y, 60, 70);
-        saboteur1.getPlumberLabel().setOpaque(true);
-        gameFrame.getContentPane().add(saboteur1.getPlumberLabel());
+        saboteur1.getSaboteurLabel().setBounds(Saboteur1Coordinate.x, Saboteur1Coordinate.y, 60, 70);
+        saboteur1.getSaboteurLabel().setOpaque(true);
+        gameFrame.getContentPane().add(saboteur1.getSaboteurLabel());
 
-        saboteur2.getPlumberLabel().setBounds(Saboteur2Coordinate.x, Saboteur2Coordinate.y, 60, 70);
-        saboteur2.getPlumberLabel().setOpaque(true);
-        gameFrame.getContentPane().add(saboteur2.getPlumberLabel());
+        saboteur2.getSaboteurLabel().setBounds(Saboteur2Coordinate.x, Saboteur2Coordinate.y, 60, 70);
+        saboteur2.getSaboteurLabel().setOpaque(true);
+        gameFrame.getContentPane().add(saboteur2.getSaboteurLabel());
     }
 
     private void addCisternLabels(Cistern cistern, Point location){

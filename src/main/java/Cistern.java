@@ -22,34 +22,24 @@ public class Cistern extends ActiveElement {
     private Timer timer;
     private Point coordinate;
     private boolean isManufacturing;
-    private JLabel cisternLabel;
     private JLabel pumpLabelPlace;
     private JLabel pipeLabelPlace;
     private static int idCounter = 0;
 
+    private CisternView cisternView;
     public Cistern() {
         this.inventoryPipe = null;
         this.inventoryPump = null;
         this.timer = new Timer();
         this.isManufacturing = false;
-        try {
-            BufferedImage image = ImageIO.read(new File("res/Cistern.png"));
-            ImageIcon cisternIcon = new ImageIcon(image);
-            cisternLabel = new JLabel(cisternIcon);
-            cisternLabel.setBackground(new Color(0,0,0,0));
+        this.cisternView = new CisternView();
+        //Pump
+        pumpLabelPlace = new JLabel();
+        pumpLabelPlace.setBackground(new Color(0,0,0,0));
 
-            //Pump
-            pumpLabelPlace = new JLabel();
-            pumpLabelPlace.setBackground(new Color(0,0,0,0));
-
-            //Pipe
-            pipeLabelPlace = new JLabel();
-            pipeLabelPlace.setBackground(new Color(0,0,0,0));
-
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-
+        //Pipe
+        pipeLabelPlace = new JLabel();
+        pipeLabelPlace.setBackground(new Color(0,0,0,0));
         manufactureElement();
     }
 
@@ -147,7 +137,7 @@ public class Cistern extends ActiveElement {
     }
 
     public JLabel getCisternLabel(){
-        return cisternLabel;
+        return cisternView.getLabel();
     }
 
     public JLabel getPumpPlaceLabel() {
