@@ -1,9 +1,13 @@
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import static java.lang.System.out;
 
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.image.BufferedImage;
 import java.io.Console;
+import java.io.File;
+import java.io.IOException;
 import java.util.*;
 import java.util.List;  // to avoid ambiguity of instantiation of the List container 
 import java.util.Timer;
@@ -327,6 +331,7 @@ public class Controller {
         if(row >=0 &&row<GRID_ROWS&&col>=0 && col<GRID_COLS){
             grid.getElementsGrid()[row][col] = element;
         }
+
     }
 
     public static Point convertCoordinates(Point pixelCoordinates){
@@ -634,8 +639,14 @@ public class Controller {
             if (grid.getElementsGrid()[chosenCell.x][chosenCell.y] == null
                     && plumber.inventory != null
                     && plumber.inventory instanceof Pump) {
-                plumber.installPump(chosenCell);
+                int x = convertToPixels(chosenCell).x;
+                int y = convertToPixels(chosenCell).y;
+                JLabel pumpLabel = ((Pump) plumber.inventory).getPumpLabel();
+                pumpLabel.setBounds(x, y, pumpLabel.getWidth(), pumpLabel.getHeight());
+                gameFrame.add(pumpLabel);
                 gameFrame.repaint();
+                out.println("THE PUMP IS AT X: " + pumpLabel.getX() + " Y: " + pumpLabel.getY());
+                plumber.installPump(chosenCell);
             }
             else{
                 out.println("The pump can not be installed!!");

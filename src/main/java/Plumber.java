@@ -114,9 +114,6 @@ public class Plumber extends Player {
      * Finally, it prints a success message.
      */
     public boolean installPump(Point targetCoordinate) {
-        // we are sure that targetCoordinate is empty
-        // if it is not, it should fail on the stage of the Controller
-
         // unnecessary duplication of logic, instead of installPump we could have install Element
         printMethodName("installPump");
 
@@ -124,8 +121,7 @@ public class Plumber extends Player {
             Grid.setElement(targetCoordinate, inventory);
             Controller.placePipeorPump(Controller.convertToPixels(targetCoordinate), inventory);
             inventory = null;  // empty the inventory, the actual instantiate will happen in the Controller
-            out.println("The pump has been installed in "+ targetCoordinate.x + " . " + targetCoordinate.y);
-            out.println("Pixels are: x= "+ Controller.convertToPixels(targetCoordinate).x + "y = " + Controller.convertToPixels(targetCoordinate).y);
+            out.println("The pump has been installed in "+ targetCoordinate.x + " x " + targetCoordinate.y);
             return true;
         } else if (inventory instanceof EndOfPipe) {
             out.println("You have EndOfPipe in your inventory!");
