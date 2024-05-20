@@ -83,8 +83,6 @@ public class Plumber extends Player {
     public boolean pickUpPump(Cistern cistern) {
         printMethodName("pickUpPump");
 
-
-
         if (cistern.getInventoryPump() == null) {
             out.println("There is no pump in the cistern!");
             return false;
@@ -123,7 +121,11 @@ public class Plumber extends Player {
         printMethodName("installPump");
 
         if (inventory instanceof Pump) {
+            Grid.setElement(targetCoordinate, inventory);
+            Controller.placePipeorPump(Controller.convertToPixels(targetCoordinate), inventory);
             inventory = null;  // empty the inventory, the actual instantiate will happen in the Controller
+            out.println("The pump has been installed in "+ targetCoordinate.x + " . " + targetCoordinate.y);
+            out.println("Pixels are: x= "+ Controller.convertToPixels(targetCoordinate).x + "y = " + Controller.convertToPixels(targetCoordinate).y);
             return true;
         } else if (inventory instanceof EndOfPipe) {
             out.println("You have EndOfPipe in your inventory!");
