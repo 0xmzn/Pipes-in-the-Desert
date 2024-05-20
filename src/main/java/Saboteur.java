@@ -1,12 +1,8 @@
-import javax.imageio.ImageIO;
 import javax.swing.*;
 
 import static java.lang.System.out;
 
 import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
 
 /**
  * The Saboteur class extends the Player class and implements saboteur-specific
@@ -16,22 +12,13 @@ public class Saboteur extends Player {
     /**
      * Constructs a new Saboteur object.
      */
-
-    private JLabel saboteurLabel;
     private Point currentCoordinate;
-
+    private SaboteurView saboteurView;
 
     public Saboteur(Point coordinate) {
         super(coordinate);
         currentCoordinate = coordinate;
-        try {
-            BufferedImage image = ImageIO.read(new File("res/saboteur2.png"));
-            ImageIcon plumberIcon = new ImageIcon(image);
-            saboteurLabel = new JLabel(plumberIcon);
-            saboteurLabel.setBackground(new Color(0,0,0,0));
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        saboteurView = new SaboteurView();
     }
 
     @Override
@@ -60,9 +47,9 @@ public class Saboteur extends Player {
         }
     }
     public void moveSaboteurLabel(int x, int y){
-        saboteurLabel.setLocation(x,y);
+        getSaboteurLabel().setLocation(x,y);
     }
-    public JLabel getPlumberLabel(){
-        return saboteurLabel;
+    public JLabel getSaboteurLabel(){
+        return saboteurView.getLabel();
     }
 }
