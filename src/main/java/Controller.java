@@ -11,6 +11,8 @@ import java.io.IOException;
 import java.util.*;
 import java.util.List;  // to avoid ambiguity of instantiation of the List container 
 import java.util.Timer;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.awt.*;
 
@@ -23,6 +25,7 @@ import java.awt.*;
  */
 
 public class Controller {
+    private List<Integer> startPoints= new ArrayList<>(){{add(1);add(4); add(7); }};
     private final Scanner scanner;
     /**
      * The grid that stores objects, which implement the <Element> interface, i.e.
@@ -44,6 +47,7 @@ public class Controller {
      * A number of turns that have passed from the start of the game.
      */
     private int turn;
+    int pipeId;
 
     /**
      * A constant speed with which water passes through the pipe network.
@@ -62,8 +66,8 @@ public class Controller {
     private int round;
     private boolean gameRunning;
 
-    List<Pipe> pipes;
-    List<Pump> pumps;
+    private Map<Integer, Pipe> pipes;
+    private Map<Integer, Pump> pumps;
 
     private final Cistern cistern1;
     private final Cistern cistern2;
@@ -89,6 +93,7 @@ public class Controller {
     private Player activePlayer;
     private static final int GRID_ROWS = 10;
     private static final int GRID_COLS = 10;
+
     /**
      * Constructs a new Controller object. Initializes the scanner to reuse for user
      * input.
@@ -105,13 +110,13 @@ public class Controller {
         plumber2 = new Plumber(Plumber2Coordinate);
         saboteur1 = new Saboteur(Saboteur1Coordinate);
         saboteur2 = new Saboteur(Saboteur2Coordinate);
-
+        pipeId = 1;
         round = 1;
 
         gameRunning = true;
 
-        pipes = new ArrayList<>();
-        pumps = new ArrayList<>();
+        pipes = new HashMap<>();
+        pumps = new HashMap<>();
 
         gameFrame = new JFrame("PIPES IN THE DESERT");
         gameFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -202,6 +207,33 @@ public class Controller {
         cistern2.setCoordinate(new Point(90,210));
         cistern3.setCoordinate(new Point(90,350));
 
+        for(int i = 0; i<GRID_ROWS; i++){
+            if(i!=3 && i!=6){
+                placePipes(new Pipe(), new Point(i,1));
+            }
+            else{
+                placePumps(new Pump(), new Point(i,1));
+            }
+        }
+
+        for(int i = 0; i<GRID_ROWS; i++){
+            if(i!=3 && i!=6){
+                placePipes(new Pipe(), new Point(i,4));
+            }
+            else{
+                placePumps(new Pump(), new Point(i,4));
+            }
+        }
+
+        for(int i = 0; i<GRID_ROWS; i++){
+            if(i!=3 && i!=6){
+                placePipes(new Pipe(), new Point(i,7));
+            }
+            else{
+                placePumps(new Pump(), new Point(i,7));
+            }
+        }
+
         //walking area
         walkArea(gameFrame.getContentPane(), new Color(94, 59, 28), new Point(99, 50), new Dimension(60, 450));
         walkArea(gameFrame.getContentPane(), new Color(94, 59, 28), new Point(612, 50), new Dimension(60, 450));
@@ -257,11 +289,67 @@ public class Controller {
                 break;
             case KeyEvent.VK_I:
                 installPumpAction((Plumber)activePlayer);
-
+                break;
+            case KeyEvent.VK_B:
+                puncturePipe((Saboteur) activePlayer);
+                break;
+            case KeyEvent.VK_F:
+                fixPipe((Plumber) activePlayer);
+                break;
         }
 
     }
 
+    private void fixPipe(Plumber plumber){
+        Point saboteurPos = plumber.getCurrentCoordinate();
+        Point gridCoordinate = convertCoordinates(saboteurPos);
+
+        int row = gridCoordinate.x;
+        int col = gridCoordinate.y;
+
+        Element elementAtPos = grid.getElementsGrid()[row][col];
+        if(elementAtPos instanceof Pipe){
+            Pipe pipe = (Pipe) elementAtPos;
+            pipe.setIsPunctured(false);
+
+            gameFrame.repaint();
+            System.out.println("Pipe fixed at position: " + row + ", " + col);
+        }
+        else {
+            if (elementAtPos instanceof Pump){
+                Pump pump = (Pump) elementAtPos;
+                pump.setIsPunctured(false);
+
+                gameFrame.repaint();
+
+                System.out.println("Pump fixed at position: " + row + ", " + col);
+            }
+
+            System.out.println("No pipe or pump to fix at position: " + row + ", " + col);
+        }
+    }
+
+    private void puncturePipe(Saboteur saboteur){
+        Point saboteurPos = saboteur.getCurrentCoordinate();
+        Point gridCoordinate = convertCoordinates(saboteurPos);
+
+        int row = gridCoordinate.x;
+        int col = gridCoordinate.y;
+
+        Element elementAtPos = grid.getElementsGrid()[row][col];
+        if(elementAtPos instanceof Pipe){
+            Pipe pipe = (Pipe) elementAtPos;
+            pipe.setIsPunctured(true);
+
+            grid.getElementsGrid()[row][col] = pipe;
+
+            gameFrame.repaint();
+            System.out.println("Pipe punctured at position: " + row + ", " + col);
+        }
+        else {
+            System.out.println("No pipe to puncture at position: " + row + ", " + col);
+        }
+    }
     private void handleMove(int moveX, int moveY){
 
         //Defining the walking area at cisterns bounds
@@ -334,11 +422,34 @@ public class Controller {
 
         cistern.getPumpPlaceLabel().setBounds(location.x+60,location.y+100,100,100);
         gameFrame.add(cistern.getPumpPlaceLabel());
-
-        cistern.getPipeLabelPlace().setBounds(location.x+165,location.y+100,100,100);
-        gameFrame.add(cistern.getPipeLabelPlace());
+//
+//        cistern.getPipeLabelPlace().setBounds(location.x+165,location.y+100,100,100);
+//        gameFrame.add(cistern.getPipeLabelPlace());
     }
 
+    private void placePipes(Pipe pipe, Point location){
+        Point coordinate = convertToPixels(location);
+        pipe.setID(pipeId++);
+        pipe.getPipeLabel().setBounds(coordinate.x+2,coordinate.y+20,100,100);
+        gameFrame.add(pipe.getPipeLabel());
+        Grid.setElement(location, pipe);
+        placePipeorPump(location.x, location.y, pipe);
+        pipes.put(pipe.getID(), pipe);
+        gameFrame.repaint();
+    }
+    private void placePumps(Pump pump, Point location){
+        Point coordinate = convertToPixels(location);
+        pump.setID(pipeId++);
+        pump.getPumpLabel().setBounds(coordinate.x+2,coordinate.y+20,100,100);
+        gameFrame.add(pump.getPumpLabel());
+        Grid.setElement(location, pump);
+        placePipeorPump(location.x, location.y, pump);
+        pumps.put(pump.getID(), pump);
+        gameFrame.repaint();
+
+        // BREAKS ALL PUMPS BY DEFAULT
+        //pump.RandomBreak();
+    }
     /**
      * Places a pipe or pump element at the specified row and column in the grid.
      *
@@ -349,6 +460,7 @@ public class Controller {
     public static void placePipeorPump(int row, int col, Element element){
         if(row >=0 &&row<GRID_ROWS&&col>=0 && col<GRID_COLS){
             grid.getElementsGrid()[row][col] = element;
+            System.out.println("putted to the grid");
         }
     }
 
@@ -367,7 +479,6 @@ public class Controller {
         }
 
     }
-
     /**
      * Converts pixel coordinates to a custom coordinate system.
      *
@@ -417,24 +528,24 @@ public class Controller {
 
         initGrid();
 
-        cistern1.manufactureElement();
-        pumps.add(cistern1.getInventoryPump());
-        pipes.add(cistern1.getInventoryPipe());
-        if(cistern1.getInventoryPipe()!=null){
-            placePipeorPump(0,1, cistern1.getInventoryPipe());
-        }
-        cistern2.manufactureElement();
-        pumps.add(cistern2.getInventoryPump());
-        pipes.add(cistern2.getInventoryPipe());
-        if(cistern2.getInventoryPipe()!=null){
-            placePipeorPump(0,4, cistern2.getInventoryPipe());
-        }
-        cistern3.manufactureElement();
-        pumps.add(cistern3.getInventoryPump());
-        pipes.add(cistern3.getInventoryPipe());
-        if(cistern3.getInventoryPipe()!=null){
-            placePipeorPump(0,7, cistern3.getInventoryPipe());
-        }
+        //cistern1.manufactureElement();
+//        pumps.add(cistern1.getInventoryPump());
+//        pipes.add(cistern1.getInventoryPipe());
+//        if(cistern1.getInventoryPipe()!=null){
+//            placePipeorPump(0,1, cistern1.getInventoryPipe());
+//        }
+        //cistern2.manufactureElement();
+//        pumps.add(cistern2.getInventoryPump());
+//        pipes.add(cistern2.getInventoryPipe());
+//        if(cistern2.getInventoryPipe()!=null){
+//            placePipeorPump(0,4, cistern2.getInventoryPipe());
+//        }
+        //cistern3.manufactureElement();
+//        pumps.add(cistern3.getInventoryPump());
+//        pipes.add(cistern3.getInventoryPipe());
+//        if(cistern3.getInventoryPipe()!=null){
+//            placePipeorPump(0,7, cistern3.getInventoryPipe());
+//        }
 
         startNewRound();
     }
@@ -531,6 +642,7 @@ public class Controller {
      * @param seconds the remaining time in seconds
      */
     public void updateTimerLabel(int seconds) {
+        this.checkWater();
         SwingUtilities.invokeLater(() -> {
             timerLabel.setText("Time: " + seconds);
         });
@@ -559,11 +671,34 @@ public class Controller {
             }
         }, 0, 1000);
     }
+
+    public void checkWater(){
+        boolean test=true;
+        for(int i : this.startPoints){
+            test=true;
+            for(int j=9; j>=0; j--){
+                if(!grid.getElementsGrid()[j][i].WaterGoing())
+                {
+                    test=false;
+                    break;
+                }
+            }
+            if(test){
+                this.plumberScore++;
+            }
+            else{
+                this.saboteurScore++;
+            }
+        }
+        this.saboteurScoreLabel.setText("sabutoer:"+Integer.toString(this.saboteurScore));
+        this.plumberScoreLabel.setText("plumber:"+Integer.toString(this.plumberScore));
+
+    }
+
     /**
      * Breaks a pump if there is one not broken currently.
      */
     public void breakPump() {
-        // TODO: update with prototype version
         printMethodName("breakPump()");
 
         if(pumps.isEmpty()){
@@ -573,14 +708,16 @@ public class Controller {
         Random random = new Random();
         int randomIndex = random.nextInt(pumps.size());
         Pump pumpToBreak = pumps.get(randomIndex);
-        pumpToBreak.setIsPunctured(true);
+
         Timer timer = new Timer();
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
+                pumpToBreak.setIsPunctured(true);
                 breakPump();
+
             }
-        }, 50 * 1000);
+        }, 20 * 1000);
     }
 
     /**
@@ -702,9 +839,13 @@ public class Controller {
                 int x = convertToPixels(chosenCell).x;
                 int y = convertToPixels(chosenCell).y;
                 JLabel pumpLabel = ((Pump) plumber.inventory).getPumpLabel();
+
                 pumpLabel.setBounds(x, y, pumpLabel.getWidth(), pumpLabel.getHeight());
-                gameFrame.add(pumpLabel);
+
+                gameFrame.getContentPane().add(pumpLabel);
+                pumpLabel.setVisible(true);
                 gameFrame.repaint();
+
                 out.println("THE PUMP IS AT X: " + pumpLabel.getX() + " Y: " + pumpLabel.getY());
                 plumber.installPump(chosenCell);
             }

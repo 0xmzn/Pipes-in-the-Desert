@@ -26,7 +26,7 @@ public class Pipe implements Element {
      * Keeps track of whether water is flowing through the pipe or not.
      */
     private boolean isWaterFlowing;
-
+    private JLabel pipeLabel;
     /**
      * Stores 2 <EndOfPipe> elements referring to both sides of the pipe.
      */
@@ -40,7 +40,53 @@ public class Pipe implements Element {
         isWaterFlowing = false;
         pipeEnd1 = new EndOfPipe(coordinate);
         pipeEnd2 = new EndOfPipe(coordinate);
-        pipeView = new PipeView();
+        initializePipeLabel();
+
+    }
+
+    public void initializePipeLabel(){
+        printMethodName("initializePipeLabel");
+
+        BufferedImage image;
+        try{
+            image = ImageIO.read(new File("res/pipe.png"));
+            ImageIcon pumpIcon = new ImageIcon(image);
+            pipeLabel = new JLabel(pumpIcon);
+            pipeLabel.setBackground(new Color(0, 0, 0, 0));
+        }
+        catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        setLabel();
+    }
+
+    private void setLabel(){
+        BufferedImage image;
+        if(!isPunctured){
+            System.out.println("NOT PUNCTURED PIPE");
+            try{
+                image = ImageIO.read(new File("res/pipe.png"));
+                ImageIcon pumpIcon = new ImageIcon(image);
+                pipeLabel.setIcon(pumpIcon);
+                pipeLabel.setBackground(new Color(0, 0, 0, 0));
+            }
+            catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }else{
+            System.out.println("PUNCTURED PIPE");
+            try{
+                image = ImageIO.read(new File("res/leakingPipe.png"));
+                ImageIcon pumpIcon = new ImageIcon(image);
+                pipeLabel.setIcon(pumpIcon);
+                pipeLabel.setBackground(new Color(0, 0, 0, 0));
+            }
+            catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+        pipeLabel.repaint();
     }
 
     @Override
@@ -68,6 +114,12 @@ public class Pipe implements Element {
         return true;
     }
 
+
+    @Override
+    public boolean WaterGoing() {
+        return !this.isPunctured;
+    }
+
     /**
      * Returns the punctured state of the pipe.
      *
@@ -83,7 +135,9 @@ public class Pipe implements Element {
      * @param puncturedState the new punctured state of the pipe.
      */
     public void setIsPunctured(boolean puncturedState) {
+        printMethodName("setIsPunctured()");
         isPunctured = puncturedState;
+        setLabel();
     }
 
     /**
@@ -104,13 +158,15 @@ public class Pipe implements Element {
         isWaterFlowing = waterFlowingState;
     }
     public JLabel getPipeLabel(){
-        printMethodName("getPumpLabel()");
-        return pipeView.getLabel();
+        printMethodName("getPipeLabel()");
+        return pipeLabel;
     }
+//    public JLabel getPuncturedLabel(){
+//
+//    }
     private static void printMethodName(String methodName) {
         System.out.println("\n------------------------------------------------------------");
-        System.out.println(methodName + " method of the Controller class is called.");
+        System.out.println(methodName + " method of the Pipe class is called.");
         System.out.println("------------------------------------------------------------\n");
     }
-
 }

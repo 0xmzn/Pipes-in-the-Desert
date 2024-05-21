@@ -4,9 +4,13 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
 import java.util.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.concurrent.TimeUnit;
 
 
 /**
@@ -52,6 +56,20 @@ public class Pump extends ActiveElement {
         waterInReservoir = 0;
         connectedEndsOfPipes = new ArrayList<EndOfPipe>();
         pumpView = new PumpView(new Point(0,0));
+
+        ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
+        Runnable task = new Runnable() {
+            public void run() {
+                RandomBreak();
+            }
+        };
+        scheduler.scheduleAtFixedRate(task, 0, 1, TimeUnit.SECONDS);
+    }
+
+
+    @Override
+    public boolean WaterGoing(){
+        return !isPunctured;
     }
     /**
      * Returns the value of isPunctured.
@@ -68,7 +86,9 @@ public class Pump extends ActiveElement {
      * @param isPunctured the new value of isPunctured
      */
     public void setIsPunctured(boolean isPunctured) {
+
         this.isPunctured = isPunctured;
+        pumpView.SetLabel(isPunctured);
     }
 
     /**
@@ -157,4 +177,13 @@ public class Pump extends ActiveElement {
         System.out.println("------------------------------------------------------------\n");
     }
 
+    Random random = new Random();
+    public void RandomBreak(){
+        if (isPunctured) return;
+        double chance = 0.01; // x% chance to execute the function
+        if (random.nextDouble() < chance) {
+            System.out.println("Random break");
+            setIsPunctured(true);
+        }
+    }
 }
