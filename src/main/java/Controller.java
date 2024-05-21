@@ -285,16 +285,35 @@ public class Controller {
                 handleMove(moveX, moveY);
                 break;
             case KeyEvent.VK_P:
-                pickUpPumpAction((Plumber)activePlayer);
+                if(activePlayer instanceof Plumber){
+                    pickUpPumpAction((Plumber)activePlayer);
+                }else{
+                    System.out.println("Not your command");
+                }
                 break;
             case KeyEvent.VK_I:
-                installPumpAction((Plumber)activePlayer);
+                if(activePlayer instanceof Plumber){
+                    installPumpAction((Plumber)activePlayer);
+
+                }else{
+                    System.out.println("Not your command");
+                }
                 break;
             case KeyEvent.VK_B:
-                puncturePipe((Plumber) activePlayer);
+                if(activePlayer instanceof Saboteur){
+                    puncturePipe((Saboteur) activePlayer);
+                }
+                else{
+                    System.out.println("Not your command");
+                }
                 break;
             case KeyEvent.VK_F:
-                fixPipe((Plumber) activePlayer);
+                if(activePlayer instanceof Plumber){
+                    fixPipe((Plumber) activePlayer);
+                }
+                else{
+                    System.out.println("Not your command");
+                }
                 break;
         }
 
@@ -329,7 +348,7 @@ public class Controller {
         }
     }
 
-    private void puncturePipe(Plumber saboteur){
+    private void puncturePipe(Saboteur saboteur){
         Point saboteurPos = saboteur.getCurrentCoordinate();
         Point gridCoordinate = convertCoordinates(saboteurPos);
 
@@ -422,9 +441,9 @@ public class Controller {
 
         cistern.getPumpPlaceLabel().setBounds(location.x+60,location.y+100,100,100);
         gameFrame.add(cistern.getPumpPlaceLabel());
-//
-//        cistern.getPipeLabelPlace().setBounds(location.x+165,location.y+100,100,100);
-//        gameFrame.add(cistern.getPipeLabelPlace());
+
+        cistern.getPipeLabelPlace().setBounds(location.x+60,location.y+100,100,100);
+        gameFrame.add(cistern.getPipeLabelPlace());
     }
 
     private void placePipes(Pipe pipe, Point location){
@@ -528,25 +547,6 @@ public class Controller {
 
         initGrid();
 
-        //cistern1.manufactureElement();
-//        pumps.add(cistern1.getInventoryPump());
-//        pipes.add(cistern1.getInventoryPipe());
-//        if(cistern1.getInventoryPipe()!=null){
-//            placePipeorPump(0,1, cistern1.getInventoryPipe());
-//        }
-        //cistern2.manufactureElement();
-//        pumps.add(cistern2.getInventoryPump());
-//        pipes.add(cistern2.getInventoryPipe());
-//        if(cistern2.getInventoryPipe()!=null){
-//            placePipeorPump(0,4, cistern2.getInventoryPipe());
-//        }
-        //cistern3.manufactureElement();
-//        pumps.add(cistern3.getInventoryPump());
-//        pipes.add(cistern3.getInventoryPipe());
-//        if(cistern3.getInventoryPipe()!=null){
-//            placePipeorPump(0,7, cistern3.getInventoryPipe());
-//        }
-
         startNewRound();
     }
     /**
@@ -578,7 +578,6 @@ public class Controller {
      * @param activeSpring The active spring that determines the water flow.
      */
     public void trackFlow(Spring activeSpring) {
-        // TODO
         printMethodName("trackWaterFlow()");
         
         Point activeSpringCoordinate = activeSpring.getCoordinate();
@@ -690,7 +689,7 @@ public class Controller {
                 this.saboteurScore++;
             }
         }
-        this.saboteurScoreLabel.setText("sabutoer:"+Integer.toString(this.saboteurScore));
+        this.saboteurScoreLabel.setText("saboteur:"+Integer.toString(this.saboteurScore));
         this.plumberScoreLabel.setText("plumber:"+Integer.toString(this.plumberScore));
 
     }
@@ -786,19 +785,17 @@ public class Controller {
     private void pickUpPumpAction(Plumber plumber){
         printMethodName("PickUpPump");
         Point plumberPos = plumber.getCurrentCoordinate();
+
         System.out.println(plumberPos);
 
         Cistern target = null;
         if(isNear(plumberPos, cistern1)){
-
             printMethodName("Picking up from cistern1");
             target = cistern1;
         } else if(isNear(plumberPos,cistern2)) {
-
             printMethodName("Picking up from cistern2");
             target = cistern2;
         } else if(isNear(plumberPos, cistern3)){
-
             printMethodName("Picking up from cistern3");
             target = cistern3;
         }
@@ -838,15 +835,17 @@ public class Controller {
                     && plumber.inventory instanceof Pump) {
                 int x = convertToPixels(chosenCell).x;
                 int y = convertToPixels(chosenCell).y;
-                JLabel pumpLabel = ((Pump) plumber.inventory).getPumpLabel();
+                Pump pump = (Pump)plumber.inventory;
+                placePumps(new Pump(), chosenCell);
+//                JLabel pumpLabel = ((Pump) plumber.inventory).getPumpLabel();
+//
+//                pumpLabel.setBounds(x, y, pumpLabel.getWidth(), pumpLabel.getHeight());
+//
+//                gameFrame.getContentPane().add(pumpLabel);
+//                pumpLabel.setVisible(true);
+//                gameFrame.repaint();
 
-                pumpLabel.setBounds(x, y, pumpLabel.getWidth(), pumpLabel.getHeight());
-
-                gameFrame.getContentPane().add(pumpLabel);
-                pumpLabel.setVisible(true);
-                gameFrame.repaint();
-
-                out.println("THE PUMP IS AT X: " + pumpLabel.getX() + " Y: " + pumpLabel.getY());
+                //out.println("THE PUMP IS AT X: " + pumpLabel.getX() + " Y: " + pumpLabel.getY());
                 plumber.installPump(chosenCell);
             }
             else{
@@ -859,15 +858,14 @@ public class Controller {
      * Checks if the plumber is near a cistern.
      *
      * @param plumberPos the plumber's position
-     * @param cistern    the cistern object
+     * @param element    the element object
      * @return true if the plumber is near the cistern, false otherwise
      */
-    private boolean isNear(Point plumberPos, Cistern cistern){
+    private boolean isNear(Point plumberPos, Element element){
         printMethodName("IsNear");
-        Point cisternPos = cistern.getCoordinate();
+        Point cisternPos = element.getCoordinate();
         System.out.println(cisternPos);
         int proximity = 20;
         return plumberPos.distance(cisternPos) < proximity;
     }
-
 }
