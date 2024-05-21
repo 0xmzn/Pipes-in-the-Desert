@@ -291,7 +291,7 @@ public class Controller {
                 installPumpAction((Plumber)activePlayer);
                 break;
             case KeyEvent.VK_B:
-                puncturePipe((Plumber) activePlayer);
+                puncturePipe((Saboteur) activePlayer);
                 break;
             case KeyEvent.VK_F:
                 fixPipe((Plumber) activePlayer);
@@ -329,7 +329,7 @@ public class Controller {
         }
     }
 
-    private void puncturePipe(Plumber saboteur){
+    private void puncturePipe(Saboteur saboteur){
         Point saboteurPos = saboteur.getCurrentCoordinate();
         Point gridCoordinate = convertCoordinates(saboteurPos);
 
