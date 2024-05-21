@@ -496,7 +496,6 @@ public class Controller {
         if(row >=0 &&row<GRID_ROWS&&col>=0 && col<GRID_COLS){
             grid.getElementsGrid()[row][col] = element;
         }
-
     }
     /**
      * Converts pixel coordinates to a custom coordinate system.
@@ -735,11 +734,11 @@ public class Controller {
     public void giveTurn() {
         printMethodName("giveTurn()");
         if(activePlayer == plumber1){
-            activePlayer = plumber2;
-        }else if(activePlayer == plumber2){
             activePlayer = saboteur1;
+        }else if(activePlayer == plumber2){
+            activePlayer =saboteur2 ;
         }else if(activePlayer== saboteur1){
-            activePlayer = saboteur2;
+            activePlayer = plumber2;
         }else if(activePlayer==saboteur2){
             activePlayer = plumber1;
             round++;

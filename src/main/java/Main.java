@@ -125,4 +125,5 @@ public class Main {
         UIManager.put("Label.font", f);
         UIManager.put("TextField.font", f);
     }
+
 }
